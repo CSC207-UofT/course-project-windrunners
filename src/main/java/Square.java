@@ -1,10 +1,8 @@
 package main.java;
 
-import java.util.Optional;
-
 public class Square {
     private Tile tile;
-    private String modifier;
+    private final String modifier;
 
     public Square() {
         tile = null;

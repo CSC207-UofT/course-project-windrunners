@@ -3,8 +3,8 @@ package main.java;
 import java.util.HashMap;
 
 public class Tile {
-    private char letter;
-    private int value;
+    private final char letter;
+    private final int value;
 
     public char getLetter() { return letter; }
     public int getValue() { return value; }

@@ -1,8 +1,6 @@
 package main.java;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class Board {

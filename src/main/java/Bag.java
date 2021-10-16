@@ -5,10 +5,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Bag {
 
-    private List<Tile> tiles;
+    private List<Tile> tiles = new ArrayList<>();
 
     public Bag() {
-        tiles = new ArrayList<>();
         HashMap<Character, Integer> distribution = getLetterDistribution();
         for (int i = 65; i <= 90; i++) {
             int num = distribution.get((char) i);

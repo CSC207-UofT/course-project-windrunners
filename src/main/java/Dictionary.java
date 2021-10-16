@@ -7,16 +7,14 @@ import java.io.IOException;
 import java.util.HashSet;
 
 public class Dictionary {
-    private HashSet<String> words;
+    private final HashSet<String> words;
 
     public Dictionary() {
         words = new HashSet<>();
         try (BufferedReader br = new BufferedReader(new FileReader("./dictionary.txt"))) {
             String line;
-            int i = 0;
             while ((line = br.readLine()) != null) {
                 words.add(line);
-                i++;
             }
         } catch (FileNotFoundException fileNotFoundException) {
             System.out.println("File Not Found");
