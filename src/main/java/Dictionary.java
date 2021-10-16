@@ -7,15 +7,15 @@ import java.io.IOException;
 import java.util.HashSet;
 
 public class Dictionary {
-    private HashSet<String> dictionary;
+    private HashSet<String> words;
 
     public Dictionary() {
-        dictionary = new HashSet<>();
+        words = new HashSet<>();
         try (BufferedReader br = new BufferedReader(new FileReader("./dictionary.txt"))) {
             String line;
             int i = 0;
             while ((line = br.readLine()) != null) {
-                dictionary.add(line);
+                words.add(line);
                 i++;
             }
         } catch (FileNotFoundException fileNotFoundException) {
@@ -25,9 +25,9 @@ public class Dictionary {
         }
     }
 
-    public HashSet<String> getDictionary() { return dictionary; }
+    public HashSet<String> getDictionary() { return words; }
 
-    public boolean inDictionary(String word) {
-        return dictionary.contains(word);
+    public boolean isValid(String word) {
+        return words.contains(word);
     }
 }
