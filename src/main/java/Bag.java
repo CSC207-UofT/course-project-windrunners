@@ -1,35 +1,22 @@
 package main.java;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Bag {
 
-    private Tile[] tiles;
+    private List<Tile> tiles;
 
     public Bag() {
-        tiles = new Tile[100];
+        tiles = new ArrayList<>();
         HashMap<Character, Integer> distribution = getLetterDistribution();
-        int index = 0;
         for (int i = 65; i <= 90; i++) {
             int num = distribution.get((char) i);
             for (int j = 0; j <= num; j++) {
-                tiles[index] = new Tile((char) i);
-                index++;
+                tiles.add(new Tile((char) i));
             }
         }
-
-        Random rnd = new Random();
-        for (int i = tiles.length - 1; i > 0; i--)
-        {
-            index = rnd.nextInt(i + 1);
-            Tile a = tiles[index];
-            tiles[index] = tiles[i];
-            tiles[i] = a;
-        }
-
+        Collections.shuffle(tiles);
     }
 
     public HashMap getLetterDistribution() {
