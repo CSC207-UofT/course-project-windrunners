@@ -1,4 +1,4 @@
-#Phase 0 Progress Report
+## Phase 0 Progress Report
 
 **Andy, Elliot, Rachel, Shaul, Shridhar, Yash**
 
