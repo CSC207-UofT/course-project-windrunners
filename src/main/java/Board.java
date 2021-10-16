@@ -100,4 +100,26 @@ public class Board {
 
         return wordValue;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder output = new StringBuilder();
+        String row = "-".repeat(4 * BOARD_WIDTH + 1) + System.lineSeparator();
+
+        output.append(row);
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+            output.append('|');
+            for (int j = 0; j < BOARD_WIDTH; j++) {
+                if (board[i][j].getTile() == null) {
+                    output.append("   |");
+                } else {
+                    String display = " " + board[i][j].getTile().getLetter() + " |";
+                    output.append(display);
+                }
+                output.append(System.lineSeparator());
+            }
+            output.append(row);
+        }
+        return output.toString();
+    }
 }
