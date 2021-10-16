@@ -21,12 +21,13 @@ public class Player {
         rack.add(tile);
     }
 
-    public void removeTile(char letter) {
-        for (Tile tile : rack) {
-            if (tile.getLetter() == letter) {
-                rack.remove(tile);
+    public Tile removeTile(char letter) {
+        for (int i = 0; i < rack.size(); i++) {
+            if (rack.get(i).getLetter() == letter) {
+                return rack.remove(i);
             }
         }
+        return null;
     }
 
     public int getRackSize() {
@@ -34,12 +35,15 @@ public class Player {
     }
 
     public boolean hasLetters(List<Character> letterList) {
+        List<Tile> rackCopy = new ArrayList<>(rack);
+
         boolean hasLetter;
         for (char letter : letterList) {
             hasLetter = false;
-            for (Tile tile : rack) {
+            for (Tile tile : rackCopy) {
                 if (tile.getLetter() == letter) {
                     hasLetter = true;
+                    rackCopy.remove(tile);
                 }
             }
             if (!hasLetter) {
