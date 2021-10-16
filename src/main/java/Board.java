@@ -1,6 +1,7 @@
 package main.java;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class Board {
     private Square[][] board;
@@ -9,7 +10,7 @@ public class Board {
         board = new Square[15][15];
     }
 
-    public int countValue(Tile[] word) {
+    public int countValue(List<Tile> word) {
         int wordValue = 0;
         for (Tile tile : word) {
             wordValue += tile.getValue();
