@@ -14,7 +14,6 @@ public class Game {
         Dictionary dictionary = new Dictionary();
         Bag bag = new Bag();
         Scanner sc = new Scanner(System.in);
-        System.out.println(board.getBoard()[1][1]);
         System.out.print("Enter Player 1's Name: ");
         String name1 = sc.next();
         System.out.print("Enter Player 2's Name: ");
@@ -25,5 +24,6 @@ public class Game {
             player1.addTile(bag.drawTile());
             player2.addTile(bag.drawTile());
         }
+        player1.addPoints(0);
     }
 }

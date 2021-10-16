@@ -1,11 +1,10 @@
 package main.java;
 
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Bag {
 
-    private List<Tile> tiles = new ArrayList<>();
+    private final List<Tile> tiles = new ArrayList<>();
 
     public Bag() {
         HashMap<Character, Integer> distribution = getLetterDistribution();

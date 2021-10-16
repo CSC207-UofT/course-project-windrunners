@@ -4,18 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    private String name;
+    private final String name;
     private int points;
-    private List<Tile> rack;
+    private final List<Tile> rack;
 
     public Player(String name) {
         this.name = name;
         this.points = 0;
         this.rack = new ArrayList<>();
     }
+
+    public String getName() { return name; }
     public void addPoints(int value) {
         points += value;
     }
+    public int getPoints() { return points; }
 
     public void addTile(Tile tile) {
         rack.add(tile);
