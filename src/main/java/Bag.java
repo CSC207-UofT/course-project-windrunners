@@ -16,11 +16,16 @@ public class Bag {
                 tiles.add(new Tile((char) i));
             }
         }
-        Collections.shuffle(tiles);
     }
 
-    public HashMap getLetterDistribution() {
-        HashMap<Character, Integer> letterDistribution = new HashMap<Character, Integer>();
+    public Tile drawTile() {
+        Random rnd = new Random();
+        int i = rnd.nextInt(tiles.size());
+        return tiles.remove(i);
+    }
+
+    private HashMap<Character, Integer> getLetterDistribution() {
+        HashMap<Character, Integer> letterDistribution = new HashMap<>();
         for (char letter : new char[]{'J', 'K', 'Q', 'X', 'Z'}) {
             letterDistribution.put(letter, 1);
         }
