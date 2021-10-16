@@ -17,6 +17,8 @@ public class Bag {
         }
     }
 
+    public List<Tile> getTiles() { return tiles; }
+
     public Tile drawTile() {
         Random rnd = new Random();
         int i = rnd.nextInt(tiles.size());

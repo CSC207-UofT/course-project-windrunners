@@ -13,6 +13,9 @@ public class Player {
         this.points = 0;
         this.rack = new ArrayList<>();
     }
+
+    public String getName() { return name; }
+
     public void addPoints(int value) {
         points += value;
     }
@@ -21,16 +24,28 @@ public class Player {
         rack.add(tile);
     }
 
-    public void removeTile(char letter) {
+    public Tile removeTile(char letter) {
         for (Tile tile : rack) {
             if (tile.getLetter() == letter) {
                 rack.remove(tile);
+                return tile;
             }
         }
+        return null;
     }
 
     public int getRackSize() {
         return rack.size();
+    }
+
+    public String getRackString() {
+        StringBuilder rackString = new StringBuilder("[");
+        for (Tile tile : rack) {
+            rackString.append(tile.getLetter());
+            rackString.append(",");
+        }
+        rackString.append("]");
+        return rackString.toString();
     }
 
     public boolean hasLetters(List<Character> letterList) {
