@@ -16,6 +16,8 @@ public class Player {
 
     public String getName() { return name; }
 
+    public int getPoints() { return points; }
+
     public void addPoints(int value) {
         points += value;
     }
@@ -39,7 +41,7 @@ public class Player {
     }
 
     public String getRackString() {
-        StringBuilder rackString = new StringBuilder("[");
+        StringBuilder rackString = new StringBuilder(this.name + "'s Letters: [");
         for (Tile tile : rack) {
             rackString.append(tile.getLetter());
             rackString.append(",");

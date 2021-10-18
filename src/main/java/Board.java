@@ -10,13 +10,15 @@ public class Board {
     public static final boolean DOWN = false;
 
     public static final int BOARD_WIDTH = 15;
+    public static final int MIDDLE_SQUARE = 7;
 
-    public Board() {
+    public Board(Tile startingTile) {
         for (int i = 0; i < BOARD_WIDTH; i++) {
             for (int j = 0; j < BOARD_WIDTH; j++) {
                 board[i][j] = new Square();
             }
         }
+        board[MIDDLE_SQUARE][MIDDLE_SQUARE].setTile(startingTile);
     }
 
     public Square[][] getBoard() { return board; }
@@ -74,19 +76,19 @@ public class Board {
         if (direction == RIGHT) {
             int i = 0;
             while (!tiles.isEmpty()) {
-                if (board[x+i][y].getTile() == null) {
-                    board[x+i][y].setTile(tiles.remove(0));
+                if (board[x][y+i].getTile() == null) {
+                    board[x][y+i].setTile(tiles.remove(0));
                 }
-                word.add(board[x+i][y].getTile());
+                word.add(board[x][y+i].getTile());
                 i++;
             }
         } else {
             int j = 0;
             while (!tiles.isEmpty()) {
-                if (board[x][y+j].getTile() == null) {
-                    board[x][y+j].setTile(tiles.remove(0));
+                if (board[x+j][y].getTile() == null) {
+                    board[x+j][y].setTile(tiles.remove(0));
                 }
-                word.add(board[x][y+j].getTile());
+                word.add(board[x+j][y].getTile());
                 j++;
             }
         }
@@ -106,11 +108,17 @@ public class Board {
     @Override
     public String toString() {
         StringBuilder output = new StringBuilder();
-        String row = "-".repeat(4 * BOARD_WIDTH + 1) + System.lineSeparator();
+        output.append("  ");
+        for (int i = 0; i < BOARD_WIDTH; i ++) {
+            output.append(" ".repeat(i < 9 ? 2 : 1));
+            output.append(i + 1 + " ");
+        }
+        output.append(System.lineSeparator());
+        String row = "  " + "-".repeat(4 * BOARD_WIDTH + 1) + System.lineSeparator();
 
         output.append(row);
         for (int i = 0; i < BOARD_WIDTH; i++) {
-            output.append('|');
+            output.append((char) (i + 65) + " |");
             for (int j = 0; j < BOARD_WIDTH; j++) {
                 if (board[i][j].getTile() == null) {
                     output.append("   |");
@@ -118,8 +126,8 @@ public class Board {
                     String display = " " + board[i][j].getTile().getLetter() + " |";
                     output.append(display);
                 }
-                output.append(System.lineSeparator());
             }
+            output.append(System.lineSeparator());
             output.append(row);
         }
         return output.toString();
