@@ -24,6 +24,18 @@ public class Bag {
         return tiles.remove(i);
     }
 
+    public List<Tile> swapTiles(List<Tile> tilesToSwap) {
+        int numTilesToSwap = tilesToSwap.size();
+        List<Tile> tilesReturned = new ArrayList<>();
+        for (int i = 0; i < numTilesToSwap; i++) {
+            tilesReturned.add(drawTile());
+        }
+        for (int k = 0; k < numTilesToSwap; k++) {
+            tiles.add(tilesToSwap.get(k));
+        }
+        return tilesReturned;
+    }
+
     private HashMap<Character, Integer> getLetterDistribution() {
         HashMap<Character, Integer> letterDistribution = new HashMap<>();
         for (char letter : new char[]{'J', 'K', 'Q', 'X', 'Z'}) {
