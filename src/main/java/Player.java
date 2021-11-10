@@ -1,6 +1,7 @@
 package main.java;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Player {
@@ -64,5 +65,10 @@ public class Player {
             }
         }
         return true;
+    }
+
+    public boolean hasLetter(char letter) {
+        List<Character> temp = Arrays.asList(letter);
+        return hasLetters(temp);
     }
 }
