@@ -31,7 +31,7 @@ public class Board {
             }
 
             for (int i = 0; i < length; i++) {
-                if (board[y][x + i].getTile() != null &&
+                if (!board[y][x + i].isEmpty() &&
                         board[y][x + i].getTile().getLetter() != word.charAt(i)) {
                     return false;
                 }
@@ -42,7 +42,7 @@ public class Board {
             }
 
             for (int i = 0; i < length; i++) {
-                if (board[y + i][x].getTile() != null &&
+                if (!board[y + i][x].isEmpty() &&
                         board[y + i][x].getTile().getLetter() != word.charAt(i)) {
                     return false;
                 }
@@ -56,13 +56,13 @@ public class Board {
         int length = word.length();
         if (direction == RIGHT) {
             for (int i = 0; i < length; i++) {
-                if (board[y][x + i].getTile() == null) {
+                if (board[y][x + i].isEmpty()) {
                     needed.add(word.charAt(i));
                 }
             }
         } else {
             for (int i = 0; i < length; i++) {
-                if (board[y + i][x].getTile() == null) {
+                if (board[y + i][x].isEmpty()) {
                     needed.add(word.charAt(i));
                 }
             }
@@ -76,7 +76,7 @@ public class Board {
         if (direction == RIGHT) {
             int i = 0;
             while (!tiles.isEmpty()) {
-                if (board[y][x + i].getTile() == null) {
+                if (board[y][x + i].isEmpty()) {
                     board[y][x + i].setTile(tiles.remove(0));
                 }
                 word.add(board[y][x + i].getTile());
@@ -85,7 +85,7 @@ public class Board {
         } else {
             int j = 0;
             while (!tiles.isEmpty()) {
-                if (board[y + j][x].getTile() == null) {
+                if (board[y + j][x].isEmpty()) {
                     board[y + j][x].setTile(tiles.remove(0));
                 }
                 word.add(board[y + j][x].getTile());
@@ -120,7 +120,7 @@ public class Board {
         for (int i = 0; i < BOARD_WIDTH; i++) {
             output.append((char) (i + 65) + " |");
             for (int j = 0; j < BOARD_WIDTH; j++) {
-                if (board[i][j].getTile() == null) {
+                if (board[i][j].isEmpty()) {
                     output.append("   |");
                 } else {
                     String display = " " + board[i][j].getTile().getLetter() + " |";
