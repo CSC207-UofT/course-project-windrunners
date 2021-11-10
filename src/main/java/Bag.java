@@ -58,4 +58,8 @@ public class Bag {
 
         return letterDistribution;
     }
+
+    public int numTilesRemaining() {
+        return tiles.size();
+    }
 }

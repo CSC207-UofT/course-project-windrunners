@@ -35,6 +35,9 @@ public class Game {
             System.out.println("Score: " + currentPlayer.getPoints());
             System.out.println(currentPlayer.getRackString());
             System.out.println(board);
+            if (bag.numTilesRemaining() < 7) {
+                System.out.println("Note: Bag has only " + bag.numTilesRemaining() + " tiles");
+            }
             System.out.println("Answer true to make a move, false to swap tiles: ");
             boolean choice = sc.nextBoolean();
             if (choice) {
@@ -79,7 +82,7 @@ public class Game {
         while (loopCondition) {
             System.out.println("Number of tiles to swap? (between 1 and 7)");
             int numTilesToSwap = sc.nextInt();
-            if (bag.getTiles().size() - numTilesToSwap < 0) {
+            if (bag.numTilesRemaining() < numTilesToSwap) {
                 System.out.println("Bag doesn't have enough tiles to swap. Try Again");
             }
             else {
