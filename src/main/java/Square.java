@@ -24,7 +24,7 @@ public class Square {
     public void setTile(Tile tile) { this.tile = tile; }
 
     public boolean isMultActive() { return multActive; }
-    public void multUsed() { multActive = false; }
+    public void setMultUsed() { multActive = false; }
 
     public int getLetterMult() { return letterMult; }
     public int getWordMult() { return wordMult; }
