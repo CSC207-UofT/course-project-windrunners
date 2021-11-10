@@ -38,7 +38,7 @@ public class Game {
             System.out.println("Answer true to make a move, false to swap tiles: ");
             boolean choice = sc.nextBoolean();
             if (choice) {
-                playerDecidesToMakeMove(currentPlayer, board, bag, sc);
+                playerDecidesToMakeMove(currentPlayer, board, bag, sc, dictionary);
             } else {
                 playerDecidesToSwapTiles(currentPlayer, bag, sc);
             }
@@ -46,16 +46,17 @@ public class Game {
         }
     }
 
-    private static void playerDecidesToMakeMove(Player currentPlayer, Board board, Bag bag, Scanner sc) {
+    private static void playerDecidesToMakeMove(Player currentPlayer, Board board, Bag bag, Scanner sc,
+                                                Dictionary dictionary) {
         System.out.println("Position of 1st letter (e.g. A5): ");
         String position = sc.next();
-        int x = (int) position.charAt(0) - 65;
-        int y = Integer.parseInt(String.valueOf(position.charAt(1))) - 1;
+        int y = (int) position.charAt(0) - 65;
+        int x = Integer.parseInt(String.valueOf(position.charAt(1))) - 1;
         System.out.println("You word goes from left to right? (answer true or false)");
         boolean direction = sc.nextBoolean();
         System.out.println("What is the word?");
         String word = sc.next().toUpperCase();
-        if (board.checkWord(x, y, direction, word)) {
+        if (board.checkWord(x, y, direction, word) && dictionary.isValid(word)) {
             List<Tile> tilesForWord = new ArrayList<>();
             int wordValue = 0;
             for (char letter : board.lettersNeeded(x, y, direction, word)) {

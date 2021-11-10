@@ -31,8 +31,8 @@ public class Board {
             }
 
             for (int i = 0; i < length; i++) {
-                if (board[x+i][y].getTile() != null &&
-                        board[x+i][y].getTile().getLetter() != word.charAt(i)) {
+                if (board[y][x + i].getTile() != null &&
+                        board[y][x + i].getTile().getLetter() != word.charAt(i)) {
                     return false;
                 }
             }
@@ -42,8 +42,8 @@ public class Board {
             }
 
             for (int i = 0; i < length; i++) {
-                if (board[x][y+i].getTile() != null &&
-                        board[x][y+i].getTile().getLetter() != word.charAt(i)) {
+                if (board[y + i][x].getTile() != null &&
+                        board[y + i][x].getTile().getLetter() != word.charAt(i)) {
                     return false;
                 }
             }
@@ -56,13 +56,13 @@ public class Board {
         int length = word.length();
         if (direction == RIGHT) {
             for (int i = 0; i < length; i++) {
-                if (board[x+i][y].getTile() == null) {
+                if (board[y][x + i].getTile() == null) {
                     needed.add(word.charAt(i));
                 }
             }
         } else {
             for (int i = 0; i < length; i++) {
-                if (board[x][y+i].getTile() == null) {
+                if (board[y + i][x].getTile() == null) {
                     needed.add(word.charAt(i));
                 }
             }
@@ -76,19 +76,19 @@ public class Board {
         if (direction == RIGHT) {
             int i = 0;
             while (!tiles.isEmpty()) {
-                if (board[x][y+i].getTile() == null) {
-                    board[x][y+i].setTile(tiles.remove(0));
+                if (board[y][x + i].getTile() == null) {
+                    board[y][x + i].setTile(tiles.remove(0));
                 }
-                word.add(board[x][y+i].getTile());
+                word.add(board[y][x + i].getTile());
                 i++;
             }
         } else {
             int j = 0;
             while (!tiles.isEmpty()) {
-                if (board[x+j][y].getTile() == null) {
-                    board[x+j][y].setTile(tiles.remove(0));
+                if (board[y + j][x].getTile() == null) {
+                    board[y + j][x].setTile(tiles.remove(0));
                 }
-                word.add(board[x+j][y].getTile());
+                word.add(board[y + j][x].getTile());
                 j++;
             }
         }
