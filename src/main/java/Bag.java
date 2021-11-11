@@ -10,7 +10,7 @@ public class Bag {
         HashMap<Character, Integer> distribution = getLetterDistribution();
         for (int i = 65; i <= 90; i++) {
             int num = distribution.get((char) i);
-            for (int j = 0; j <= num; j++) {
+            for (int j = 0; j < num; j++) {
                 tiles.add(new Tile((char) i));
             }
         }
