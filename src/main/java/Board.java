@@ -96,7 +96,7 @@ public class Board {
         final int D = (direction == DOWN) ? 1 : 0;
         final int R = (direction == RIGHT) ? 1 : 0;
         boolean ifTouchesAnotherWord = false;
-        if (y - D != 0 && x - R != 0) {
+        if (y - D >= 0 && x - R >= 0) {
             ifTouchesAnotherWord = !board[y - D][x - R].isEmpty();
         }
         if (y + D < BOARD_WIDTH && x + R < BOARD_WIDTH) {
