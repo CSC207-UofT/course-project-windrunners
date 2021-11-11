@@ -46,7 +46,7 @@ public class Board {
         int count  = 1;
         for (int i = 0; i < BOARD_WIDTH; i++) {
             for (int j = 0; j < BOARD_WIDTH; j++) {
-                    if (board[i][j].isEmpty()) {
+                    if (!board[i][j].isEmpty()) {
                         count += 1;
                     }
             }
@@ -55,14 +55,14 @@ public class Board {
     }
 
     public boolean checkWord(int x, int y, boolean direction, String word, Dictionary dictionary) {
-        if (!dictionary.isValid(word)) {
+        if (!dictionary.isValid(word)) {;
             return false;
         }
-        if (containsOnlyOneTile()) {
-            return dictionary.isValid(word);
-        }
+        // if (containsOnlyOneTile()) {
+        //    return dictionary.isValid(word);
+        //}
 
-        int ifTouchesOtherWord = 0;
+        boolean ifTouchesOtherWord = false;
         int length = word.length();
         final int D = (direction == DOWN) ? 1 : 0;
         final int R = (direction == RIGHT) ? 1 : 0;
@@ -74,6 +74,7 @@ public class Board {
             int r = R * i;
             if (!board[y + d][x + r].isEmpty() &&
                     board[y + d][x + r].getTile().getLetter() != word.charAt(i)) {
+                System.out.println("hey");
                 return false;
             }
             boolean oppDirection = !direction;
@@ -84,14 +85,17 @@ public class Board {
                 }
             }
             if (!board[y + d][x + r].isEmpty()) {
-                ifTouchesOtherWord = 1;
+                ifTouchesOtherWord = true;
             }
 
             if (letterTouchesAnotherWord(word.charAt(i), y + d, x + r, oppDirection)) {
-                ifTouchesOtherWord = 1;
+                ifTouchesOtherWord = true;
             }
         }
-    return ifTouchesOtherWord == 1;
+        if (!ifTouchesOtherWord) {
+            System.out.println("hey");
+        }
+    return ifTouchesOtherWord;
     }
 
     private boolean letterTouchesAnotherWord(char letter, int y, int x, boolean direction) {
@@ -123,10 +127,12 @@ public class Board {
             x += R;
         }
         word.append(letter);
+        y += D;
+        x += R;
         while (y < BOARD_WIDTH && x < BOARD_WIDTH && !board[y][x].isEmpty()) {
+            word.append(board[y][x].getTile().getLetter());
             y += D;
             x += R;
-            word.append(board[y][x].getTile().getLetter());
         }
         return dictionary.isValid(word.toString()) || word.length() == 1;
     }
