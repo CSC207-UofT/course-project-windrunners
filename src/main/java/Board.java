@@ -25,27 +25,17 @@ public class Board {
 
     public boolean checkWord(int x, int y, boolean direction, String word) {
         int length = word.length();
-        if (direction == RIGHT) {
-            if (x + length - 1 > BOARD_WIDTH) {
+        final int D = (direction == DOWN) ? 1 : 0;
+        final int R = (direction == RIGHT) ? 1 : 0;
+        if (x * R + y * D + length - 1 > BOARD_WIDTH) {
+            return false;
+        }
+        for (int i = 0; i < length; i++) {
+            int d = D * i;
+            int r = R * i;
+            if (!board[y + d][x + r].isEmpty() &&
+                    board[y + d][x + r].getTile().getLetter() != word.charAt(i)) {
                 return false;
-            }
-
-            for (int i = 0; i < length; i++) {
-                if (!board[y][x + i].isEmpty() &&
-                        board[y][x + i].getTile().getLetter() != word.charAt(i)) {
-                    return false;
-                }
-            }
-        } else {
-            if (y + length - 1 > BOARD_WIDTH) {
-                return false;
-            }
-
-            for (int i = 0; i < length; i++) {
-                if (!board[y + i][x].isEmpty() &&
-                        board[y + i][x].getTile().getLetter() != word.charAt(i)) {
-                    return false;
-                }
             }
         }
         return true;
@@ -54,19 +44,14 @@ public class Board {
     public List<Character> lettersNeeded(int x, int y, boolean direction, String word) {
         List<Character> needed = new ArrayList<>();
         int length = word.length();
-        if (direction == RIGHT) {
-            for (int i = 0; i < length; i++) {
-                if (board[y][x + i].isEmpty()) {
-                    needed.add(word.charAt(i));
-                }
-            }
-        } else {
-            for (int i = 0; i < length; i++) {
-                if (board[y + i][x].isEmpty()) {
-                    needed.add(word.charAt(i));
-                }
+        final int D = (direction == DOWN) ? 1 : 0;
+        final int R = (direction == RIGHT) ? 1 : 0;
+        for (int i = 0; i < length; i++) {
+            if (board[y + i * D][x + i * R].isEmpty()) {
+                needed.add(word.charAt(i));
             }
         }
+
         return needed;
     }
 
@@ -117,6 +102,7 @@ public class Board {
         }
         return word;
     }
+
     private int countValue(List<Square> word) {
         int wordValue = 0;
         int mult = 1;
