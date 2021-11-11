@@ -27,6 +27,7 @@ public class Board {
 
     public static final int BOARD_WIDTH = 15;
     public static final int MIDDLE_SQUARE = 7;
+    private int filledSquares;
 
     public Board(Tile startingTile) {
         for (int i = 0; i < BOARD_WIDTH; i++) {
@@ -38,20 +39,13 @@ public class Board {
             }
         }
         board[MIDDLE_SQUARE][MIDDLE_SQUARE].setTile(startingTile);
+        filledSquares = 1;
     }
 
     public Square[][] getBoard() { return board; }
 
     public boolean containsOnlyOneTile() {
-        int count  = 1;
-        for (int i = 0; i < BOARD_WIDTH; i++) {
-            for (int j = 0; j < BOARD_WIDTH; j++) {
-                    if (!board[i][j].isEmpty()) {
-                        count += 1;
-                    }
-            }
-        }
-        return count == 1;
+        return filledSquares == 1;
     }
 
     public boolean checkWord(int x, int y, boolean direction, String word, Dictionary dictionary) {
@@ -153,6 +147,7 @@ public class Board {
         while (!tiles.isEmpty()) {
             if (board[y+d][x+r].isEmpty()) {
                 board[y+d][x+r].setTile(tiles.remove(0));
+                filledSquares++;
                 ArrayList<Square> crossingWord = getWordAt(x + r, y + d, OTHER_DIRECTION);
                 if (crossingWord.size() >= 2) { crossingWords.add(crossingWord); }
             }
