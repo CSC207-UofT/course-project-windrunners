@@ -111,7 +111,7 @@ public class Board {
         final int R = (direction == RIGHT) ? 1 : 0;
         int d = 0;
         int r = 0;
-        while (y + d >= 0 && x + r >= 0 && !board[y+d][x+r].isEmpty()) {
+        while (y + d > 0 && x + r > 0 && !board[y+d][x+r].isEmpty()) {
             d -= D;
             r -= R;
         }
