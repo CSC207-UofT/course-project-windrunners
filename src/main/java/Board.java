@@ -77,7 +77,7 @@ public class Board {
     // tiles is a list of required tiles to fill up the rest of the word, in the order they need to be inserted
     public int insertWord(int x, int y, boolean direction, List<Tile> tiles) {
         List<Square> word = new ArrayList<>();
-        final boolean OTHER_DIRECTION = (direction == DOWN) ? DOWN : RIGHT;
+        final boolean OTHER_DIRECTION = (direction == DOWN) ? RIGHT : DOWN;
         List<ArrayList<Square>> crossingWords = new ArrayList<>();
         int d = 0;
         int r = 0;
