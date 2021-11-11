@@ -115,7 +115,7 @@ public class Board {
             d -= D;
             r -= R;
         }
-        while (y + d <= BOARD_WIDTH && x + r <= BOARD_WIDTH && !board[y+d][x+r].isEmpty()) {
+        while (y + d < BOARD_WIDTH && x + r < BOARD_WIDTH && !board[y+d][x+r].isEmpty()) {
             word.add(board[y+d][x+r]);
             d += D;
             r += R;
