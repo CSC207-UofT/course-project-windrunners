@@ -72,7 +72,7 @@ public class Board {
             }
             boolean oppDirection = !direction;
             if (board[y + d][x + r].isEmpty()) {
-                if (!checkIfConnectedWordIsValid(y + d - R, x + r - D, dictionary, oppDirection, word.charAt(i)))
+                if (!checkIfConnectedWordIsValid(y + d, x + r, dictionary, oppDirection, word.charAt(i)))
                 {
                     return false;
                 }
@@ -103,7 +103,7 @@ public class Board {
         StringBuilder word = new StringBuilder();
         final int D = (direction == DOWN) ? 1 : 0;
         final int R = (direction == RIGHT) ? 1 : 0;
-        while (y >= D && x >= R && !board[y-D][x-R].isEmpty()) {
+        while (y >= D && x >= R && !board[y - D][x - R].isEmpty()) {
              y -= D;
              x -= R;
         }
