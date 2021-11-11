@@ -74,7 +74,6 @@ public class Board {
             int r = R * i;
             if (!board[y + d][x + r].isEmpty() &&
                     board[y + d][x + r].getTile().getLetter() != word.charAt(i)) {
-                System.out.println("hey");
                 return false;
             }
             boolean oppDirection = !direction;
@@ -85,7 +84,7 @@ public class Board {
                 }
             }
             if (!board[y + d][x + r].isEmpty() ||
-                    letterTouchesAnotherWord(word.charAt(i), y + d, x + r, oppDirection)) {
+                    letterTouchesAnotherWord(y + d, x + r, oppDirection)) {
                 ifTouchesOtherWord = true;
             }
         }
@@ -93,15 +92,15 @@ public class Board {
     return ifTouchesOtherWord;
     }
 
-    private boolean letterTouchesAnotherWord(char letter, int y, int x, boolean direction) {
+    private boolean letterTouchesAnotherWord(int y, int x, boolean direction) {
         final int D = (direction == DOWN) ? 1 : 0;
         final int R = (direction == RIGHT) ? 1 : 0;
         boolean ifTouchesAnotherWord = false;
         if (y - D != 0 && x - R != 0) {
-            ifTouchesAnotherWord = !board[y][x].isEmpty();
+            ifTouchesAnotherWord = !board[y - D][x - R].isEmpty();
         }
         if (y + D < BOARD_WIDTH && x + R < BOARD_WIDTH) {
-            ifTouchesAnotherWord = ifTouchesAnotherWord || !board[y][x].isEmpty();
+            ifTouchesAnotherWord = ifTouchesAnotherWord || !board[y + D][x + R].isEmpty();
         }
         return ifTouchesAnotherWord;
     }
