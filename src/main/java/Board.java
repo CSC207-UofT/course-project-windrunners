@@ -42,7 +42,27 @@ public class Board {
 
     public Square[][] getBoard() { return board; }
 
-    public boolean checkWord(int x, int y, boolean direction, String word) {
+    public boolean containsOnlyOneTile() {
+        int count  = 1;
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+            for (int j = 0; j < BOARD_WIDTH; j++) {
+                    if (board[i][j].isEmpty()) {
+                        count += 1;
+                    }
+            }
+        }
+        return count == 1;
+    }
+
+    public boolean checkWord(int x, int y, boolean direction, String word, Dictionary dictionary) {
+        if (!dictionary.isValid(word)) {
+            return false;
+        }
+        if (containsOnlyOneTile()) {
+            return dictionary.isValid(word);
+        }
+
+        int ifTouchesOtherWord = 0;
         int length = word.length();
         final int D = (direction == DOWN) ? 1 : 0;
         final int R = (direction == RIGHT) ? 1 : 0;
@@ -56,8 +76,59 @@ public class Board {
                     board[y + d][x + r].getTile().getLetter() != word.charAt(i)) {
                 return false;
             }
+            boolean oppDirection = !direction;
+            if (board[y + d][x + r].isEmpty()) {
+                if (!checkIfConnectedWordIsValid(y + d - R, x + r - D, dictionary, oppDirection, word.charAt(i)))
+                {
+                    return false;
+                }
+            }
+            if (!board[y + d][x + r].isEmpty()) {
+                ifTouchesOtherWord = 1;
+            }
+
+            if (letterTouchesAnotherWord(word.charAt(i), y + d, x + r, oppDirection)) {
+                ifTouchesOtherWord = 1;
+            }
         }
-        return true;
+    return ifTouchesOtherWord == 1;
+    }
+
+    private boolean letterTouchesAnotherWord(char letter, int y, int x, boolean direction) {
+        final int D = (direction == DOWN) ? 1 : 0;
+        final int R = (direction == RIGHT) ? 1 : 0;
+        boolean ifTouchesAnotherWord = false;
+        if (y - D != 0 && x - R != 0) {
+            ifTouchesAnotherWord = !board[y][x].isEmpty();
+        }
+        if (y + D < BOARD_WIDTH && x + R < BOARD_WIDTH) {
+            ifTouchesAnotherWord = ifTouchesAnotherWord || !board[y][x].isEmpty();
+        }
+        return ifTouchesAnotherWord;
+    }
+
+    private boolean checkIfConnectedWordIsValid(int y, int x, Dictionary dictionary, boolean direction, char letter) {
+        StringBuilder word = new StringBuilder();
+        final int D = (direction == DOWN) ? 1 : 0;
+        final int R = (direction == RIGHT) ? 1 : 0;
+        while (y >= 0 && x >= 0 && !board[y][x].isEmpty()) {
+             y -= D;
+             x -= R;
+        }
+        y += D;
+        x += R;
+        while (y < BOARD_WIDTH && x < BOARD_WIDTH && !board[y][x].isEmpty()) {
+            word.append(board[y][x].getTile().getLetter());
+            y += D;
+            x += R;
+        }
+        word.append(letter);
+        while (y < BOARD_WIDTH && x < BOARD_WIDTH && !board[y][x].isEmpty()) {
+            y += D;
+            x += R;
+            word.append(board[y][x].getTile().getLetter());
+        }
+        return dictionary.isValid(word.toString()) || word.length() == 1;
     }
 
     public List<Character> lettersNeeded(int x, int y, boolean direction, String word) {

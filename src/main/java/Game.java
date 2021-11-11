@@ -59,7 +59,7 @@ public class Game {
         boolean direction = sc.nextBoolean();
         System.out.println("What is the word?");
         String word = sc.next().toUpperCase();
-        if (board.checkWord(x, y, direction, word) && dictionary.isValid(word)) {
+        if (board.checkWord(x, y, direction, word, dictionary)) {
             List<Tile> tilesForWord = new ArrayList<>();
             for (char letter : board.lettersNeeded(x, y, direction, word)) {
                 Tile removedTile = (currentPlayer.removeTile(letter));
