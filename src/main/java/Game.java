@@ -54,10 +54,7 @@ public class Game {
         System.out.println("Position of 1st letter (e.g. A5): ");
         String position = sc.next();
         int y = (int) position.charAt(0) - 65;
-        int x = Integer.parseInt(String.valueOf(position.charAt(1))) - 1;
-        if (position.length() == 3) {
-            x = Integer.parseInt(position.substring(1)) - 1;
-        }
+        int x = Integer.parseInt(position.substring(1)) - 1;
         System.out.println("You word goes from left to right? (answer true or false)");
         boolean direction = sc.nextBoolean();
         System.out.println("What is the word?");

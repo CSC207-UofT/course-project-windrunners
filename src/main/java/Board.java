@@ -58,9 +58,9 @@ public class Board {
         if (!dictionary.isValid(word)) {;
             return false;
         }
-        // if (containsOnlyOneTile()) {
-        //    return dictionary.isValid(word);
-        //}
+        if (containsOnlyOneTile()) {
+            return dictionary.isValid(word);
+        }
 
         boolean ifTouchesOtherWord = false;
         int length = word.length();
@@ -84,17 +84,12 @@ public class Board {
                     return false;
                 }
             }
-            if (!board[y + d][x + r].isEmpty()) {
+            if (!board[y + d][x + r].isEmpty() ||
+                    letterTouchesAnotherWord(word.charAt(i), y + d, x + r, oppDirection)) {
                 ifTouchesOtherWord = true;
             }
+        }
 
-            if (letterTouchesAnotherWord(word.charAt(i), y + d, x + r, oppDirection)) {
-                ifTouchesOtherWord = true;
-            }
-        }
-        if (!ifTouchesOtherWord) {
-            System.out.println("hey");
-        }
     return ifTouchesOtherWord;
     }
 
