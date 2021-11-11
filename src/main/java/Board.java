@@ -5,7 +5,23 @@ import java.util.List;
 
 public class Board {
     private final Square[][] board = new Square[BOARD_WIDTH][BOARD_WIDTH];
-
+    private static final String[][] SQUARE_TYPES = {
+        {"3W","  ","  ","2L","  ","  ","  ","3W","  ","  ","  ","2L","  ","  ","3W"},
+        {"  ","2W","  ","  ","  ","3L","  ","  ","  ","3L","  ","  ","  ","2W","  "},
+        {"  ","  ","2W","  ","  ","  ","2L","  ","2L","  ","  ","  ","2W","  ","  "},
+        {"2L","  ","  ","2W","  ","  ","  ","2L","  ","  ","  ","2W","  ","  ","2L"},
+        {"  ","  ","  ","  ","2W","  ","  ","  ","  ","  ","2W","  ","  ","  ","  "},
+        {"  ","3L","  ","  ","  ","3L","  ","  ","  ","3L","  ","  ","  ","3L","  "},
+        {"  ","  ","2L","  ","  ","  ","2L","  ","2L","  ","  ","  ","2L","  ","  "},
+        {"3W","  ","  ","2L","  ","  ","  ","2W","  ","  ","  ","2L","  ","  ","3W"},
+        {"  ","  ","2L","  ","  ","  ","2L","  ","2L","  ","  ","  ","2L","  ","  "},
+        {"  ","3L","  ","  ","  ","3L","  ","  ","  ","3L","  ","  ","  ","3L","  "},
+        {"  ","  ","  ","  ","2W","  ","  ","  ","  ","  ","2W","  ","  ","  ","  "},
+        {"2L","  ","  ","2W","  ","  ","  ","2L","  ","  ","  ","2W","  ","  ","2L"},
+        {"  ","  ","2W","  ","  ","  ","2L","  ","2L","  ","  ","  ","2W","  ","  "},
+        {"  ","2W","  ","  ","  ","3L","  ","  ","  ","3L","  ","  ","  ","2W","  "},
+        {"3W","  ","  ","2L","  ","  ","  ","3W","  ","  ","  ","2L","  ","  ","3W"}
+    };
     public static final boolean RIGHT = true;
     public static final boolean DOWN = false;
 
@@ -15,7 +31,10 @@ public class Board {
     public Board(Tile startingTile) {
         for (int i = 0; i < BOARD_WIDTH; i++) {
             for (int j = 0; j < BOARD_WIDTH; j++) {
-                board[i][j] = new Square();
+                String squareType = SQUARE_TYPES[i][j];
+                int L = (squareType.equals("3L")) ? 3 : (squareType.equals("2L")) ? 2 : 1;
+                int W = (squareType.equals("3W")) ? 3 : (squareType.equals("2W")) ? 2 : 1;
+                board[i][j] = new Square(L, W);
             }
         }
         board[MIDDLE_SQUARE][MIDDLE_SQUARE].setTile(startingTile);
@@ -134,12 +153,8 @@ public class Board {
         for (int i = 0; i < BOARD_WIDTH; i++) {
             output.append((char) (i + 65) + " |");
             for (int j = 0; j < BOARD_WIDTH; j++) {
-                if (board[i][j].isEmpty()) {
-                    output.append("   |");
-                } else {
-                    String display = " " + board[i][j].getTile().getLetter() + " |";
-                    output.append(display);
-                }
+                String str = String.format("%2s |", board[i][j].toString());
+                output.append(str);
             }
             output.append(System.lineSeparator());
             output.append(row);

@@ -32,4 +32,16 @@ public class Square {
     public boolean isEmpty() {
         return tile == null;
     }
+
+    @Override
+    public String toString() {
+        if (isEmpty()) {
+            String str = "";
+            if (letterMult != 1) { str += letterMult + "L"; }
+            if (wordMult != 1) { str += wordMult + "W"; }
+            return str;
+        } else {
+            return tile.getLetter() + "";
+        }
+    }
 }
