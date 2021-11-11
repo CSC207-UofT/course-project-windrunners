@@ -80,6 +80,7 @@ public class Board {
         for (Square square: word) {
             square.setMultUsed();
         }
+        if (tiles.size() == 7) { points += 50; }
         return points;
     }
 
