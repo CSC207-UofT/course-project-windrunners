@@ -55,7 +55,7 @@ public class Board {
     }
 
     public boolean checkWord(int x, int y, boolean direction, String word, Dictionary dictionary) {
-        if (!dictionary.isValid(word)) {;
+        if (!dictionary.isValid(word)) {
             return false;
         }
         if (containsOnlyOneTile()) {
@@ -109,12 +109,10 @@ public class Board {
         StringBuilder word = new StringBuilder();
         final int D = (direction == DOWN) ? 1 : 0;
         final int R = (direction == RIGHT) ? 1 : 0;
-        while (y >= 0 && x >= 0 && !board[y][x].isEmpty()) {
+        while (y >= D && x >= R && !board[y-D][x-R].isEmpty()) {
              y -= D;
              x -= R;
         }
-        y += D;
-        x += R;
         while (y < BOARD_WIDTH && x < BOARD_WIDTH && !board[y][x].isEmpty()) {
             word.append(board[y][x].getTile().getLetter());
             y += D;
