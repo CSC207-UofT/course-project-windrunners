@@ -61,13 +61,11 @@ public class Game {
         String word = sc.next().toUpperCase();
         if (board.checkWord(x, y, direction, word) && dictionary.isValid(word)) {
             List<Tile> tilesForWord = new ArrayList<>();
-            int wordValue = 0;
             for (char letter : board.lettersNeeded(x, y, direction, word)) {
                 Tile removedTile = (currentPlayer.removeTile(letter));
                 tilesForWord.add(removedTile);
-                wordValue += removedTile.getValue();
             }
-            board.insertWord(x, y, direction, tilesForWord);
+            int wordValue = board.insertWord(x, y, direction, tilesForWord);
             currentPlayer.addPoints(wordValue);
             while (currentPlayer.getRackSize() < 7) {
                 currentPlayer.addTile(bag.drawTile());
