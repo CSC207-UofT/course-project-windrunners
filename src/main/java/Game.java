@@ -54,20 +54,18 @@ public class Game {
         System.out.println("Position of 1st letter (e.g. A5): ");
         String position = sc.next();
         int y = (int) position.charAt(0) - 65;
-        int x = Integer.parseInt(String.valueOf(position.charAt(1))) - 1;
+        int x = Integer.parseInt(position.substring(1)) - 1;
         System.out.println("You word goes from left to right? (answer true or false)");
         boolean direction = sc.nextBoolean();
         System.out.println("What is the word?");
         String word = sc.next().toUpperCase();
-        if (board.checkWord(x, y, direction, word) && dictionary.isValid(word)) {
+        if (board.checkWord(x, y, direction, word, dictionary)) {
             List<Tile> tilesForWord = new ArrayList<>();
-            int wordValue = 0;
             for (char letter : board.lettersNeeded(x, y, direction, word)) {
                 Tile removedTile = (currentPlayer.removeTile(letter));
                 tilesForWord.add(removedTile);
-                wordValue += removedTile.getValue();
             }
-            board.insertWord(x, y, direction, tilesForWord);
+            int wordValue = board.insertWord(x, y, direction, tilesForWord);
             currentPlayer.addPoints(wordValue);
             while (currentPlayer.getRackSize() < 7) {
                 currentPlayer.addTile(bag.drawTile());
