@@ -21,6 +21,8 @@ public class Game {
             }
             playerManager.goToNextPlayer();
         }
+        Player winner = playerManager.getLeader();
+        System.out.println("Congratulations " + winner.getName() + "! You won with " + winner.getPoints() + " points");
     }
     public static void handleSwapMove(SwapMove move, Bag bag, PlayerManager pm) {
         List<Tile> tilesToSwap = move.getTilesToSwap();

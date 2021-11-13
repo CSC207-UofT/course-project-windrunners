@@ -9,7 +9,7 @@ public class PlayerManager {
     public PlayerManager(Bag bag) {
         Scanner sc = new Scanner(System.in);
         System.out.print("How many players are there?");
-        int numPlayers = sc.nextInt();
+        int numPlayers = Math.min(sc.nextInt(), 1);
         this.players = new Player[numPlayers];
         for (int i = 0; i < numPlayers; i++) {
             System.out.print("Enter Player " + (i+1) + "'s Name: ");
@@ -46,5 +46,17 @@ public class PlayerManager {
             currentPlayer.removeTile(tile.getLetter());
         }
         currentPlayer.addTiles(tilesToAdd);
+    }
+
+    public Player getLeader() {
+        Player leader = players[0];
+        int leaderPoints = 0;
+        for (Player player : players) {
+            if (player.getPoints() >= leaderPoints) {
+                leader = player;
+                leaderPoints = player.getPoints();
+            }
+        }
+        return leader;
     }
 }
