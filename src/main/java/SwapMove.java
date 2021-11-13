@@ -3,14 +3,12 @@ package main.java;
 import java.util.List;
 
 public class SwapMove extends Move {
-    private final List<Tile> letters;
+    private final List<Tile> tilesToSwap;
 
-    public SwapMove(List<Tile> letters) {
+    public SwapMove(List<Tile> tilesToSwap) {
         super("SWAP");
-        this.letters = letters;
+        this.tilesToSwap = tilesToSwap;
     }
 
-    public List<Tile> getLetters() {
-        return letters;
-    }
+    public List<Tile> getTilesToSwap() { return tilesToSwap; }
 }
