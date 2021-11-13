@@ -9,7 +9,7 @@ public class Game {
     public static void main(String[] args) {
         Dictionary dictionary = new Dictionary();
         Bag bag = new Bag();
-        Board board = new Board(bag.drawTiles(1).get(0));
+        Board board = new Board();
         Scanner sc = new Scanner(System.in);
         System.out.println(board.getBoard()[1][1]);
         System.out.print("Enter Player 1's Name: ");
@@ -36,11 +36,11 @@ public class Game {
             if (bag.numTilesRemaining() < 7) {
                 System.out.println("Note: Bag has only " + bag.numTilesRemaining() + " tiles");
             }
-            System.out.println("Answer true to make a move, false to swap tiles: ");
-            boolean choice = sc.nextBoolean();
-            if (choice) {
+            System.out.println("Answer 1 to make a move, 2 to swap tiles, 3 to pass: ");
+            int choice = sc.nextInt();
+            if (choice == 1) {
                 playerDecidesToMakeMove(currentPlayer, board, bag, sc, dictionary);
-            } else {
+            } else if (choice == 2) {
                 playerDecidesToSwapTiles(currentPlayer, bag, sc);
             }
             System.out.println();
