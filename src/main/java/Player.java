@@ -100,12 +100,12 @@ public class Player {
     }
 
     private Move makeSwapMove(Scanner sc, int numTilesRemaining) {
-        int maxTilesToSwap = Math.max(7, numTilesRemaining);
+        int maxTilesToSwap = Math.min(7, numTilesRemaining);
         int numTilesToSwap;
         while(true) {
             System.out.println("Number of tiles to swap? (between 1 and " + maxTilesToSwap + ")");
             numTilesToSwap = sc.nextInt();
-            if (numTilesRemaining < maxTilesToSwap) {
+            if (numTilesToSwap > maxTilesToSwap) {
                 System.out.println("You can only swap " + maxTilesToSwap + " tiles. Try again.");
             } else {
                 break;
