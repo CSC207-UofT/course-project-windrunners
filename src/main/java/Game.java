@@ -12,22 +12,9 @@ public class Game {
         Board board = new Board(bag.drawTiles(1).get(0));
         Scanner sc = new Scanner(System.in);
         System.out.println(board.getBoard()[1][1]);
-        System.out.print("Enter Player 1's Name: ");
-        String name1 = sc.next();
-        System.out.print("Enter Player 2's Name: ");
-        String name2 = sc.next();
-        System.out.println();
-        Player player1 = new Player(name1);
-        Player player2 = new Player(name2);
-        player1.addTiles(bag.drawTiles(7));
-        player2.addTiles(bag.drawTiles(7));
-        Player currentPlayer = player2;
+        PlayerManager playerManager = new PlayerManager(bag);
         while (bag.numTilesRemaining() > 0) {
-            if (currentPlayer == player2) {
-                currentPlayer = player1;
-            } else {
-                currentPlayer = player2;
-            }
+            Player currentPlayer = playerManager.getNextPlayer();
             System.out.println(currentPlayer.getName() + "'s Turn:");
             System.out.println("Number of Tiles in the Bag = " + bag.numTilesRemaining());
             System.out.println("Score: " + currentPlayer.getPoints());
