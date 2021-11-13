@@ -19,19 +19,17 @@ public class Game {
         System.out.println();
         Player player1 = new Player(name1);
         Player player2 = new Player(name2);
-        for (int i = 0; i < 7; i++) {
-            player1.addTile(bag.drawTile());
-            player2.addTile(bag.drawTile());
-        }
+        player1.addTiles(bag.drawTiles(7));
+        player2.addTiles(bag.drawTiles(7));
         Player currentPlayer = player2;
-        while (bag.getTiles().size() > 0) {
+        while (bag.numTilesRemaining() > 0) {
             if (currentPlayer == player2) {
                 currentPlayer = player1;
             } else {
                 currentPlayer = player2;
             }
             System.out.println(currentPlayer.getName() + "'s Turn:");
-            System.out.println("Number of Tiles in the Bag = " + bag.getTiles().size());
+            System.out.println("Number of Tiles in the Bag = " + bag.numTilesRemaining());
             System.out.println("Score: " + currentPlayer.getPoints());
             System.out.println(currentPlayer.getRackString());
             System.out.println(board);
@@ -67,9 +65,8 @@ public class Game {
             }
             int wordValue = board.insertWord(x, y, direction, tilesForWord);
             currentPlayer.addPoints(wordValue);
-            while (currentPlayer.getRackSize() < 7) {
-                currentPlayer.addTile(bag.drawTile());
-            }
+            int tilesToDraw = 7 - currentPlayer.getRackSize();
+            currentPlayer.addTiles(bag.drawTiles(tilesToDraw));
         } else {
             System.out.println("Invalid Word/Placement");
         }
@@ -99,9 +96,7 @@ public class Game {
                     }
                 }
                 List<Tile> tilesReturned = bag.swapTiles(temp);
-                for (int k = 0; k < numTilesToSwap; k++) {
-                    currentPlayer.addTile(tilesReturned.get(k));
-                }
+                currentPlayer.addTiles(tilesReturned);
                 System.out.println("Tiles Swapped");
             }
         }

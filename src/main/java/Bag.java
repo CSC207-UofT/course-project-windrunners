@@ -15,12 +15,18 @@ public class Bag {
         }
     }
 
-    public List<Tile> getTiles() { return tiles; }
+//    public List<Tile> getTiles() { return tiles; }
 
     public Tile drawTile() {
         Random rnd = new Random();
         int i = rnd.nextInt(tiles.size());
         return tiles.remove(i);
+    }
+
+    public List<Tile> drawTiles(int num) {
+       List<Tile> tiles = new ArrayList<>();
+       for (int i = 0; i < num; i++) { tiles.add(drawTile()); }
+       return tiles;
     }
 
     public List<Tile> swapTiles(List<Tile> tilesToSwap) {

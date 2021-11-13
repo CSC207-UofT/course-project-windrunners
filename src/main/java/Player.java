@@ -23,8 +23,8 @@ public class Player {
         points += value;
     }
 
-    public void addTile(Tile tile) {
-        rack.add(tile);
+    public void addTiles(List<Tile> tiles) {
+        rack.addAll(tiles);
     }
 
     public Tile removeTile(char letter) {
