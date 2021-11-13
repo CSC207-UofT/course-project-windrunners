@@ -39,7 +39,7 @@ public class Game {
             return;
         }
         List<Character> lettersNeeded = board.lettersNeeded(x, y, direction, word);
-        if (pm.currentPlayerHasLetters(lettersNeeded)) {
+        if (!pm.currentPlayerHasLetters(lettersNeeded)) {
             System.out.println("Do not have letters required to make move");
             return;
         }
