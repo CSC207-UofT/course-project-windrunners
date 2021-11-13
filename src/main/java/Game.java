@@ -9,7 +9,7 @@ public class Game {
     public static void main(String[] args) {
         Dictionary dictionary = new Dictionary();
         Bag bag = new Bag();
-        Board board = new Board(bag.drawTile());
+        Board board = new Board(bag.drawTiles(1).get(0));
         Scanner sc = new Scanner(System.in);
         System.out.println(board.getBoard()[1][1]);
         System.out.print("Enter Player 1's Name: ");
