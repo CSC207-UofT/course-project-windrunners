@@ -58,9 +58,8 @@ public class Board {
         int endOfWordPosition = x * R + y * D + length - 1;
 
         if (containsNoTiles()) {
-            // put my changes here
-            if (x <= MIDDLE_SQUARE && y <= MIDDLE_SQUARE &&
-                    endOfWordPosition >= MIDDLE_SQUARE) {
+            if ((D == 1 && x == MIDDLE_SQUARE && y <= MIDDLE_SQUARE && endOfWordPosition >= MIDDLE_SQUARE) ||
+                    (R == 1 && x <= MIDDLE_SQUARE && y == MIDDLE_SQUARE && endOfWordPosition >= MIDDLE_SQUARE)) {
                 return dictionary.isValid(word);
             } else {
                 return false;
