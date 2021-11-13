@@ -56,7 +56,7 @@ public class Bag {
             entry('J', 1),
             entry('K', 1),
             entry('L', 4),
-            entry('M', 1),
+            entry('M', 3),
             entry('N', 6),
             entry('O', 8),
             entry('P', 2),
@@ -68,7 +68,7 @@ public class Bag {
             entry('V', 2),
             entry('W', 2),
             entry('X', 1),
-            entry('Y', 1),
+            entry('Y', 2),
             entry('Z', 1)
     );
 

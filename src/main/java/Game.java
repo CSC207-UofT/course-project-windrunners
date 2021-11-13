@@ -2,14 +2,13 @@ package main.java;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Game {
     public static void main(String[] args) {
         Dictionary dictionary = new Dictionary();
         Bag bag = new Bag();
         System.out.println(bag.numTilesRemaining());
-        Board board = new Board(bag.drawTiles(1).get(0));
+        Board board = new Board();
         PlayerManager playerManager = new PlayerManager(bag);
         while (bag.numTilesRemaining() > 0) {
             Move move = playerManager.getNextMove(board, bag.numTilesRemaining());
