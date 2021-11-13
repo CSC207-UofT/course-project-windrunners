@@ -1,5 +1,6 @@
 package main.java;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -7,6 +8,13 @@ import java.util.Scanner;
 public class Game {
 
     public static void main(String[] args) {
+        JFrame window = new JFrame("Scrabble");
+        window.setContentPane(new GamePanel());
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setResizable(false);
+        window.pack();
+        window.setLocationRelativeTo(null);
+        window.setVisible(true);
         Dictionary dictionary = new Dictionary();
         Bag bag = new Bag();
         Board board = new Board(bag.drawTile());

@@ -1,5 +1,7 @@
 package main.java;
 
+import java.awt.*;
+
 public class Square {
     private Tile tile;
     private final int letterMult;
@@ -43,5 +45,31 @@ public class Square {
         } else {
             return tile.getLetter() + "";
         }
+    }
+
+    public void drawSquare(Graphics g, int x, int y) {
+        // this method assumes there is no tile on the square
+        g.setColor(new Color(253, 173, 91));
+        if (this.letterMult == 2) {
+            g.setColor(new Color(174, 232, 255, 255));
+        }
+        if (this.letterMult == 3) {
+            g.setColor(new Color(0, 130, 255));
+        }
+        if (this.wordMult == 2) {
+            g.setColor(new Color(232, 129, 129));
+        }
+        if (this.wordMult == 3) {
+            g.setColor(Color.red);
+        }
+        Font font = new Font("TimesRoman", Font.BOLD, 20);
+        g.setFont(font);
+        FontMetrics metrics = g.getFontMetrics(font);
+        g.fillRect(40 * x, 40 * y, 40, 40);
+        g.setColor(Color.WHITE);
+        g.drawRect(40 * x, 40 * y, 40, 40);
+        g.setColor(Color.BLACK);
+        String mult = this.toString();
+        g.drawString(mult, 40 * x + (40 - metrics.stringWidth(mult)) / 2, 40 * y + (40 - metrics.getHeight()) / 2 + metrics.getAscent());
     }
 }

@@ -1,5 +1,6 @@
 package main.java;
 
+import java.awt.*;
 import java.util.Map;
 
 import static java.util.Map.entry;
@@ -44,4 +45,18 @@ public class Tile {
             entry('Y', 4),
             entry('Z', 10)
     );
+
+    public void drawTile(Graphics g, int x, int y) {
+        Font font = new Font("TimesRoman", Font.BOLD, 30);
+//        Font font = new Font("TimesRoman", Font.BOLD, 12);
+//        String newline = System.getProperty("line.separator");
+        g.setFont(font);
+        FontMetrics metrics = g.getFontMetrics(font);
+        g.setColor(new Color(150,75,0));
+        g.fillRoundRect(40 * x, 40 * y, 40, 40, 10, 10);
+        g.setColor(Color.BLACK);
+        g.drawRoundRect(40 * x, 40 * y, 40, 40, 10, 10);
+        String letter = String.valueOf(this.letter);
+        g.drawString(String.valueOf(letter), 40 * x + (40 - metrics.stringWidth(letter)) / 2, 40 * y + (40 - metrics.getHeight()) / 2 + metrics.getAscent());
+    }
 }

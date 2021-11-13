@@ -1,5 +1,6 @@
 package main.java;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -225,5 +226,18 @@ public class Board {
             output.append(row);
         }
         return output.toString();
+    }
+
+    public void drawBoard(Graphics g) {
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+            for (int j = 0; j < BOARD_WIDTH; j++) {
+                if (board[i][j].getTile() == null) {
+                    this.board[i][j].drawSquare(g, i, j);
+                }
+                else {
+                    this.board[i][j].getTile().drawTile(g, i, j);
+                }
+            }
+        }
     }
 }
