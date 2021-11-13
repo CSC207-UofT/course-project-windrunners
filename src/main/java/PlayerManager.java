@@ -9,7 +9,7 @@ public class PlayerManager {
     public PlayerManager(Bag bag) {
         Scanner sc = new Scanner(System.in);
         System.out.print("How many players are there?");
-        int numPlayers = Math.min(sc.nextInt(), 1);
+        int numPlayers = Math.max(sc.nextInt(), 1);
         this.players = new Player[numPlayers];
         for (int i = 0; i < numPlayers; i++) {
             System.out.print("Enter Player " + (i+1) + "'s Name: ");
