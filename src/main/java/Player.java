@@ -72,7 +72,8 @@ public class Player {
         return hasLetters(temp);
     }
 
-    public Move makeMove(Scanner sc, Board board, int numTilesRemaining) {
+    public Move makeMove(Board board, int numTilesRemaining) {
+        Scanner sc = new Scanner(System.in);
         printGameData(board, numTilesRemaining);
         String moveType = getMoveType(sc);
         if (moveType.equals("pass")) {

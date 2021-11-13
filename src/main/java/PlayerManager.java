@@ -28,8 +28,8 @@ public class PlayerManager {
         currentPlayerNum = (currentPlayerNum + 1) % players.length;
     }
 
-    public Move getNextMove(Scanner sc, Board board, int numTilesRemaining) {
-        return getCurrentPlayer().makeMove(sc, board, numTilesRemaining);
+    public Move getNextMove(Board board, int numTilesRemaining) {
+        return getCurrentPlayer().makeMove(board, numTilesRemaining);
     }
 
     public boolean currentPlayerHasLetters(List<Character> letters) {

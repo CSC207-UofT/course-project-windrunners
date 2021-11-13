@@ -10,10 +10,9 @@ public class Game {
         Bag bag = new Bag();
         System.out.println(bag.numTilesRemaining());
         Board board = new Board(bag.drawTiles(1).get(0));
-        Scanner sc = new Scanner(System.in);
         PlayerManager playerManager = new PlayerManager(bag);
         while (bag.numTilesRemaining() > 0) {
-            Move move = playerManager.getNextMove(sc, board, bag.numTilesRemaining());
+            Move move = playerManager.getNextMove(board, bag.numTilesRemaining());
             if (move.getMoveType().equals("SWAP")) {
                 handleSwapMove((SwapMove) move, bag, playerManager);
             } else if (move.getMoveType().equals("PLACE")) {
