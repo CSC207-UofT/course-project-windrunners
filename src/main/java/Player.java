@@ -1,7 +1,6 @@
 package main.java;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Player {
@@ -52,15 +51,8 @@ public class Player {
     }
 
     public boolean hasLetters(List<Character> letterList) {
-        boolean hasLetter;
         for (char letter : letterList) {
-            hasLetter = false;
-            for (Tile tile : rack) {
-                if (tile.getLetter() == letter) {
-                    hasLetter = true;
-                }
-            }
-            if (!hasLetter) {
+            if (!hasLetter(letter)) {
                 return false;
             }
         }
@@ -68,7 +60,11 @@ public class Player {
     }
 
     public boolean hasLetter(char letter) {
-        List<Character> temp = Arrays.asList(letter);
-        return hasLetters(temp);
+        for (Tile tile : rack) {
+            if (tile.getLetter() == letter) {
+                return true;
+            }
+        }
+        return false;
     }
 }
