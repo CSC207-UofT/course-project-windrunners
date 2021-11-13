@@ -1,6 +1,8 @@
 package main.java;
 
-import java.util.HashMap;
+import java.util.Map;
+
+import static java.util.Map.entry;
 
 public class Tile {
     private final char letter;
@@ -11,26 +13,35 @@ public class Tile {
 
     public Tile(char letter) {
         this.letter = letter;
-        this.value = Tile.valueDict().get(letter);
+        this.value = Tile.VALUE_DICT.get(letter);
     }
-    public static HashMap<Character, Integer> valueDict() {
-        HashMap<Character, Integer> letterValues = new HashMap<>();
-        for (char letter : new char[]{'A', 'E', 'I', 'L', 'N', 'O', 'R', 'S', 'T', 'U'}) {
-            letterValues.put(letter, 1);
-        }
-        letterValues.put('D', 2);
-        letterValues.put('G', 2);
-        for (char letter : new char[]{'B', 'C', 'M', 'P'}) {
-            letterValues.put(letter, 3);
-        }
-        for (char letter : new char[]{'F', 'H', 'V', 'W', 'Y'}) {
-            letterValues.put(letter, 4);
-        }
-        letterValues.put('K', 5);
-        letterValues.put('J', 8);
-        letterValues.put('X', 8);
-        letterValues.put('Q', 10);
-        letterValues.put('Z', 10);
-        return letterValues;
-    }
+
+    public static final Map<Character, Integer> VALUE_DICT = Map.ofEntries(
+            entry('A', 1),
+            entry('B', 3),
+            entry('C', 3),
+            entry('D', 2),
+            entry('E', 1),
+            entry('F', 4),
+            entry('G', 2),
+            entry('H', 4),
+            entry('I', 1),
+            entry('J', 8),
+            entry('K', 5),
+            entry('L', 1),
+            entry('M', 3),
+            entry('N', 1),
+            entry('O', 1),
+            entry('P', 3),
+            entry('Q', 10),
+            entry('R', 1),
+            entry('S', 1),
+            entry('T', 1),
+            entry('U', 1),
+            entry('V', 4),
+            entry('W', 4),
+            entry('X', 8),
+            entry('Y', 4),
+            entry('Z', 10)
+    );
 }
