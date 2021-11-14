@@ -60,6 +60,13 @@ public class Board {
         return filledSquares == 0;
     }
 
+    /*
+        In this method, and in all the methods below,
+        D is 1 if we are checking/inserting the word down the board, and 0 otherwise
+        R is 1 if we are checking/inserting the word to the right, and 0 otherwise
+        This avoids the need to consider two cases according to the value of direction
+    */
+
     /**
      * check if word can be placed on the Board
      * @param x is the column of the first letter of the word
@@ -74,13 +81,6 @@ public class Board {
             return false;
         }
 
-        /*
-        In this method, and in all the methods below,
-        D is 1 if we are checking/inserting the word down the board, and 0 otherwise
-        R is 1 if we are checking/inserting the word to the right, and 0 otherwise
-        This avoids the need to consider two cases according to the value of direction
-         */
-
         boolean ifTouchesOtherWord = false;
 
         int length = word.length();
@@ -89,12 +89,8 @@ public class Board {
         int endOfWordPosition = x * R + y * D + length - 1; // position of the last letter of the word
 
         if (containsNoTiles()) {
-            if ((D == 1 && x == MIDDLE_SQUARE && y <= MIDDLE_SQUARE && endOfWordPosition >= MIDDLE_SQUARE) ||
-                    (R == 1 && x <= MIDDLE_SQUARE && y == MIDDLE_SQUARE && endOfWordPosition >= MIDDLE_SQUARE)) {
-                return dictionary.isValid(word);
-            } else {
-                return false;
-            }
+            return (D == 1 && x == MIDDLE_SQUARE && y <= MIDDLE_SQUARE && endOfWordPosition >= MIDDLE_SQUARE) ||
+                    (R == 1 && x <= MIDDLE_SQUARE && y == MIDDLE_SQUARE && endOfWordPosition >= MIDDLE_SQUARE);
         }
 
         if (endOfWordPosition > BOARD_WIDTH) {
