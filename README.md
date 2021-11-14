@@ -1,10 +1,10 @@
 ## Scrabble Game
 
-This is a Scrabble games, for 2 players. The code files are located in
+This is a Scrabble game for 2 players. The code files are located in:
 
     src/main/java
 
-folder, and the other files are in these locations:
+And here are the rest of the files:
 
     phase0/specification.md
     phase0/crc_cards.docx
