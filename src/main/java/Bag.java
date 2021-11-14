@@ -3,10 +3,17 @@ package main.java;
 import java.util.*;
 
 import static java.util.Map.entry;
+
+/**
+ * A Bag is a collection of Tiles that is used to play Scrabble
+ */
 public class Bag {
 
     private final List<Tile> tiles = new ArrayList<>();
 
+    /**
+     * CLass Constructor. Creates new Tile objects and adds them to the Bag
+     */
     public Bag() {
         for (Map.Entry<Character,Integer> en : LETTER_DISTRIBUTION.entrySet()) {
             for (int j = 0; j < en.getValue(); j++) {
@@ -17,18 +24,32 @@ public class Bag {
 
 //    public List<Tile> getTiles() { return tiles; }
 
+    /**
+     * draw a random tile from the Bag
+     * @return the tile drawn from the Bag
+     */
     private Tile drawTile() {
         Random rnd = new Random();
         int i = rnd.nextInt(tiles.size());
         return tiles.remove(i);
     }
 
+    /**
+     * draw a random number of tiles from the Bag
+     * @param num the number of tiles to draw
+     * @return the List of Tiles drawn from the Bag
+     */
     public List<Tile> drawTiles(int num) {
        List<Tile> tiles = new ArrayList<>();
        for (int i = 0; i < num; i++) { tiles.add(drawTile()); }
        return tiles;
     }
 
+    /**
+     * swap tiles with the bag
+     * @param tilesToSwap is the List of tiles that are to be swapped with tiles in the Bag
+     * @return the List of tiles returned from the Bag
+     */
     public List<Tile> swapTiles(List<Tile> tilesToSwap) {
         int numTilesToSwap = tilesToSwap.size();
         List<Tile> tilesReturned = new ArrayList<>();
@@ -39,6 +60,9 @@ public class Bag {
         return tilesReturned;
     }
 
+    /**
+     * @return the number of Tiles remaining in the Bag
+     */
     public int numTilesRemaining() {
         return tiles.size();
     }

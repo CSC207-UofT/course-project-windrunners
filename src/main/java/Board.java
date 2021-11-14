@@ -3,6 +3,10 @@ package main.java;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A Scrabble Board, which is a collection of Squares, each of which comes in different types
+ * A string representation of the Board (along with the type of Squares) is given below
+ */
 public class Board {
     private final Square[][] board = new Square[BOARD_WIDTH][BOARD_WIDTH];
     private static final String[][] SQUARE_TYPES = {
@@ -22,13 +26,17 @@ public class Board {
         {"  ","2W","  ","  ","  ","3L","  ","  ","  ","3L","  ","  ","  ","2W","  "},
         {"3W","  ","  ","2L","  ","  ","  ","3W","  ","  ","  ","2L","  ","  ","3W"}
     };
+    // used to indicate the direction along which a word is to be placed on the Board
     public static final boolean RIGHT = true;
     public static final boolean DOWN = false;
 
-    public static final int BOARD_WIDTH = 15;
-    public static final int MIDDLE_SQUARE = 7;
-    private int filledSquares;
+    public static final int BOARD_WIDTH = 15; // the width of the Board
+    public static final int MIDDLE_SQUARE = 7; // the co-ordinates of the middle square are row 7, column 7
+    private int filledSquares; // represents the number of Squares which are empty
 
+    /**
+     * Class constructor. All the squares on the Board are initially empty
+     */
     public Board() {
         for (int i = 0; i < BOARD_WIDTH; i++) {
             for (int j = 0; j < BOARD_WIDTH; j++) {
@@ -40,22 +48,45 @@ public class Board {
         }
     }
 
+    /**
+     * @return the board
+     */
     public Square[][] getBoard() { return board; }
 
+    /**
+     * @return true iff the board is empty
+     */
     public boolean containsNoTiles() {
         return filledSquares == 0;
     }
 
+    /**
+     * check if word can be placed on the Board
+     * @param x is the column of the first letter of the word
+     * @param y is the row of the last letter of the word
+     * @param direction is the direction along which the word may be placed
+     * @param word  is the word that is being checked
+     * @param dictionary is the Scrabble dictionary; used to verify is a word is a valid Scrabble word
+     * @return true iff the word can be placed on the board
+     */
     public boolean checkWord(int x, int y, boolean direction, String word, Dictionary dictionary) {
         if (!dictionary.isValid(word)) {
             return false;
         }
 
+        /*
+        In this method, and in all the methods below,
+        D is 1 if we are checking/inserting the word down the board, and 0 otherwise
+        R is 1 if we are checking/inserting the word to the right, and 0 otherwise
+        This avoids the need to consider two cases according to the value of direction
+         */
+
         boolean ifTouchesOtherWord = false;
+
         int length = word.length();
         final int D = (direction == DOWN) ? 1 : 0;
         final int R = (direction == RIGHT) ? 1 : 0;
-        int endOfWordPosition = x * R + y * D + length - 1;
+        int endOfWordPosition = x * R + y * D + length - 1; // position of the last letter of the word
 
         if (containsNoTiles()) {
             if ((D == 1 && x == MIDDLE_SQUARE && y <= MIDDLE_SQUARE && endOfWordPosition >= MIDDLE_SQUARE) ||
@@ -92,6 +123,13 @@ public class Board {
     return ifTouchesOtherWord;
     }
 
+    /**
+     * check if the Square at row y, column x is adjacent to at least one other word on the Board
+     * @param x is the column of the Square
+     * @param y is the row of the Square
+     * @param direction is the direction along which we wish to check for adjacency
+     * @return true iff the Square is adjacent to at least one word on the Board
+     */
     private boolean letterTouchesAnotherWord(int y, int x, boolean direction) {
         final int D = (direction == DOWN) ? 1 : 0;
         final int R = (direction == RIGHT) ? 1 : 0;
@@ -105,6 +143,18 @@ public class Board {
         return ifTouchesAnotherWord;
     }
 
+    /**
+     * checks whether each of the words on the board that may potentially
+     *      *               contain this letter are valid Scrabble words
+     * @param x is the column of the letter
+     * @param y is the row of the letter
+     * @param direction is the direction along which the word is to be checked
+     * @param dictionary is the Scrabble dictionary; used to verify is a word is a valid Scrabble word
+     * @param letter is the letter being considered; any words on the board that may potentially
+     *               contain this letter are checked for validation
+     * @return true iff all the words on the board that may potentially
+     *      *      *               contain this letter are valid Scrabble words
+     */
     private boolean checkIfConnectedWordIsValid(int y, int x, Dictionary dictionary, boolean direction, char letter) {
         StringBuilder word = new StringBuilder();
         final int D = (direction == DOWN) ? 1 : 0;
@@ -129,6 +179,14 @@ public class Board {
         return dictionary.isValid(word.toString()) || word.length() == 1;
     }
 
+    /**
+     * return a string of the letters of word, not in the board
+     * @param x is the column of the first letter of the word
+     * @param y is the row of the last letter of the word
+     * @param direction is the direction along which the word may be placed
+     * @param word  is the word to be placed on the board
+     * @return a string of the letters of word, not in the board
+     */
     public List<Character> lettersNeeded(int x, int y, boolean direction, String word) {
         List<Character> needed = new ArrayList<>();
         int length = word.length();
@@ -143,7 +201,14 @@ public class Board {
         return needed;
     }
 
-    // tiles is a list of required tiles to fill up the rest of the word, in the order they need to be inserted
+    /**
+     * insert the required tiles to fill up the rest of the word, in the order they need to be inserted
+     * @param x is the column of the first letter of the word
+     * @param y is the row of the last letter of the word
+     * @param direction is the direction along which the Tiles are inserted
+     * @param tiles is a list of required tiles to fill up the rest of the word, in the order they need to be inserted
+     * @return the points earned on inserting this word
+     */
     public int insertWord(int x, int y, boolean direction, List<Tile> tiles) {
         List<Square> word = new ArrayList<>();
         final boolean OTHER_DIRECTION = (direction == DOWN) ? RIGHT : DOWN;
@@ -174,7 +239,13 @@ public class Board {
     }
 
 
-    // get the word in the given direction containing the given location
+    /**
+     * get the word in the given direction containing the given location
+     * @param x is the column of the given location
+     * @param y is the row of the given location
+     * @param direction is the given direction
+     * @return a List of Squares containing the word in the given direction containing the given location
+     */
     private ArrayList<Square> getWordAt(int x, int y, boolean direction) {
         ArrayList<Square> word = new ArrayList<>();
         final int D = (direction == DOWN) ? 1 : 0;
@@ -194,6 +265,11 @@ public class Board {
         return word;
     }
 
+    /**
+     * return the points earned according to the word placed on the List word
+     * @param word a List of Squares used to calculate the points
+     * @return the points earned according to the word placed on the List word
+     */
     private int countValue(List<Square> word) {
         int wordValue = 0;
         int mult = 1;
@@ -209,6 +285,9 @@ public class Board {
         return mult * wordValue;
     }
 
+    /**
+     * @return a string representation of the Board
+     */
     @Override
     public String toString() {
         StringBuilder output = new StringBuilder();
