@@ -30,7 +30,7 @@ public class Board {
     public static final int MIDDLE_SQUARE = 7;
     private int filledSquares;
 
-    public Board(Tile startingTile) {
+    public Board() {
         for (int i = 0; i < BOARD_WIDTH; i++) {
             for (int j = 0; j < BOARD_WIDTH; j++) {
                 String squareType = SQUARE_TYPES[i][j];
@@ -39,29 +39,35 @@ public class Board {
                 board[i][j] = new Square(L, W);
             }
         }
-        board[MIDDLE_SQUARE][MIDDLE_SQUARE].setTile(startingTile);
-        filledSquares = 1;
     }
 
     public Square[][] getBoard() { return board; }
 
-    public boolean containsOnlyOneTile() {
-        return filledSquares == 1;
+    public boolean containsNoTiles() {
+        return filledSquares == 0;
     }
 
     public boolean checkWord(int x, int y, boolean direction, String word, Dictionary dictionary) {
         if (!dictionary.isValid(word)) {
             return false;
         }
-        if (containsOnlyOneTile()) {
-            return dictionary.isValid(word);
-        }
 
         boolean ifTouchesOtherWord = false;
         int length = word.length();
         final int D = (direction == DOWN) ? 1 : 0;
         final int R = (direction == RIGHT) ? 1 : 0;
-        if (x * R + y * D + length - 1 > BOARD_WIDTH) {
+        int endOfWordPosition = x * R + y * D + length - 1;
+
+        if (containsNoTiles()) {
+            if ((D == 1 && x == MIDDLE_SQUARE && y <= MIDDLE_SQUARE && endOfWordPosition >= MIDDLE_SQUARE) ||
+                    (R == 1 && x <= MIDDLE_SQUARE && y == MIDDLE_SQUARE && endOfWordPosition >= MIDDLE_SQUARE)) {
+                return dictionary.isValid(word);
+            } else {
+                return false;
+            }
+        }
+
+        if (endOfWordPosition > BOARD_WIDTH) {
             return false;
         }
         for (int i = 0; i < length; i++) {

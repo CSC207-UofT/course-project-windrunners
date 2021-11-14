@@ -15,12 +15,18 @@ public class Bag {
         }
     }
 
-    public List<Tile> getTiles() { return tiles; }
+//    public List<Tile> getTiles() { return tiles; }
 
-    public Tile drawTile() {
+    private Tile drawTile() {
         Random rnd = new Random();
         int i = rnd.nextInt(tiles.size());
         return tiles.remove(i);
+    }
+
+    public List<Tile> drawTiles(int num) {
+       List<Tile> tiles = new ArrayList<>();
+       for (int i = 0; i < num; i++) { tiles.add(drawTile()); }
+       return tiles;
     }
 
     public List<Tile> swapTiles(List<Tile> tilesToSwap) {
@@ -50,7 +56,7 @@ public class Bag {
             entry('J', 1),
             entry('K', 1),
             entry('L', 4),
-            entry('M', 1),
+            entry('M', 3),
             entry('N', 6),
             entry('O', 8),
             entry('P', 2),
@@ -62,7 +68,7 @@ public class Bag {
             entry('V', 2),
             entry('W', 2),
             entry('X', 1),
-            entry('Y', 1),
+            entry('Y', 2),
             entry('Z', 1)
     );
 
