@@ -9,17 +9,17 @@ import java.util.List;
 public class Game {
 
     /**
-     * The main method. Sets up and controls the state of the Game
-     * The Game ends when the Bag empties
+     * The main method. Sets up and controls the state of the Game.
+     * The Game ends when the Bag empties.
      */
     public static void main(String[] args) {
         Dictionary dictionary = new Dictionary();
         Bag bag = new Bag();
         System.out.println(bag.numTilesRemaining());
         Board board = new Board();
-        PlayerManager playerManager = new PlayerManager(bag);
+        PlayerManager playerManager = new PlayerManager(System.in, System.out, bag);
         while (bag.numTilesRemaining() > 0) {
-            Move move = playerManager.getNextMove(board, bag.numTilesRemaining());
+            Move move = playerManager.getNextMove(System.in, System.out, board, bag.numTilesRemaining());
             if (move.getMoveType().equals("SWAP")) {
                 handleSwapMove((SwapMove) move, bag, playerManager);
             } else if (move.getMoveType().equals("PLACE")) {

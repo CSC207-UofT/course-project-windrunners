@@ -1,5 +1,7 @@
 package main.java;
 
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.Scanner;
 import java.util.List;
 
@@ -16,19 +18,22 @@ public class PlayerManager {
      * Class constructor. Initializes Player objects and distributes
      * Tiles to each player from the Bag
      * @param bag the Bag used to distribute Tiles from
+     * @param in is an InputStream to allow the playerManager to ask the user
+     *          for the number and names of players
+     * @param out is an PrintStream to allow the playerManager to ask a user for input
      */
-    public PlayerManager(Bag bag) {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("How many players are there?");
+    public PlayerManager(InputStream in, PrintStream out, Bag bag) {
+        Scanner sc = new Scanner(in);
+        out.print("How many players are there?");
         int numPlayers = Math.max(sc.nextInt(), 1);
         this.players = new Player[numPlayers];
         for (int i = 0; i < numPlayers; i++) {
-            System.out.print("Enter Player " + (i+1) + "'s Name: ");
+            out.print("Enter Player " + (i+1) + "'s Name: ");
             String name = sc.next();
             Player player = new Player(name);
             player.addTiles(bag.drawTiles(7));
             players[i] = player;
-            System.out.println();
+            out.println();
         }
     }
 
@@ -48,12 +53,14 @@ public class PlayerManager {
 
     /**
      * get the Move made by the current Player
+     * @param in is an InputStream to allow the Player to get data from a user
+     * @param out is an PrintStream to allow the Player to output data to a user
      * @param board the Scrabble Board
      * @param numTilesRemaining is the number of Tiles remaining in the Bag
      * @return the Move made by the current Player
      */
-    public Move getNextMove(Board board, int numTilesRemaining) {
-        return getCurrentPlayer().makeMove(board, numTilesRemaining);
+    public Move getNextMove(InputStream in, PrintStream out, Board board, int numTilesRemaining) {
+        return getCurrentPlayer().makeMove(in, out, board, numTilesRemaining);
     }
 
     /**
