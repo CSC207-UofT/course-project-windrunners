@@ -41,10 +41,6 @@ public class PlayerManager {
         }
     }
 
-    public PlayerManager(){
-        this.players = new Player[0];
-    }
-
     /**
      * Class constructor.
      * @param players the list of players
@@ -52,6 +48,15 @@ public class PlayerManager {
     public PlayerManager(Player[] players, int currentPlayerNum){
         this.players = players;
         this.currentPlayerNum = currentPlayerNum;
+    }
+
+    /**
+     * Copy constructor. Used to make a deep copy of a player manager.
+     * @param that the PlayerManager to copy from
+     */
+    public PlayerManager(PlayerManager that){
+        this.players = that.getPlayers();
+        this.currentPlayerNum = that.getCurrentPlayerNum();
     }
 
     /**

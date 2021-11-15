@@ -21,8 +21,16 @@ public class GameState {
      */
     public GameState() {
         this.bag = new Bag();
-        this.playerManager = new PlayerManager();
+        this.playerManager = new PlayerManager(System.in, System.out, bag);
         this.board = new Board();
+        this.currentPlayerNum = playerManager.getCurrentPlayerNum();
+        this.numberOfPlayers = playerManager.getPlayers().length;
+    }
+
+    public GameState(Bag bag, PlayerManager playerManager, Board board) {
+        this.bag = bag;
+        this.playerManager = playerManager;
+        this.board = board;
         this.currentPlayerNum = playerManager.getCurrentPlayerNum();
         this.numberOfPlayers = playerManager.getPlayers().length;
     }

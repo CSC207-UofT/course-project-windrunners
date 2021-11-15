@@ -49,6 +49,10 @@ public class Board {
         }
     }
 
+    /**
+     * Class constructor. Fills the squares on the Board with the tiles in the locations as specified by boardLetters
+     * @param boardLetters a BOARD_WIDTH^2 array with the letters that are already on the Board
+     */
     public Board(char[][] boardLetters){
         for (int i = 0; i < BOARD_WIDTH; i++) {
             for (int j = 0; j < BOARD_WIDTH; j++) {
@@ -62,6 +66,17 @@ public class Board {
                 }
             }
         }
+    }
+
+    /**
+     * Copy constructor. Make a deep copy of the Board from another Board
+     * @param that the Board to copy from
+     */
+    public Board(Board that) {
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+            board[i] = that.getBoard()[i];
+        }
+        this.filledSquares = that.getFilledSquares();
     }
 
     /**
@@ -81,6 +96,10 @@ public class Board {
             }
         }
         return boardLetters;
+    }
+
+    public int getFilledSquares() {
+        return filledSquares;
     }
 
     /**

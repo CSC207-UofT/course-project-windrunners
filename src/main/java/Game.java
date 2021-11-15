@@ -27,18 +27,8 @@ public class Game {
         window.setLocationRelativeTo(null);
         window.setVisible(true);
         Dictionary dictionary = new Dictionary();
-        GameState gameState;
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Start a new game (answer true) or load from previously saved game (answer false)?");
-        if (sc.nextBoolean()) {
-            gameState = new GameState(System.in, System.out);
-        } else {
-            gameState = new GameState("../../../gamestates/");
-        }
-        Bag bag = gameState.getBag();
         System.out.println(bag.numTilesRemaining());
-        Board board = gameState.getBoard();
-        PlayerManager playerManager = gameState.getPlayerManager();
+
         while (bag.numTilesRemaining() > 0) {
             gamePanel.repaint();
             Move move = playerManager.getNextMove(System.in, System.out, board, bag.numTilesRemaining());
@@ -48,16 +38,20 @@ public class Game {
                 handlePlaceMove((PlaceMove) move, bag, playerManager, board, dictionary);
             }
             playerManager.goToNextPlayer();
-            updateGameState(gameState, bag, board, playerManager);
         }
         Player winner = playerManager.getLeader();
         System.out.println("Congratulations " + winner.getName() + "! You won with " + winner.getPoints() + " points");
     }
 
-    private static void updateGameState(GameState gameState, Bag bag, Board board, PlayerManager playerManager) {
-        gameState.setBag(bag);
-        gameState.setBoard(board);
-        gameState.setPlayerManager(playerManager);
+
+    private static GameState getGameState() {
+        return new GameState(new Bag(bag), new PlayerManager(playerManager), new Board(board));
+    }
+
+    private static void loadGameState(GameState gameState) {
+        bag = gameState.getBag();
+        playerManager = gameState.getPlayerManager();
+        board = gameState.getBoard();
     }
 
     /**

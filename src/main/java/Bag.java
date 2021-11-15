@@ -62,7 +62,15 @@ public class Bag {
         }
     }
 
-//    public List<Tile> getTiles() { return tiles; }
+    /**
+     * Copy constructor. Makes a deep copy of the Bag.
+     * @param that the Bag to copy from
+     */
+    public Bag(Bag that) {
+        tiles.addAll(that.getTiles());
+    }
+
+    public List<Tile> getTiles() { return tiles; }
 
     /**
      * @return an ArrayList with just the letters of the tiles that are left in the bag (with repeats)
