@@ -268,10 +268,12 @@ public class Board {
         List<ArrayList<Square>> crossingWords = new ArrayList<>();
         int d = 0;
         int r = 0;
-        while (!tiles.isEmpty()) {
+        int used = 0;
+        while (used < tiles.size()) {
             if (board[y + d][x + r].isEmpty()) {
-                board[y + d][x + r].setTile(tiles.remove(0));
+                board[y + d][x + r].setTile(tiles.get(used));
                 filledSquares++;
+                used++;
                 ArrayList<Square> crossingWord = getWordAt(x + r, y + d, OTHER_DIRECTION);
                 if (crossingWord.size() >= 2) {
                     crossingWords.add(crossingWord);
