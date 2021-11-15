@@ -74,7 +74,9 @@ public class Board {
      */
     public Board(Board that) {
         for (int i = 0; i < BOARD_WIDTH; i++) {
-            board[i] = that.getBoard()[i];
+            for (int j = 0; j < BOARD_WIDTH; j++) {
+                board[i][j] = new Square(that.board[i][j]);
+            }
         }
         this.filledSquares = that.getFilledSquares();
     }

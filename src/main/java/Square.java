@@ -38,6 +38,17 @@ public class Square {
     }
 
     /**
+     * Class constructor. Make a deep copy.
+     * @param that the Square to make a deep copy of
+     */
+    public Square(Square that) {
+        tile = that.getTile();
+        multActive = that.isMultActive();
+        letterMult = that.getLetterMult();
+        wordMult = that.getWordMult();
+    }
+
+    /**
      * @return the Tile on the Square (null if the Square is empty)
      */
     public Tile getTile() { return tile; }
