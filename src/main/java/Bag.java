@@ -22,7 +22,7 @@ public class Bag {
             entry('J', 1),
             entry('K', 1),
             entry('L', 4),
-            entry('M', 3),
+            entry('M', 2),
             entry('N', 6),
             entry('O', 8),
             entry('P', 2),
