@@ -33,7 +33,6 @@ public class Game {
         if (sc.nextBoolean()) {
             gameState = new GameState(System.in, System.out);
         } else {
-            // TODO: come up with an actual file path
             gameState = new GameState("../../../gamestates/");
         }
         Bag bag = gameState.getBag();
