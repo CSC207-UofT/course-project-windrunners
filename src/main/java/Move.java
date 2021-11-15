@@ -1,26 +1,19 @@
 package main.java;
 
+import java.io.PrintStream;
+
 /**
- * An abstract class representing a move made by a Player
- * A move can be of 3 types:
- * SWAP
- * PLACE
- * PASS
+ * An interface representing a move made by a Player. Implements the Command design pattern.
  */
-public abstract class Move {
-    private final String moveType;
-
+public interface  Move {
     /**
-     * Class Constructor.
-     * @param moveType is the type of move made by the Player
+     * A function to execute the move.
+     * @param bag   the bag to replenish the currentPlayer's rack after the move has been made
+     * @param pm    the Player Manager
+     * @param board the Scrabble Board on which the word is to be inserted
+     * @param dict  the Scrabble dictionary to check whether words are valid
+     * @param out   a PrintStream to allow the move to output
      */
-    public Move(String moveType) {
-        this.moveType = moveType;
-    }
-
-    /**
-     * @return the type of Move made by the Player
-     */
-    public String getMoveType() { return moveType; }
+    void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict, PrintStream out);
 }
 

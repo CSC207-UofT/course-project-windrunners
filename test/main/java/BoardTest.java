@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,14 +12,6 @@ import static org.junit.Assert.*;
 public class BoardTest {
     private static Dictionary dict;
     private Board board;
-
-    private List<Tile> charsToTiles(char[] letters) {
-        List<Tile> tiles = new ArrayList<>();
-        for (char letter : letters) {
-            tiles.add(new Tile(Character.toUpperCase(letter)));
-        }
-        return tiles;
-    }
 
     @BeforeClass
     public static void setUpDict() {
@@ -39,7 +30,7 @@ public class BoardTest {
 
     @Test
     public void testContainsNoTilesFalse() {
-        board.insertWord(7, 7, Board.DOWN, charsToTiles("coke".toCharArray()));
+        board.insertWord(7, 7, Board.DOWN, Tile.charsToTiles("coke".toCharArray()));
         assertFalse(board.containsNoTiles());
     }
 
@@ -80,49 +71,49 @@ public class BoardTest {
     
     @Test
     public void testCheckWordOverflowsEdgeDown() {
-       board.insertWord(7, 7, Board.DOWN, charsToTiles("abject".toCharArray()));
+       board.insertWord(7, 7, Board.DOWN, Tile.charsToTiles("abject".toCharArray()));
        assertFalse(board.checkWord(7 + 1, 7 + 5, Board.DOWN, "objectively", dict));
     }
 
     @Test
     public void testCheckWordOverflowsEdgeRight() {
-        board.insertWord(7, 7, Board.RIGHT, charsToTiles("abject".toCharArray()));
+        board.insertWord(7, 7, Board.RIGHT, Tile.charsToTiles("abject".toCharArray()));
         assertFalse(board.checkWord(7 + 5, 7 + 1, Board.RIGHT, "objectively", dict));
     }
 
     @Test
     public void testCheckWordUnderflowsEdgeDown() {
-        board.insertWord(7, 7 - 4, Board.DOWN, charsToTiles("abject".toCharArray()));
+        board.insertWord(7, 7 - 4, Board.DOWN, Tile.charsToTiles("abject".toCharArray()));
         assertFalse(board.checkWord(7 + 1, -1, Board.DOWN, "object", dict));
     }
 
     @Test
     public void testCheckWordUnderflowsEdgeRight() {
-        board.insertWord(7 - 4, 7, Board.RIGHT, charsToTiles("abject".toCharArray()));
+        board.insertWord(7 - 4, 7, Board.RIGHT, Tile.charsToTiles("abject".toCharArray()));
         assertFalse(board.checkWord(-1, 7 + 1, Board.RIGHT, "object", dict));
     }
 
     @Test
     public void testCheckWordOverflowsEdgeOtherDirectionDown() {
-        board.insertWord(7, 7, Board.DOWN, charsToTiles("strength".toCharArray()));
+        board.insertWord(7, 7, Board.DOWN, Tile.charsToTiles("strength".toCharArray()));
         assertFalse(board.checkWord(7, 15, Board.RIGHT, "son", dict));
     }
 
     @Test
     public void testCheckWordOverflowsEdgeOtherDirectionRight() {
-        board.insertWord(7, 7, Board.RIGHT, charsToTiles("strength".toCharArray()));
+        board.insertWord(7, 7, Board.RIGHT, Tile.charsToTiles("strength".toCharArray()));
         assertFalse(board.checkWord(15, 7, Board.DOWN, "son", dict));
     }
 
     @Test
     public void testCheckWordUnderflowsEdgeOtherDirectionDown() {
-        board.insertWord(7, 0, Board.DOWN, charsToTiles("trappers".toCharArray()));
+        board.insertWord(7, 0, Board.DOWN, Tile.charsToTiles("trappers".toCharArray()));
         assertFalse(board.checkWord(7, -1, Board.RIGHT, "son", dict));
     }
 
     @Test
     public void testCheckWordUnderflowsEdgeOtherDirectionRight() {
-        board.insertWord(7, 7, Board.RIGHT, charsToTiles("strength".toCharArray()));
+        board.insertWord(7, 7, Board.RIGHT, Tile.charsToTiles("strength".toCharArray()));
         assertFalse(board.checkWord(-1, 7, Board.DOWN, "son", dict));
     }
 
@@ -148,58 +139,55 @@ public class BoardTest {
 
     @Test
     public void testCheckWordDoesntTouchOtherWord() {
-        board.insertWord(7, 7, Board.RIGHT, charsToTiles("abject".toCharArray()));
-        board.insertWord(7, 7+1, Board.DOWN, charsToTiles("qua".toCharArray()));
+        board.insertWord(7, 7, Board.RIGHT, Tile.charsToTiles("abject".toCharArray()));
+        board.insertWord(7, 7+1, Board.DOWN, Tile.charsToTiles("qua".toCharArray()));
         assertFalse(board.checkWord(7-2, 7, Board.DOWN, "hello", dict));
     }
     @Test public void testCheckWordOnlyTouchesAtStart1() {
-        board.insertWord(7, 7, Board.RIGHT, charsToTiles("at".toCharArray()));
+        board.insertWord(7, 7, Board.RIGHT, Tile.charsToTiles("at".toCharArray()));
         assertTrue(board.checkWord(7-1, 7, Board.DOWN, "cab", dict));
     }
 
     @Test public void testCheckWordOnlyShareLetterAtStart() {
-        board.insertWord(7, 7, Board.RIGHT, charsToTiles("at".toCharArray()));
+        board.insertWord(7, 7, Board.RIGHT, Tile.charsToTiles("at".toCharArray()));
         assertTrue(board.checkWord(7, 7, Board.DOWN, "atrophy", dict));
     }
 
     @Test
     public void testCheckWordIncludesExistingLetters() {
-        board.insertWord(7, 7, Board.RIGHT, charsToTiles("abject".toCharArray()));
-        board.insertWord(7, 7+2, Board.RIGHT, charsToTiles("aqua".toCharArray()));
+        board.insertWord(7, 7, Board.RIGHT, Tile.charsToTiles("abject".toCharArray()));
+        board.insertWord(7, 7+2, Board.RIGHT, Tile.charsToTiles("aqua".toCharArray()));
         assertTrue(board.checkWord(7, 7, Board.DOWN, "abacus", dict));
     }
 
     @Test
     public void testCheckWordAddsToExistingWords() {
-        board.insertWord(7, 7, Board.RIGHT, charsToTiles("at".toCharArray()));
-        board.insertWord(7, 7+2, Board.RIGHT, charsToTiles("at".toCharArray()));
+        board.insertWord(7, 7, Board.RIGHT, Tile.charsToTiles("at".toCharArray()));
+        board.insertWord(7, 7+2, Board.RIGHT, Tile.charsToTiles("at".toCharArray()));
         assertTrue(board.checkWord(7-1, 7, Board.DOWN, "cabaret", dict));
     }
 
     @Test
     public void testCheckWordCreatesInvalidWord() {
-        board.insertWord(7, 7, Board.RIGHT, charsToTiles("at".toCharArray()));
-        board.insertWord(7, 7+2, Board.RIGHT, charsToTiles("at".toCharArray()));
-        board.insertWord(7, 7+4, Board.RIGHT, charsToTiles("at".toCharArray()));
+        board.insertWord(7, 7, Board.RIGHT, Tile.charsToTiles("at".toCharArray()));
+        board.insertWord(7, 7+2, Board.RIGHT, Tile.charsToTiles("at".toCharArray()));
+        board.insertWord(7, 7+4, Board.RIGHT, Tile.charsToTiles("at".toCharArray()));
         assertFalse(board.checkWord(7-1, 7, Board.DOWN, "braces", dict));
     }
 
     @Test
     public void testCheckWordLettersDontMatchUp() {
-        board.insertWord(7, 7, Board.RIGHT, charsToTiles("at".toCharArray()));
+        board.insertWord(7, 7, Board.RIGHT, Tile.charsToTiles("at".toCharArray()));
         assertFalse(board.checkWord(7, 7, Board.DOWN, "braces", dict));
     }
 
     @Test
     public void testLettersNeeded() {
-        board.insertWord(7, 7, Board.RIGHT, charsToTiles("at".toCharArray()));
-        board.insertWord(7, 7+2, Board.RIGHT, charsToTiles("at".toCharArray()));
-        board.insertWord(7, 7+4, Board.RIGHT, charsToTiles("uncle".toCharArray()));
+        board.insertWord(7, 7, Board.RIGHT, Tile.charsToTiles("at".toCharArray()));
+        board.insertWord(7, 7+2, Board.RIGHT, Tile.charsToTiles("at".toCharArray()));
+        board.insertWord(7, 7+4, Board.RIGHT, Tile.charsToTiles("uncle".toCharArray()));
         List<Character> lettersNeeded = board.lettersNeeded(7,7, Board.DOWN, "abacus");
         Collections.sort(lettersNeeded);
         assertArrayEquals(new Character[] {'b', 'c', 's'}, lettersNeeded.toArray());
     }
-
-
-
 }

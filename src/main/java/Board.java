@@ -188,7 +188,7 @@ public class Board {
      * @param y         is the row of the last letter of the word
      * @param direction is the direction along which the word may be placed
      * @param word      is the word to be placed on the board
-     * @return a string of the letters of word, not in the board
+     * @return a List of the letters of the word that are not in the board
      */
     public List<Character> lettersNeeded(int x, int y, boolean direction, String word) {
         List<Character> needed = new ArrayList<>();
@@ -306,14 +306,16 @@ public class Board {
         output.append("  ");
         for (int i = 0; i < BOARD_WIDTH; i++) {
             output.append(" ".repeat(i < 9 ? 2 : 1));
-            output.append(i + 1 + " ");
+            output.append(i + 1);
+            output.append(" ");
         }
         output.append(System.lineSeparator());
         String row = "  " + "-".repeat(4 * BOARD_WIDTH + 1) + System.lineSeparator();
 
         output.append(row);
         for (int i = 0; i < BOARD_WIDTH; i++) {
-            output.append((char) (i + 65) + " |");
+            output.append((char) (i + 65));
+            output.append(" |");
             for (int j = 0; j < BOARD_WIDTH; j++) {
                 String str = String.format("%2s |", board[i][j].toString());
                 output.append(str);
