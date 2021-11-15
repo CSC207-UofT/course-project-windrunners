@@ -3,9 +3,10 @@ package main.java;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -15,6 +16,7 @@ public class PlayerTest {
     public void setUp() {
         player = new Player("bob");
     }
+
     @Test
     public void testAddPoints() {
         int[] pointsToAdd = {1, 32, 3431, 534, 12323};
@@ -28,7 +30,6 @@ public class PlayerTest {
 
     @Test
     public void testRackHasCorrectSize() {
-
         player.addTiles(Tile.charsToTiles("ABCAADE".toCharArray()));
         assertEquals(player.getRackSize(), 7);
         player.removeTile('A');
@@ -59,10 +60,32 @@ public class PlayerTest {
     }
 
     @Test
+    public void testRemoveTilesTooMany() {
+        List<Character> addLetters = Arrays.asList('H', 'H','I', 'J');
+        List<Tile> tiles = Tile.charsToTiles(addLetters);
+        player.addTiles(tiles);
+        List<Character> letters = Arrays.asList('H', 'I','J', 'H','Y');
+        List<Tile> removedTiles = player.removeTiles(letters);
+        List<Character> removedLetters = Tile.tilesToChars(removedTiles);
+        Collections.sort(removedLetters);
+        assertEquals(addLetters, removedLetters);
+    }
+
+    @Test
+    public void testRemoveTilesNotEvery() {
+        List<Tile> tiles = Tile.charsToTiles("ABAABC".toCharArray());
+        player.addTiles(tiles);
+        List<Character> letters = Arrays.asList('A', 'A');
+        List<Tile> removedTiles = player.removeTiles(letters);
+        List<Character> removedLetters = Tile.tilesToChars(removedTiles);
+        assertEquals(letters, removedLetters);
+    }
+
+    @Test
     public void testHasLettersTrue() {
         List<Tile> tiles = Tile.charsToTiles("HIJHY".toCharArray());
         player.addTiles(tiles);
-        boolean hasLetters = player.hasLetters(List.of('H', 'I', 'J', 'H', 'Y'));
+        boolean hasLetters = player.hasLetters(Arrays.asList('H', 'I', 'J', 'H', 'Y'));
         assertTrue(hasLetters);
     }
 

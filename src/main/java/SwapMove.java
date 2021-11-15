@@ -11,7 +11,6 @@ public class SwapMove implements Move {
 
     /**
      * Class constructor.
-     * moveType is set to "SWAP"
      * @param tilesToSwap is the List of Tiles to swap with the Bag
      */
     public SwapMove(List<Tile> tilesToSwap) {
@@ -19,16 +18,7 @@ public class SwapMove implements Move {
     }
 
     /**
-     * @return the List of Tiles to swap with the Bag
-     */
-    public List<Tile> getTilesToSwap() { return tilesToSwap; }
-
-    /**
-     * a SwapMove which stores the tiles to swap
-     * @param bag   the bag to replenish the currentPlayer's rack after the move has been made
-     * @param pm    the Player Manager
-     * @param board the Scrabble Board on which the word is to be inserted
-     * @param dict  the Scrabble dictionary
+     * Attempts to swap tilesToSwap with the bag
      */
     @Override
     public void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict, PrintStream out) {

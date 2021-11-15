@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A subclass of Move created when a Player decides to place a word on the Board
+ * An implementation of Move created when a Player decides to place a word on the Board
  */
 public class PlaceMove implements Move {
     private final int x;
@@ -15,11 +15,10 @@ public class PlaceMove implements Move {
 
     /**
      * Class constructor.
-     * the moveType is set to "PLACE"
-     * @param word is the word that maybe placed on the Board
-     * @param x is the column of the first letter of the word
-     * @param y is the row of the first letter of the word
-     * @param direction is the direction along which the word maybe placed
+     * @param word      is the word to be placed on the Board
+     * @param x         is the column of the first letter of the word
+     * @param y         is the row of the first letter of the word
+     * @param direction is the direction along which the word is to be placed
      */
     public PlaceMove(int x, int y, boolean direction, String word) {
         this.x = x;
@@ -29,12 +28,7 @@ public class PlaceMove implements Move {
     }
 
     /**
-     * a PlaceMove which stores the word to be inserted on the board, its co-ordinates,
-     *      *              and the direction along which the word is to be inserted
-     * @param bag   the bag to replenish the currentPlayer's rack after the move has been made
-     * @param pm    the Player Manager
-     * @param board the Scrabble Board on which the word is to be inserted
-     * @param dict  the Scrabble dictionary
+     * Attempts to put the given word on the board in the given direction starting at the given coordinates.
      */
     @Override
     public void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict, PrintStream out) {

@@ -1,8 +1,6 @@
 package main.java;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The Game class which controls the Game

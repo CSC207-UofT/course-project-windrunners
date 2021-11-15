@@ -31,10 +31,7 @@ public class Square {
      */
 
     public Square() {
-        tile = null;
-        multActive = true;
-        letterMult = 1;
-        wordMult = 1;
+        this(1,1);
     }
 
     /**
@@ -54,7 +51,7 @@ public class Square {
     public boolean isMultActive() { return multActive; }
 
     /**
-     * set multActive to false
+     * set multActive to false.
      */
     public void setMultUsed() { multActive = false; }
 

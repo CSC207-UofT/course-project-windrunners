@@ -39,7 +39,7 @@ public class Dictionary {
 
     /**
      * check if word is a valid Scrabble word
-     * @param word is the word that is to be check for validity
+     * @param word is the word that is to be checked for validity
      * @return true iff word is a valid Scrabble word
      */
     public boolean isValid(String word) {

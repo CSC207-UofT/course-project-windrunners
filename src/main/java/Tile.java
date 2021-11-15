@@ -71,6 +71,11 @@ public class Tile {
         g.drawString(String.valueOf(letter), TILE_WIDTH * x + (TILE_WIDTH - metrics.stringWidth(letter)) / 2, TILE_WIDTH * y + (TILE_WIDTH - metrics.getHeight()) / 2 + metrics.getAscent());
     }
 
+    /**
+     * Takes a List of Characters and returns a List of tiles with those Characters.
+     * @param letters the List of Characters to be converted into a List of Tiles
+     * @return a List of Tiles
+     */
     public static List<Tile> charsToTiles(List<Character> letters) {
         List<Tile> tiles = new ArrayList<>();
         for (char letter : letters) {
@@ -79,6 +84,11 @@ public class Tile {
         return tiles;
     }
 
+    /**
+     * Takes an array of chars and returns a List of tiles with those chars.
+     * @param letters the array of chars[] to be converted into Tiles
+     * @return a List of Tiles
+     */
     public static List<Tile> charsToTiles(char[] letters) {
         List<Tile> tiles = new ArrayList<>();
         for (char letter : letters) {
@@ -87,7 +97,11 @@ public class Tile {
         return tiles;
     }
 
-
+    /**
+     * Takes a List of Tiles and returns a List of Characters with the letters from those tiles.
+     * @param tiles the List of Tiles to be converted into Characters
+     * @return a List of Characters
+     */
     public static List<Character> tilesToChars(List<Tile> tiles) {
         List<Character> letters = new ArrayList<>();
         for (Tile tile : tiles) {

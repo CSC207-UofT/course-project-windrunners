@@ -39,8 +39,6 @@ public class Bag {
     );
     private final List<Tile> tiles = new ArrayList<>();
 
-//    public List<Tile> getTiles() { return tiles; }
-
     /**
      * Class Constructor. Creates new Tile objects and adds them to the Bag
      */
@@ -55,7 +53,7 @@ public class Bag {
     /**
      * draw a random tile from the Bag
      *
-     * @return the tile drawn from the Bag
+     * @return the tile drawn from the Bag. Returns null if empty.
      */
     private Tile drawTile() {
         if (tiles.size() == 0) return null;
@@ -68,7 +66,7 @@ public class Bag {
      * draw a random number of tiles from the Bag
      *
      * @param num the number of tiles to draw
-     * @return the List of Tiles drawn from the Bag
+     * @return the List of Tiles drawn from the Bag.
      */
     public List<Tile> drawTiles(int num) {
        List<Tile> tiles = new ArrayList<>();
@@ -81,15 +79,13 @@ public class Bag {
     /**
      * swap tiles with the bag
      *
-     * @param tilesToSwap is the List of tiles that are to be swapped with tiles in the Bag
+     * @param tilesToSwap is the List of tiles that are to be swapped with tiles in the Bag.
+     *                    Should always have tilesToSwap.size() <= tiles.size()
      * @return the List of tiles returned from the Bag
      */
     public List<Tile> swapTiles(List<Tile> tilesToSwap) {
         int numTilesToSwap = tilesToSwap.size();
-        List<Tile> tilesReturned = new ArrayList<>();
-        for (int i = 0; i < numTilesToSwap; i++) {
-            tilesReturned.add(drawTile());
-        }
+        List<Tile> tilesReturned = drawTiles(numTilesToSwap);
         tiles.addAll(tilesToSwap);
         return tilesReturned;
     }
