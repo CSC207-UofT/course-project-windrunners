@@ -172,8 +172,8 @@ public class GameState {
                     info[1] = Integer.parseInt(currentPlayerNumAsString[0]);
                     i++;
                 } else {
-                    String[] currentPlayerNumAsString = line.split(",");
-                    info[2] = Integer.parseInt(currentPlayerNumAsString[0]);
+                    String[] numPlayersAsString = line.split(",");
+                    info[2] = Integer.parseInt(numPlayersAsString[0]);
                     i++;
                 }
             }
