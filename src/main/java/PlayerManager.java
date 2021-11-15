@@ -1,5 +1,6 @@
 package main.java;
 
+import java.awt.*;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -43,7 +44,7 @@ public class PlayerManager {
     /**
      * @return the current Player
      */
-    private Player getCurrentPlayer() {
+    public Player getCurrentPlayer() {
         return players[currentPlayerNum];
     }
 
@@ -118,4 +119,12 @@ public class PlayerManager {
         };
         return Collections.max(Arrays.asList(players), comp.thenComparing(Player::getPoints));
     }
+
+    public void renderScoreboard(Graphics g) {
+        for (int i = 0; i < players.length; i++) {
+            Player player = players[i];
+            g.drawString(player.getName() + ": " + player.getPoints(), 600, 100 + 40 * i);
+        }
+    }
+
 }
