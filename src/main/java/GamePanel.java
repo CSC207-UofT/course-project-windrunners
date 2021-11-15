@@ -7,6 +7,8 @@ public class GamePanel extends JPanel {
     private static final int WIDTH = 800;
     private static final int HEIGHT = 800;
 
+    private static Renderer renderer = new Renderer();
+
     public GamePanel() {
         super();
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -15,8 +17,8 @@ public class GamePanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setFont(new Font("TimesRoman", Font.BOLD, 30));
-        Game.getBoard().renderBoard(g);
-        Game.getCurrentPlayer().renderRack(g);
-        Game.getPlayerManager().renderScoreboard(g);
+        renderer.renderBoard(g, Game.getBoard());
+        renderer.renderRack(g, Game.getCurrentPlayer());
+        renderer.renderScoreboard(g, Game.getPlayerManager());
     }
 }

@@ -11,13 +11,13 @@ public class DictionaryTest {
     @Test
     public void testInDictionary() {
         Dictionary dictionary = new Dictionary();
-        assertEquals(dictionary.isValid("FOOD"), true);
+        assertTrue(dictionary.isValid("FOOD"));
     }
 
     @Test
     public void testNotInDictionary() {
         Dictionary dictionary = new Dictionary();
-        assertEquals(dictionary.isValid("ASJDIF"), false);
+        assertFalse(dictionary.isValid("ASJDIF"));
     }
 
 }
