@@ -34,7 +34,7 @@ public class Game {
             gameState = new GameState(System.in, System.out);
         } else {
             // TODO: come up with an actual file path
-            gameState = new GameState("REPLACE");
+            gameState = new GameState("../../../gamestates/");
         }
         Bag bag = gameState.getBag();
         System.out.println(bag.numTilesRemaining());
