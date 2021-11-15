@@ -5,6 +5,10 @@ import java.util.Map;
 
 import static java.util.Map.entry;
 
+/**
+ *  Each Tile object has a letter and points associated with the letter
+ */
+
 public class Tile {
     private final char letter;
     private final int value;
@@ -13,6 +17,11 @@ public class Tile {
 
     public char getLetter() { return letter; }
     public int getValue() { return value; }
+
+    /**
+     * Class constructor. The points of a tile depend on its letter
+     * @param letter is the letter on the tile
+     */
 
     public Tile(char letter) {
         this.letter = letter;
