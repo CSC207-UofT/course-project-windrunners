@@ -75,6 +75,7 @@ public class Bag {
        for (int i = 0; i < num && this.tiles.size() > 0; i++) { 
            tiles.add(drawTile());
        }
+       return tiles;
     }
 
     /**
