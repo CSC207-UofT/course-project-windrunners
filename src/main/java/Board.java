@@ -94,7 +94,8 @@ public class Board {
         char[][] boardLetters = new char[BOARD_WIDTH][BOARD_WIDTH];
         for (int i = 0; i < BOARD_WIDTH; i++){
             for (int j = 0; j < BOARD_WIDTH; j++){
-                boardLetters[i][j] = board[i][j].getTile().getLetter();
+                if (!board[i][j].isEmpty())
+                    boardLetters[i][j] = board[i][j].getTile().getLetter();
             }
         }
         return boardLetters;

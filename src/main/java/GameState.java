@@ -35,14 +35,6 @@ public class GameState {
         this.numberOfPlayers = playerManager.getPlayers().length;
     }
 
-    public GameState(InputStream in, PrintStream out){
-        this.bag = new Bag();
-        this.playerManager = new PlayerManager(in, out, bag);
-        this.board = new Board();
-        this.currentPlayerNum = playerManager.getCurrentPlayerNum();
-        this.numberOfPlayers = playerManager.getPlayers().length;
-    }
-
     public GameState(String filePath) {
         this.bag = (Bag) loadBagCurrentPlayerNumberOfPlayers(filePath)[0];
         this.currentPlayerNum = (Integer) loadBagCurrentPlayerNumberOfPlayers(filePath)[1];
