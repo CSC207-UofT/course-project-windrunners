@@ -85,6 +85,17 @@ public class Player {
     }
 
     /**
+     * @return a string with the letters on the rack only
+     */
+    public String getRackLetters() {
+        StringBuilder rackLetters = new StringBuilder();
+        for (Tile tile : rack) {
+            rackLetters.append(tile.getLetter());
+        }
+        return rackLetters.toString();
+    }
+
+    /**
      * check if the Player's rack has all the letter in letterList
      * @param letterList: to be checked if it's contained in the rack
      * @return true iff letterList is a subset of the rack

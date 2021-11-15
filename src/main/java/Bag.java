@@ -25,6 +25,17 @@ public class Bag {
 //    public List<Tile> getTiles() { return tiles; }
 
     /**
+     * @return an ArrayList with just the letters of the tiles that are left in the bag (with repeats)
+     */
+    public ArrayList<Character> getBagLetters(){
+        ArrayList<Character> bagLetters = new ArrayList<>();
+        for (Tile tile : tiles){
+            bagLetters.add(tile.getLetter());
+        }
+        return bagLetters;
+    }
+
+    /**
      * draw a random tile from the Bag
      * @return the tile drawn from the Bag
      */

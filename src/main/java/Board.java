@@ -54,6 +54,20 @@ public class Board {
     public Square[][] getBoard() { return board; }
 
     /**
+     *
+     * @return a 2D array of chars containing only the string values of the tiles that are on the board
+     */
+    public char[][] getBoardLetters() {
+        char[][] boardLetters = new char[BOARD_WIDTH][BOARD_WIDTH];
+        for (int i = 0; i < BOARD_WIDTH; i++){
+            for (int j = 0; j < BOARD_WIDTH; j++){
+                boardLetters[i][j] = board[i][j].getTile().getLetter();
+            }
+        }
+        return boardLetters;
+    }
+
+    /**
      * @return true iff the board is empty
      */
     public boolean containsNoTiles() {

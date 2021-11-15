@@ -1,6 +1,9 @@
 package main.java;
 
 import java.util.List;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * This class holds all the states of the game
@@ -16,28 +19,67 @@ public class GameState {
      */
     public GameState(){
         this.bag = new Bag();
-        this.playerManager = new PlayerManager(bag);
+        this.playerManager = new PlayerManager(System.in, System.out, bag);
         this.board = new Board();
         // update it with the main method in Game
     }
 
-    public void setPlayerManager(PlayerManager playerManager){
-        this.playerManager = playerManager;
+//    public void setPlayerManager(PlayerManager playerManager){
+//        this.playerManager = playerManager;
+//    }
+//
+//    public void setBoard(Board board){
+//        this.board = board;
+//    }
+//
+//    public void setBag(Bag bag){
+//        this.bag = bag;
+//    }
+
+    public void saveGameState(String filePath) throws IOException{
+        savePlayerInfo(filePath);
+        saveBoardInfo(filePath);
+        saveBag(filePath);
     }
 
-    public void setBoard(Board board){
-        this.board = board;
+    private void savePlayerInfo(String filePath) throws IOException{
+        File playerInfoCsv = new File("playerInfo.csv");
+        FileWriter playerInfoCsvWriter = new FileWriter(playerInfoCsv);
+
+        Player[] playerList = playerManager.getPlayers();
+
+        for (Player player : playerList) {
+            String playerInfo = player.getName() + "," + player.getPoints() + "," + player.getRackLetters();
+            playerInfoCsvWriter.append(playerInfo);
+            playerInfoCsvWriter.append("\n");
+        }
+        playerInfoCsvWriter.close();
     }
 
-    public void setBag(Bag bag){
-        this.bag = bag;
+    private void saveBoardInfo(String filePath) throws IOException{
+        File boardCsv = new File("playerInfo.csv");
+        FileWriter boardCsvWriter = new FileWriter(boardCsv);
+
+        char[][] boardLetters = board.getBoardLetters();
+        for (char[] row : boardLetters){
+            for (char square : row){
+                boardCsvWriter.append(square);
+                boardCsvWriter.append(",");
+            }
+            boardCsvWriter.append("\n");
+        }
+        boardCsvWriter.close();
     }
 
-    public void saveGameState(String filePath){
+    private void saveBag(String filePath) throws IOException{
+        File bagCsv = new File("bag.csv");
+        FileWriter bagCsvWriter = new FileWriter(bagCsv);
 
-    }
-
-    public void loadGameState(String filePath){
-
+        List<Character> bagLetters = bag.getBagLetters();
+        for (char letter : bagLetters){
+            bagCsvWriter.append(letter);
+            bagCsvWriter.append(",");
+        }
+        bagCsvWriter.close();
     }
 }
