@@ -1,7 +1,5 @@
 package main.java;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -11,7 +9,7 @@ import static org.junit.Assert.*;
 
 public class PlayerTest {
 
-    public List<Tile> charToTiles(char[] letters) {
+    private List<Tile> charsToTiles(char[] letters) {
         List<Tile> tiles = new ArrayList<>();
         for (char letter : letters) tiles.add(new Tile(letter));
         return tiles;
@@ -32,7 +30,7 @@ public class PlayerTest {
     @Test
     public void testRackHasCorrectSize() {
         Player player = new Player("bob");
-        player.addTiles(charToTiles(new char[] {'A', 'B', 'C', 'A', 'A', 'D', 'E'}));
+        player.addTiles(charsToTiles(new char[] {'A', 'B', 'C', 'A', 'A', 'D', 'E'}));
         assertEquals(player.getRackSize(), 7);
         player.removeTile('A');
         assertEquals(player.getRackSize(), 6);
@@ -41,7 +39,7 @@ public class PlayerTest {
     @Test
     public void testGetRackPoints() {
         Player player = new Player("bob");
-        List<Tile> tiles = charToTiles(new char[] {'A', 'B', 'C', 'A', 'A', 'D', 'E'});
+        List<Tile> tiles = charsToTiles(new char[] {'A', 'B', 'C', 'A', 'A', 'D', 'E'});
         player.addTiles(tiles);
         int sum = 0;
         for (Tile tile: tiles) sum += tile.getValue();
@@ -51,7 +49,7 @@ public class PlayerTest {
     @Test
     public void testRemoveTile() {
         Player player = new Player("bob");
-        List<Tile> tiles = charToTiles(new char[] {'H', 'I', 'J', 'H'});
+        List<Tile> tiles = charsToTiles(new char[] {'H', 'I', 'J', 'H'});
         player.addTiles(tiles);
         Tile t1 = player.removeTile('H');
         Tile t2 = player.removeTile('H');
@@ -66,7 +64,7 @@ public class PlayerTest {
     @Test
     public void testHasLettersTrue() {
         Player player = new Player("bob");
-        List<Tile> tiles = charToTiles(new char[] {'H', 'I', 'J', 'H', 'Y'});
+        List<Tile> tiles = charsToTiles(new char[] {'H', 'I', 'J', 'H', 'Y'});
         player.addTiles(tiles);
         boolean hasLetters = player.hasLetters(List.of('H', 'I', 'J', 'H', 'Y'));
         assertTrue(hasLetters);
@@ -75,7 +73,7 @@ public class PlayerTest {
     @Test
     public void testHasLettersFalse() {
         Player player = new Player("bob");
-        List<Tile> tiles = charToTiles(new char[] {'H', 'I', 'J', 'H', 'Y'});
+        List<Tile> tiles = charsToTiles(new char[] {'H', 'I', 'J', 'H', 'Y'});
         player.addTiles(tiles);
         boolean hasLetters = player.hasLetters(List.of('K'));
         assertFalse(hasLetters);
@@ -84,7 +82,7 @@ public class PlayerTest {
     @Test
     public void testHasCopiedLetter() {
         Player player = new Player("bob");
-        List<Tile> tiles = charToTiles(new char[] {'H', 'I', 'J'});
+        List<Tile> tiles = charsToTiles(new char[] {'H', 'I', 'J'});
         player.addTiles(tiles);
         boolean hasLetters = player.hasLetters(List.of('J', 'J'));
         assertFalse(hasLetters);
@@ -93,7 +91,7 @@ public class PlayerTest {
     @Test
     public void testHasTripledLetter() {
         Player player = new Player("bob");
-        List<Tile> tiles = charToTiles(new char[] {'H', 'I', 'J', 'J'});
+        List<Tile> tiles = charsToTiles(new char[] {'H', 'I', 'J', 'J'});
         player.addTiles(tiles);
         boolean hasLetters = player.hasLetters(List.of('J', 'J', 'J'));
         assertFalse(hasLetters);

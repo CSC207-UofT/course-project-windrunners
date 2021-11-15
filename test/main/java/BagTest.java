@@ -1,8 +1,8 @@
 package main.java;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.*;
 
@@ -55,5 +55,21 @@ public class BagTest {
         List<Tile> tiles = bag.drawTiles(tilesToDraw);
         bag.swapTiles(tiles);
         assertEquals(bag.numTilesRemaining(), startSize - tilesToDraw);
+    }
+
+    @Test
+    public void testSwapReturnsCorrect() {
+        Bag bag = new Bag();
+        bag.drawTiles(bag.numTilesRemaining() - 3);
+        List<Tile> tiles = List.of(new Tile[] {new Tile('A'), new Tile('B'), new Tile('C') });
+        bag.swapTiles(tiles);
+        List<Tile> drawnTiles = bag.drawTiles(3);
+        List<Character> charsDrawn = new ArrayList<>();
+        for (Tile tile : drawnTiles) {
+            charsDrawn.add(tile.getLetter());
+        }
+        List<Character> c = List.of(new Character[] {'A', 'B', 'C'});
+        assertTrue(charsDrawn.containsAll(c));
+        assertEquals(3, c.size());
     }
 }
