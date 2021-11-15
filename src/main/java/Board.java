@@ -9,30 +9,29 @@ import java.util.List;
  * A string representation of the Board (along with the type of Squares) is given below
  */
 public class Board {
-    private final Square[][] board = new Square[BOARD_WIDTH][BOARD_WIDTH];
-    private static final String[][] SQUARE_TYPES = {
-        {"3W","  ","  ","2L","  ","  ","  ","3W","  ","  ","  ","2L","  ","  ","3W"},
-        {"  ","2W","  ","  ","  ","3L","  ","  ","  ","3L","  ","  ","  ","2W","  "},
-        {"  ","  ","2W","  ","  ","  ","2L","  ","2L","  ","  ","  ","2W","  ","  "},
-        {"2L","  ","  ","2W","  ","  ","  ","2L","  ","  ","  ","2W","  ","  ","2L"},
-        {"  ","  ","  ","  ","2W","  ","  ","  ","  ","  ","2W","  ","  ","  ","  "},
-        {"  ","3L","  ","  ","  ","3L","  ","  ","  ","3L","  ","  ","  ","3L","  "},
-        {"  ","  ","2L","  ","  ","  ","2L","  ","2L","  ","  ","  ","2L","  ","  "},
-        {"3W","  ","  ","2L","  ","  ","  ","2W","  ","  ","  ","2L","  ","  ","3W"},
-        {"  ","  ","2L","  ","  ","  ","2L","  ","2L","  ","  ","  ","2L","  ","  "},
-        {"  ","3L","  ","  ","  ","3L","  ","  ","  ","3L","  ","  ","  ","3L","  "},
-        {"  ","  ","  ","  ","2W","  ","  ","  ","  ","  ","2W","  ","  ","  ","  "},
-        {"2L","  ","  ","2W","  ","  ","  ","2L","  ","  ","  ","2W","  ","  ","2L"},
-        {"  ","  ","2W","  ","  ","  ","2L","  ","2L","  ","  ","  ","2W","  ","  "},
-        {"  ","2W","  ","  ","  ","3L","  ","  ","  ","3L","  ","  ","  ","2W","  "},
-        {"3W","  ","  ","2L","  ","  ","  ","3W","  ","  ","  ","2L","  ","  ","3W"}
-    };
     // used to indicate the direction along which a word is to be placed on the Board
     public static final boolean RIGHT = true;
     public static final boolean DOWN = false;
-
     public static final int BOARD_WIDTH = 15; // the width of the Board
     public static final int MIDDLE_SQUARE = 7; // the co-ordinates of the middle square are row 7, column 7
+    private static final String[][] SQUARE_TYPES = {
+            {"3W", "  ", "  ", "2L", "  ", "  ", "  ", "3W", "  ", "  ", "  ", "2L", "  ", "  ", "3W"},
+            {"  ", "2W", "  ", "  ", "  ", "3L", "  ", "  ", "  ", "3L", "  ", "  ", "  ", "2W", "  "},
+            {"  ", "  ", "2W", "  ", "  ", "  ", "2L", "  ", "2L", "  ", "  ", "  ", "2W", "  ", "  "},
+            {"2L", "  ", "  ", "2W", "  ", "  ", "  ", "2L", "  ", "  ", "  ", "2W", "  ", "  ", "2L"},
+            {"  ", "  ", "  ", "  ", "2W", "  ", "  ", "  ", "  ", "  ", "2W", "  ", "  ", "  ", "  "},
+            {"  ", "3L", "  ", "  ", "  ", "3L", "  ", "  ", "  ", "3L", "  ", "  ", "  ", "3L", "  "},
+            {"  ", "  ", "2L", "  ", "  ", "  ", "2L", "  ", "2L", "  ", "  ", "  ", "2L", "  ", "  "},
+            {"3W", "  ", "  ", "2L", "  ", "  ", "  ", "2W", "  ", "  ", "  ", "2L", "  ", "  ", "3W"},
+            {"  ", "  ", "2L", "  ", "  ", "  ", "2L", "  ", "2L", "  ", "  ", "  ", "2L", "  ", "  "},
+            {"  ", "3L", "  ", "  ", "  ", "3L", "  ", "  ", "  ", "3L", "  ", "  ", "  ", "3L", "  "},
+            {"  ", "  ", "  ", "  ", "2W", "  ", "  ", "  ", "  ", "  ", "2W", "  ", "  ", "  ", "  "},
+            {"2L", "  ", "  ", "2W", "  ", "  ", "  ", "2L", "  ", "  ", "  ", "2W", "  ", "  ", "2L"},
+            {"  ", "  ", "2W", "  ", "  ", "  ", "2L", "  ", "2L", "  ", "  ", "  ", "2W", "  ", "  "},
+            {"  ", "2W", "  ", "  ", "  ", "3L", "  ", "  ", "  ", "3L", "  ", "  ", "  ", "2W", "  "},
+            {"3W", "  ", "  ", "2L", "  ", "  ", "  ", "3W", "  ", "  ", "  ", "2L", "  ", "  ", "3W"}
+    };
+    private final Square[][] board = new Square[BOARD_WIDTH][BOARD_WIDTH];
     private int filledSquares; // represents the number of Squares which are empty
 
     /**
@@ -52,7 +51,9 @@ public class Board {
     /**
      * @return the board
      */
-    public Square[][] getBoard() { return board; }
+    public Square[][] getBoard() {
+        return board;
+    }
 
     /**
      * @return true iff the board is empty
@@ -70,10 +71,11 @@ public class Board {
 
     /**
      * check if word can be placed on the Board
-     * @param x is the column of the first letter of the word
-     * @param y is the row of the last letter of the word
-     * @param direction is the direction along which the word may be placed
-     * @param word  is the word that is being checked
+     *
+     * @param x          is the column of the first letter of the word
+     * @param y          is the row of the last letter of the word
+     * @param direction  is the direction along which the word may be placed
+     * @param word       is the word that is being checked
      * @param dictionary is the Scrabble dictionary; used to verify is a word is a valid Scrabble word
      * @return true iff the word can be placed on the board
      */
@@ -106,8 +108,7 @@ public class Board {
             }
             boolean oppDirection = !direction;
             if (board[y + d][x + r].isEmpty()) {
-                if (!checkIfConnectedWordIsValid(y + d, x + r, dictionary, oppDirection, word.charAt(i)))
-                {
+                if (!checkIfConnectedWordIsValid(y + d, x + r, dictionary, oppDirection, word.charAt(i))) {
                     return false;
                 }
             }
@@ -117,13 +118,14 @@ public class Board {
             }
         }
 
-    return ifTouchesOtherWord;
+        return ifTouchesOtherWord;
     }
 
     /**
      * check if the Square at row y, column x is adjacent to at least one other word on the Board
-     * @param x is the column of the Square
-     * @param y is the row of the Square
+     *
+     * @param x         is the column of the Square
+     * @param y         is the row of the Square
      * @param direction is the direction along which we wish to check for adjacency
      * @return true iff the Square is adjacent to at least one word on the Board
      */
@@ -142,23 +144,24 @@ public class Board {
 
     /**
      * checks whether each of the words on the board that may potentially
-     *      *               contain this letter are valid Scrabble words
-     * @param x is the column of the letter
-     * @param y is the row of the letter
-     * @param direction is the direction along which the word is to be checked
+     * *               contain this letter are valid Scrabble words
+     *
+     * @param x          is the column of the letter
+     * @param y          is the row of the letter
+     * @param direction  is the direction along which the word is to be checked
      * @param dictionary is the Scrabble dictionary; used to verify is a word is a valid Scrabble word
-     * @param letter is the letter being considered; any words on the board that may potentially
-     *               contain this letter are checked for validation
+     * @param letter     is the letter being considered; any words on the board that may potentially
+     *                   contain this letter are checked for validation
      * @return true iff all the words on the board that may potentially
-     *      *      *               contain this letter are valid Scrabble words
+     * *      *               contain this letter are valid Scrabble words
      */
     private boolean checkIfConnectedWordIsValid(int y, int x, Dictionary dictionary, boolean direction, char letter) {
         StringBuilder word = new StringBuilder();
         final int D = (direction == DOWN) ? 1 : 0;
         final int R = (direction == RIGHT) ? 1 : 0;
         while (y >= D && x >= R && !board[y - D][x - R].isEmpty()) {
-             y -= D;
-             x -= R;
+            y -= D;
+            x -= R;
         }
         while (y < BOARD_WIDTH && x < BOARD_WIDTH && !board[y][x].isEmpty()) {
             word.append(board[y][x].getTile().getLetter());
@@ -178,10 +181,11 @@ public class Board {
 
     /**
      * return a string of the letters of word, not in the board
-     * @param x is the column of the first letter of the word
-     * @param y is the row of the last letter of the word
+     *
+     * @param x         is the column of the first letter of the word
+     * @param y         is the row of the last letter of the word
      * @param direction is the direction along which the word may be placed
-     * @param word  is the word to be placed on the board
+     * @param word      is the word to be placed on the board
      * @return a string of the letters of word, not in the board
      */
     public List<Character> lettersNeeded(int x, int y, boolean direction, String word) {
@@ -200,10 +204,11 @@ public class Board {
 
     /**
      * insert the required tiles to fill up the rest of the word, in the order they need to be inserted
-     * @param x is the column of the first letter of the word
-     * @param y is the row of the last letter of the word
+     *
+     * @param x         is the column of the first letter of the word
+     * @param y         is the row of the last letter of the word
      * @param direction is the direction along which the Tiles are inserted
-     * @param tiles is a list of required tiles to fill up the rest of the word, in the order they need to be inserted
+     * @param tiles     is a list of required tiles to fill up the rest of the word, in the order they need to be inserted
      * @return the points earned on inserting this word
      */
     public int insertWord(int x, int y, boolean direction, List<Tile> tiles) {
@@ -213,13 +218,15 @@ public class Board {
         int d = 0;
         int r = 0;
         while (!tiles.isEmpty()) {
-            if (board[y+d][x+r].isEmpty()) {
-                board[y+d][x+r].setTile(tiles.remove(0));
+            if (board[y + d][x + r].isEmpty()) {
+                board[y + d][x + r].setTile(tiles.remove(0));
                 filledSquares++;
                 ArrayList<Square> crossingWord = getWordAt(x + r, y + d, OTHER_DIRECTION);
-                if (crossingWord.size() >= 2) { crossingWords.add(crossingWord); }
+                if (crossingWord.size() >= 2) {
+                    crossingWords.add(crossingWord);
+                }
             }
-            word.add(board[y+d][x+r]);
+            word.add(board[y + d][x + r]);
             d += (direction == DOWN) ? 1 : 0;
             r += (direction == RIGHT) ? 1 : 0;
         }
@@ -228,18 +235,21 @@ public class Board {
         for (ArrayList<Square> crossingWord : crossingWords) {
             points += countValue(crossingWord);
         }
-        for (Square square: word) {
+        for (Square square : word) {
             square.setMultUsed();
         }
-        if (tiles.size() == 7) { points += 50; }
+        if (tiles.size() == 7) {
+            points += 50;
+        }
         return points;
     }
 
 
     /**
      * get the word in the given direction containing the given location
-     * @param x is the column of the given location
-     * @param y is the row of the given location
+     *
+     * @param x         is the column of the given location
+     * @param y         is the row of the given location
      * @param direction is the given direction
      * @return a List of Squares containing the word in the given direction containing the given location
      */
@@ -249,13 +259,13 @@ public class Board {
         final int R = (direction == RIGHT) ? 1 : 0;
         int d = 0;
         int r = 0;
-        while (y + d >= D && x + r >= R && !board[y+d-D][x+r-R].isEmpty()) {
+        while (y + d >= D && x + r >= R && !board[y + d - D][x + r - R].isEmpty()) {
             d -= D;
             r -= R;
         }
 
-        while (y + d < BOARD_WIDTH && x + r < BOARD_WIDTH && !board[y+d][x+r].isEmpty()) {
-            word.add(board[y+d][x+r]);
+        while (y + d < BOARD_WIDTH && x + r < BOARD_WIDTH && !board[y + d][x + r].isEmpty()) {
+            word.add(board[y + d][x + r]);
             d += D;
             r += R;
         }
@@ -264,6 +274,7 @@ public class Board {
 
     /**
      * return the points earned according to the word placed on the List word
+     *
      * @param word a List of Squares used to calculate the points
      * @return the points earned according to the word placed on the List word
      */
@@ -289,7 +300,7 @@ public class Board {
     public String toString() {
         StringBuilder output = new StringBuilder();
         output.append("  ");
-        for (int i = 0; i < BOARD_WIDTH; i ++) {
+        for (int i = 0; i < BOARD_WIDTH; i++) {
             output.append(" ".repeat(i < 9 ? 2 : 1));
             output.append(i + 1 + " ");
         }
@@ -314,8 +325,7 @@ public class Board {
             for (int j = 0; j < BOARD_WIDTH; j++) {
                 if (board[j][i].getTile() == null) {
                     this.board[j][i].renderSquare(g, i, j);
-                }
-                else {
+                } else {
                     this.board[j][i].getTile().renderTile(g, i, j);
                 }
             }
