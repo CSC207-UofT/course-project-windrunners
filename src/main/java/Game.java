@@ -13,8 +13,8 @@ public class Game {
     private static PlayerManager playerManager = new PlayerManager(System.in, System.out, bag);
 
     /**
-     * The main method. Sets up and controls the state of the Game.
-     * The Game ends when the Bag empties.
+     * The main method. Sets up and controls the state of the Game
+     * The Game ends when the Bag empties
      */
     public static void main(String[] args) {
         JFrame window = new JFrame("Scrabble");
@@ -44,9 +44,10 @@ public class Game {
 
     /**
      * calls the Player Manager to enable the Player swap tiles with the Bag
+     *
      * @param move a SwapMove which stores the tiles to swap
-     * @param bag the bag to swap tiles with
-     * @param pm is the Player Manager
+     * @param bag  the bag to swap tiles with
+     * @param pm   is the Player Manager
      */
     public static void handleSwapMove(SwapMove move, Bag bag, PlayerManager pm) {
         List<Tile> tilesToSwap = move.getTilesToSwap();
@@ -55,13 +56,12 @@ public class Game {
     }
 
     /**
-     *
-     * @param move a PlaceMove which stores the word to be inserted on the board, its co-ordinates,
-     *         and the direction along which the word is to be inserted
-     * @param bag the bag to replenish the currentPlayer's rack after the move has been made
-     * @param pm the Player Manager
+     * @param move  a PlaceMove which stores the word to be inserted on the board, its co-ordinates,
+     *              and the direction along which the word is to be inserted
+     * @param bag   the bag to replenish the currentPlayer's rack after the move has been made
+     * @param pm    the Player Manager
      * @param board the Scrabble Board on which the word is to be inserted
-     * @param dict the Scrabble dictionary
+     * @param dict  the Scrabble dictionary
      */
     public static void handlePlaceMove(PlaceMove move, Bag bag, PlayerManager pm, Board board, Dictionary dict) {
         int x = move.getX(), y = move.getY();
@@ -80,11 +80,11 @@ public class Game {
         for (char c : lettersNeeded) {
             tilesForWord.add(new Tile(c));
         }
-        int points = board.insertWord(x,y,direction,tilesForWord);
+        int points = board.insertWord(x, y, direction, tilesForWord);
         List<Tile> tilesToAdd = bag.drawTiles(tilesForWord.size());
         pm.updateCurrentPlayer(points, tilesToAdd, tilesForWord);
     }
-
+  
     public static Board getBoard() {
         return board;
     }
