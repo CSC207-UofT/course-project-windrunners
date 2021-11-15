@@ -15,13 +15,8 @@ public class GamePanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setFont(new Font("TimesRoman", Font.BOLD, 30));
-//        g.fillRect(0, 0, 200, 200);
-//        Tile tile = new Tile('B');
-//        for (int i = 0; i < 15; i ++)
-//        tile.drawTile(g, i, 1);
-//        for (int i = 0; i < 15; i ++)
-//            tile.drawTile(g, 1, i);
-        Board board = new Board(new Tile('A'));
-        board.drawBoard(g);
+        Game.getBoard().renderBoard(g);
+        Game.getCurrentPlayer().renderRack(g);
+        Game.getPlayerManager().renderScoreboard(g);
     }
 }

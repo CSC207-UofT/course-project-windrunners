@@ -8,6 +8,8 @@ public class Square {
     private final int wordMult;
     private boolean multActive;
 
+    public static final int SQUARE_WIDTH = 40;
+
     public Square() {
         tile = null;
         multActive = true;
@@ -47,7 +49,7 @@ public class Square {
         }
     }
 
-    public void drawSquare(Graphics g, int x, int y) {
+    public void renderSquare(Graphics g, int x, int y) {
         // this method assumes there is no tile on the square
         g.setColor(new Color(253, 173, 91));
         if (this.letterMult == 2) {
@@ -65,11 +67,11 @@ public class Square {
         Font font = new Font("TimesRoman", Font.BOLD, 20);
         g.setFont(font);
         FontMetrics metrics = g.getFontMetrics(font);
-        g.fillRect(40 * x, 40 * y, 40, 40);
+        g.fillRect(SQUARE_WIDTH * x, SQUARE_WIDTH * y, SQUARE_WIDTH, SQUARE_WIDTH);
         g.setColor(Color.WHITE);
-        g.drawRect(40 * x, 40 * y, 40, 40);
+        g.drawRect(SQUARE_WIDTH * x, SQUARE_WIDTH * y, SQUARE_WIDTH, SQUARE_WIDTH);
         g.setColor(Color.BLACK);
         String mult = this.toString();
-        g.drawString(mult, 40 * x + (40 - metrics.stringWidth(mult)) / 2, 40 * y + (40 - metrics.getHeight()) / 2 + metrics.getAscent());
+        g.drawString(mult, SQUARE_WIDTH * x + (SQUARE_WIDTH - metrics.stringWidth(mult)) / 2, SQUARE_WIDTH * y + (SQUARE_WIDTH - metrics.getHeight()) / 2 + metrics.getAscent());
     }
 }

@@ -9,6 +9,8 @@ public class Tile {
     private final char letter;
     private final int value;
 
+    public static final int TILE_WIDTH = 40;
+
     public char getLetter() { return letter; }
     public int getValue() { return value; }
 
@@ -46,17 +48,15 @@ public class Tile {
             entry('Z', 10)
     );
 
-    public void drawTile(Graphics g, int x, int y) {
+    public void renderTile(Graphics g, int x, int y) {
         Font font = new Font("TimesRoman", Font.BOLD, 30);
-//        Font font = new Font("TimesRoman", Font.BOLD, 12);
-//        String newline = System.getProperty("line.separator");
         g.setFont(font);
         FontMetrics metrics = g.getFontMetrics(font);
         g.setColor(new Color(150,75,0));
-        g.fillRoundRect(40 * x, 40 * y, 40, 40, 10, 10);
+        g.fillRoundRect(TILE_WIDTH * x, TILE_WIDTH * y, TILE_WIDTH, TILE_WIDTH, 10, 10);
         g.setColor(Color.BLACK);
-        g.drawRoundRect(40 * x, 40 * y, 40, 40, 10, 10);
+        g.drawRoundRect(TILE_WIDTH * x, TILE_WIDTH * y, TILE_WIDTH, TILE_WIDTH, 10, 10);
         String letter = String.valueOf(this.letter);
-        g.drawString(String.valueOf(letter), 40 * x + (40 - metrics.stringWidth(letter)) / 2, 40 * y + (40 - metrics.getHeight()) / 2 + metrics.getAscent());
+        g.drawString(String.valueOf(letter), TILE_WIDTH * x + (TILE_WIDTH - metrics.stringWidth(letter)) / 2, TILE_WIDTH * y + (TILE_WIDTH - metrics.getHeight()) / 2 + metrics.getAscent());
     }
 }

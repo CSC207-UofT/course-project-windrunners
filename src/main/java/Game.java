@@ -5,20 +5,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
+    private static Board board = new Board();
+    private static Bag bag = new Bag();
+    private static PlayerManager playerManager = new PlayerManager(bag);
+
     public static void main(String[] args) {
         JFrame window = new JFrame("Scrabble");
-        window.setContentPane(new GamePanel());
+        GamePanel gamePanel = new GamePanel();
+        window.setContentPane(gamePanel);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
         window.pack();
         window.setLocationRelativeTo(null);
         window.setVisible(true);
         Dictionary dictionary = new Dictionary();
-        Bag bag = new Bag();
         System.out.println(bag.numTilesRemaining());
-        Board board = new Board();
-        PlayerManager playerManager = new PlayerManager(bag);
         while (bag.numTilesRemaining() > 0) {
+            gamePanel.repaint();
             Move move = playerManager.getNextMove(board, bag.numTilesRemaining());
             if (move.getMoveType().equals("SWAP")) {
                 handleSwapMove((SwapMove) move, bag, playerManager);
@@ -56,5 +59,17 @@ public class Game {
         int points = board.insertWord(x,y,direction,tilesForWord);
         List<Tile> tilesToAdd = bag.drawTiles(tilesForWord.size());
         pm.updateCurrentPlayer(points, tilesToAdd, tilesForWord);
+    }
+
+    public static Board getBoard() {
+        return board;
+    }
+
+    public static Player getCurrentPlayer() {
+        return playerManager.getCurrentPlayer();
+    }
+
+    public static PlayerManager getPlayerManager() {
+        return playerManager;
     }
 }

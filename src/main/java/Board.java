@@ -234,14 +234,14 @@ public class Board {
         return output.toString();
     }
 
-    public void drawBoard(Graphics g) {
+    public void renderBoard(Graphics g) {
         for (int i = 0; i < BOARD_WIDTH; i++) {
             for (int j = 0; j < BOARD_WIDTH; j++) {
-                if (board[i][j].getTile() == null) {
-                    this.board[i][j].drawSquare(g, i, j);
+                if (board[j][i].getTile() == null) {
+                    this.board[j][i].renderSquare(g, i, j);
                 }
                 else {
-                    this.board[i][j].getTile().drawTile(g, i, j);
+                    this.board[j][i].getTile().renderTile(g, i, j);
                 }
             }
         }

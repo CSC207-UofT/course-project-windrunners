@@ -1,5 +1,6 @@
 package main.java;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -136,4 +137,12 @@ public class Player {
         String word = sc.next().toUpperCase();
         return new PlaceMove(x, y, direction, word);
     }
+
+    public void renderRack(Graphics g) {
+        g.drawString(this.getName() + "'s rack:", 40, 16 * 40 + 20);
+        for (int i = 0; i < this.getRackSize(); i++) {
+            this.rack.get(i).renderTile(g, i + 5, 16);
+        }
+    }
+
 }
