@@ -22,6 +22,16 @@ public class Bag {
         }
     }
 
+    /**
+     * CLass Constructor. Creates new Tile objects and adds them to the Bag
+     * @param letters the letters of the tiles in the bag (from the saved GameState)
+     */
+    public Bag(char[] letters) {
+        for (char letter : letters){
+            tiles.add(new Tile(letter));
+        }
+    }
+
 //    public List<Tile> getTiles() { return tiles; }
 
     /**

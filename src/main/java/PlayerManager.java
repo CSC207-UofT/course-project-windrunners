@@ -37,6 +37,15 @@ public class PlayerManager {
         }
     }
 
+    /**
+     * Class constructor.
+     * @param players the list of players
+     */
+    public PlayerManager(Player[] players, int currentPlayerNum){
+        this.players = players;
+        this.currentPlayerNum = currentPlayerNum;
+    }
+
     public Player[] getPlayers() {
         return players;
     }

@@ -48,6 +48,21 @@ public class Board {
         }
     }
 
+    public Board(char[][] boardLetters){
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+            for (int j = 0; j < BOARD_WIDTH; j++) {
+                String squareType = SQUARE_TYPES[i][j];
+                int L = (squareType.equals("3L")) ? 3 : (squareType.equals("2L")) ? 2 : 1;
+                int W = (squareType.equals("3W")) ? 3 : (squareType.equals("2W")) ? 2 : 1;
+                board[i][j] = new Square(L, W);
+                if (boardLetters[i][j] != '\0'){
+                    board[i][j].setTile(new Tile(boardLetters[i][j]));
+                    board[i][j].setMultUsed();
+                }
+            }
+        }
+    }
+
     /**
      * @return the board
      */
