@@ -9,66 +9,7 @@ import static java.util.Map.entry;
  */
 public class Bag {
 
-    private final List<Tile> tiles = new ArrayList<>();
-
-    /**
-     * CLass Constructor. Creates new Tile objects and adds them to the Bag
-     */
-    public Bag() {
-        for (Map.Entry<Character,Integer> en : LETTER_DISTRIBUTION.entrySet()) {
-            for (int j = 0; j < en.getValue(); j++) {
-                tiles.add(new Tile(en.getKey()));
-            }
-        }
-    }
-
-//    public List<Tile> getTiles() { return tiles; }
-
-    /**
-     * draw a random tile from the Bag
-     * @return the tile drawn from the Bag
-     */
-    private Tile drawTile() {
-        Random rnd = new Random();
-        int i = rnd.nextInt(tiles.size());
-        return tiles.remove(i);
-    }
-
-    /**
-     * draw a random number of tiles from the Bag
-     * @param num the number of tiles to draw
-     * @return the List of Tiles drawn from the Bag
-     */
-    public List<Tile> drawTiles(int num) {
-       List<Tile> tiles = new ArrayList<>();
-       for (int i = 0; i < num; i++) { tiles.add(drawTile()); }
-       return tiles;
-    }
-
-    /**
-     * swap tiles with the bag
-     * @param tilesToSwap is the List of tiles that are to be swapped with tiles in the Bag
-     *                    Should always have tilesToSwap.size() <= numTilesRemaining()
-     * @return the List of tiles returned from the Bag
-     */
-    public List<Tile> swapTiles(List<Tile> tilesToSwap) {
-        int numTilesToSwap = tilesToSwap.size();
-        List<Tile> tilesReturned = new ArrayList<>();
-        for (int i = 0; i < numTilesToSwap; i++) {
-            tilesReturned.add(drawTile());
-        }
-        tiles.addAll(tilesToSwap);
-        return tilesReturned;
-    }
-
-    /**
-     * @return the number of Tiles remaining in the Bag
-     */
-    public int numTilesRemaining() {
-        return tiles.size();
-    }
-
-    public static final Map<Character, Integer> LETTER_DISTRIBUTION = Map.ofEntries(
+    private static final Map<Character, Integer> LETTER_DISTRIBUTION = Map.ofEntries(
             entry('A', 9),
             entry('B', 2),
             entry('C', 2),
@@ -96,5 +37,68 @@ public class Bag {
             entry('Y', 2),
             entry('Z', 1)
     );
+    private final List<Tile> tiles = new ArrayList<>();
+
+//    public List<Tile> getTiles() { return tiles; }
+
+    /**
+     * Class Constructor. Creates new Tile objects and adds them to the Bag
+     */
+    public Bag() {
+        for (Map.Entry<Character, Integer> en : LETTER_DISTRIBUTION.entrySet()) {
+            for (int j = 0; j < en.getValue(); j++) {
+                tiles.add(new Tile(en.getKey()));
+            }
+        }
+    }
+
+    /**
+     * draw a random tile from the Bag
+     *
+     * @return the tile drawn from the Bag
+     */
+    private Tile drawTile() {
+        Random rnd = new Random();
+        int i = rnd.nextInt(tiles.size());
+        return tiles.remove(i);
+    }
+
+    /**
+     * draw a random number of tiles from the Bag
+     *
+     * @param num the number of tiles to draw
+     * @return the List of Tiles drawn from the Bag
+     */
+    public List<Tile> drawTiles(int num) {
+        List<Tile> tiles = new ArrayList<>();
+        for (int i = 0; i < num; i++) {
+            tiles.add(drawTile());
+        }
+        return tiles;
+    }
+
+    /**
+     * swap tiles with the bag
+     *
+     * @param tilesToSwap is the List of tiles that are to be swapped with tiles in the Bag
+     * @return the List of tiles returned from the Bag
+     */
+    public List<Tile> swapTiles(List<Tile> tilesToSwap) {
+        int numTilesToSwap = tilesToSwap.size();
+        List<Tile> tilesReturned = new ArrayList<>();
+        for (int i = 0; i < numTilesToSwap; i++) {
+            tilesReturned.add(drawTile());
+        }
+        tiles.addAll(tilesToSwap);
+        return tilesReturned;
+    }
+
+    /**
+     * @return the number of Tiles remaining in the Bag
+     */
+    public int numTilesRemaining() {
+        return tiles.size();
+    }
 
 }
+
