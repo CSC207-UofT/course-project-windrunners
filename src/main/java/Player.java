@@ -36,6 +36,14 @@ public class Player {
     public int getPoints() { return points; }
 
     /**
+     * @return the points of the tiles on the Players rack (needed to compute winner at end of game)
+     */
+    public int getRackPoints() {
+        int sum = 0;
+        for (Tile tile: rack) sum += tile.getValue();
+        return sum;
+    }
+    /**
      * @param value is added to the Player's points
      */
     public void addPoints(int value) {

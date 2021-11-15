@@ -48,6 +48,7 @@ public class Bag {
     /**
      * swap tiles with the bag
      * @param tilesToSwap is the List of tiles that are to be swapped with tiles in the Bag
+     *                    Should always have tilesToSwap.size() <= numTilesRemaining()
      * @return the List of tiles returned from the Bag
      */
     public List<Tile> swapTiles(List<Tile> tilesToSwap) {

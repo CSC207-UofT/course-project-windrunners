@@ -106,9 +106,10 @@ public class PlayerManager {
         Player leader = players[0];
         int leaderPoints = 0;
         for (Player player : players) {
-            if (player.getPoints() >= leaderPoints) {
+            int points = player.getPoints() - player.getRackPoints();
+            if (points >= leaderPoints) {
                 leader = player;
-                leaderPoints = player.getPoints();
+                leaderPoints = points;
             }
         }
         return leader;
