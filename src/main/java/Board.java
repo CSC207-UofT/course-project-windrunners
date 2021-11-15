@@ -319,16 +319,4 @@ public class Board {
         }
         return output.toString();
     }
-
-    public void renderBoard(Graphics g) {
-        for (int i = 0; i < BOARD_WIDTH; i++) {
-            for (int j = 0; j < BOARD_WIDTH; j++) {
-                if (board[j][i].getTile() == null) {
-                    this.board[j][i].renderSquare(g, i, j);
-                } else {
-                    this.board[j][i].getTile().renderTile(g, i, j);
-                }
-            }
-        }
-    }
 }

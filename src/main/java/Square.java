@@ -11,8 +11,6 @@ public class Square {
     private final int wordMult;
     private boolean multActive;
 
-    public static final int SQUARE_WIDTH = 40;
-
     /**
      * Class constructor. tile is null when no tiles are placed on the Square
      * @param letterMult controls the proportion of points gained for every letter placed on the Square
@@ -94,29 +92,4 @@ public class Square {
         }
     }
 
-    public void renderSquare(Graphics g, int x, int y) {
-        // this method assumes there is no tile on the square
-        g.setColor(new Color(253, 173, 91));
-        if (this.letterMult == 2) {
-            g.setColor(new Color(174, 232, 255, 255));
-        }
-        if (this.letterMult == 3) {
-            g.setColor(new Color(0, 130, 255));
-        }
-        if (this.wordMult == 2) {
-            g.setColor(new Color(232, 129, 129));
-        }
-        if (this.wordMult == 3) {
-            g.setColor(Color.red);
-        }
-        Font font = new Font("TimesRoman", Font.BOLD, 20);
-        g.setFont(font);
-        FontMetrics metrics = g.getFontMetrics(font);
-        g.fillRect(SQUARE_WIDTH * x, SQUARE_WIDTH * y, SQUARE_WIDTH, SQUARE_WIDTH);
-        g.setColor(Color.WHITE);
-        g.drawRect(SQUARE_WIDTH * x, SQUARE_WIDTH * y, SQUARE_WIDTH, SQUARE_WIDTH);
-        g.setColor(Color.BLACK);
-        String mult = this.toString();
-        g.drawString(mult, SQUARE_WIDTH * x + (SQUARE_WIDTH - metrics.stringWidth(mult)) / 2, SQUARE_WIDTH * y + (SQUARE_WIDTH - metrics.getHeight()) / 2 + metrics.getAscent());
-    }
 }

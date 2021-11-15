@@ -49,6 +49,10 @@ public class PlayerManager {
     }
 
     /**
+     * @return the list of players
+     */
+    public Player[] getPlayers() { return players; }
+    /**
      * move to the next player
      */
     public void goToNextPlayer() {
@@ -118,13 +122,6 @@ public class PlayerManager {
             return m1 - m2;
         };
         return Collections.max(Arrays.asList(players), comp.thenComparing(Player::getPoints));
-    }
-
-    public void renderScoreboard(Graphics g) {
-        for (int i = 0; i < players.length; i++) {
-            Player player = players[i];
-            g.drawString(player.getName() + ": " + player.getPoints(), 600, 100 + 40 * i);
-        }
     }
 
 }
