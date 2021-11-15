@@ -156,27 +156,22 @@ public class GameState {
             String line;
             BufferedReader bufferedReader =
                     new BufferedReader((new FileReader(filePath + "bagInfo.csv")));
-            int i = 0;
-            while ((line = bufferedReader.readLine()) != null) {
-                if (i == 0) {
-                    String[] lettersAsStrings = line.split(",");
-                    char[] letters = new char[lettersAsStrings.length];
-                    for (int j = 0; j < letters.length; j++) {
-                        letters[j] = lettersAsStrings[j].charAt(0);
-                    }
-                    Bag bag = new Bag(letters);
-                    info[0] = bag;
-                    i++;
-                } else if (i == 1) {
-                    String[] currentPlayerNumAsString = line.split(",");
-                    info[1] = Integer.parseInt(currentPlayerNumAsString[0]);
-                    i++;
-                } else {
-                    String[] numPlayersAsString = line.split(",");
-                    info[2] = Integer.parseInt(numPlayersAsString[0]);
-                    i++;
-                }
+            line = bufferedReader.readLine();
+            String[] lettersAsStrings = line.split(",");
+            char[] letters = new char[lettersAsStrings.length];
+            for (int j = 0; j < letters.length; j++) {
+                letters[j] = lettersAsStrings[j].charAt(0);
             }
+            Bag bag = new Bag(letters);
+            info[0] = bag;
+
+            line = bufferedReader.readLine();
+            String[] currentPlayerNumAsString = line.split(",");
+            info[1] = Integer.parseInt(currentPlayerNumAsString[0]);
+
+            line = bufferedReader.readLine();
+            String[] numPlayersAsString = line.split(",");
+            info[2] = Integer.parseInt(numPlayersAsString[0]);
         } catch (IOException e) {
             e.printStackTrace();
         }
