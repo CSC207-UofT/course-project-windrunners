@@ -4,6 +4,9 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
 import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Arrays;
 
 /**
  * A Player Manager which keeps track of the Players, and the current Player
@@ -103,15 +106,16 @@ public class PlayerManager {
      * @return the Player with maximum points so far
      */
     public Player getLeader() {
-        Player leader = players[0];
-        int leaderPoints = 0;
-        for (Player player : players) {
-            int points = player.getPoints() - player.getRackPoints();
-            if (points >= leaderPoints) {
-                leader = player;
-                leaderPoints = points;
-            }
-        }
-        return leader;
+        int totalRackPoints = 0;
+        for (Player player : players) totalRackPoints += player.getRackPoints();
+        final int finalTotalRackPoints = totalRackPoints;
+        Comparator<Player> comp = (Player p1, Player p2) -> {
+            int m1 = p1.getPoints();
+            int m2 = p2.getPoints();
+            m1 += p1.getRackPoints() == 0 ? finalTotalRackPoints : -p1.getRackPoints();
+            m2 += p2.getRackPoints() == 0 ? finalTotalRackPoints : -p2.getRackPoints();
+            return m1 - m2;
+        };
+        return Collections.max(Arrays.asList(players), comp.thenComparing(Player::getPoints));
     }
 }

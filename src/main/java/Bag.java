@@ -68,7 +68,7 @@ public class Bag {
         return tiles.size();
     }
 
-    private static final Map<Character, Integer> LETTER_DISTRIBUTION = Map.ofEntries(
+    public static final Map<Character, Integer> LETTER_DISTRIBUTION = Map.ofEntries(
             entry('A', 9),
             entry('B', 2),
             entry('C', 2),
