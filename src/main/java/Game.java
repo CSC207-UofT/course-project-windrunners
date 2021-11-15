@@ -13,8 +13,8 @@ public class Game {
     private static PlayerManager playerManager = new PlayerManager(System.in, System.out, bag);
 
     /**
-     * The main method. Sets up and controls the state of the Game.
-     * The Game ends when the Bag empties.
+     * The main method. Sets up and controls the state of the Game
+     * The Game ends when the Bag empties
      */
     public static void main(String[] args) {
         JFrame window = new JFrame("Scrabble");
@@ -84,7 +84,7 @@ public class Game {
         List<Tile> tilesToAdd = bag.drawTiles(tilesForWord.size());
         pm.updateCurrentPlayer(points, tilesToAdd, tilesForWord);
     }
-
+  
     public static Board getBoard() {
         return board;
     }
