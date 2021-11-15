@@ -87,7 +87,8 @@ public class GameState {
         try {
             String line;
             int i = 0;
-            BufferedReader bufferedReader = new BufferedReader((new FileReader("playerInfo.csv")));
+            BufferedReader bufferedReader =
+                    new BufferedReader((new FileReader(filePath + "playerInfo.csv")));
             while ((line = bufferedReader.readLine()) != null) {
                 String[] playerInfo = line.split(",");
                 char[] tileLetters = playerInfo[2].toCharArray();
@@ -110,7 +111,8 @@ public class GameState {
         char[][] boardLetters = new char[Board.BOARD_WIDTH][Board.BOARD_WIDTH];
         try {
             String line;
-            BufferedReader bufferedReader = new BufferedReader((new FileReader("boardInfo.csv")));
+            BufferedReader bufferedReader =
+                    new BufferedReader((new FileReader(filePath + "boardInfo.csv")));
             int i = 0;
             while ((line = bufferedReader.readLine()) != null) {
                 int j = 0;
@@ -135,7 +137,8 @@ public class GameState {
         Object[] info = new Object[3];
         try {
             String line;
-            BufferedReader bufferedReader = new BufferedReader((new FileReader("bagInfo.csv")));
+            BufferedReader bufferedReader =
+                    new BufferedReader((new FileReader(filePath + "bagInfo.csv")));
             int i = 0;
             while ((line = bufferedReader.readLine()) != null) {
                 if (i == 0) {
@@ -165,7 +168,7 @@ public class GameState {
 
     private void savePlayerInfo(String filePath){
         try {
-            File playerInfoCsv = new File("playerInfo.csv");
+            File playerInfoCsv = new File(filePath + "playerInfo.csv");
             FileWriter playerInfoCsvWriter = new FileWriter(playerInfoCsv);
 
             Player[] playerList = playerManager.getPlayers();
@@ -183,7 +186,7 @@ public class GameState {
 
     private void saveBoardInfo(String filePath){
         try {
-            File boardCsv = new File("boardInfo.csv");
+            File boardCsv = new File(filePath + "boardInfo.csv");
             FileWriter boardCsvWriter = new FileWriter(boardCsv);
 
             char[][] boardLetters = board.getBoardLetters();
@@ -202,7 +205,7 @@ public class GameState {
 
     private void saveBagCurrentPlayerNumberOfPlayers(String filePath){
         try {
-            File bagCsv = new File("bagInfo.csv");
+            File bagCsv = new File(filePath + "bagInfo.csv");
             FileWriter bagCsvWriter = new FileWriter(bagCsv);
 
             List<Character> bagLetters = bag.getBagLetters();
