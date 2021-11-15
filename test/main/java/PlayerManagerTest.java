@@ -1,20 +1,21 @@
 package main.java;
 
 import org.junit.Test;
+import org.junit.Before;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class PlayerManagerTest {
-    private PrintStream getEmptyPrintStream() {
-        return new PrintStream(new ByteArrayOutputStream(), false, StandardCharsets.UTF_8);
-    }
     private InputStream getInputStream(String[] strings) {
         StringBuilder inputStr = new StringBuilder();
         for (int i = 0; i < strings.length - 1; i++) {
@@ -28,12 +29,17 @@ public class PlayerManagerTest {
         for (char letter : letters) tiles.add(new Tile(letter));
         return tiles;
     }
+    private PrintStream out;
+    private Bag bag;
+    @Before
+    public void setUp() {
+        out = new PrintStream(new ByteArrayOutputStream(), false, StandardCharsets.UTF_8);
+        bag = new Bag();
+    }
 
     @Test
     public void testCreatesCorrectPlayers() {
-        PrintStream out = getEmptyPrintStream();
         InputStream in = getInputStream(new String[] {"3", "bob", "rob", "robert", "joe"});
-        Bag bag = new Bag();
         PlayerManager pm = new PlayerManager(in, out, bag);
         Player p1 = pm.getCurrentPlayer();
         pm.goToNextPlayer();
@@ -50,9 +56,7 @@ public class PlayerManagerTest {
 
     @Test
     public void testUsesBagCorrectly() {
-        PrintStream out = getEmptyPrintStream();
         InputStream in = getInputStream(new String[] {"3", "bob", "rob", "robert"});
-        Bag bag = new Bag();
         int startSize = bag.numTilesRemaining();
         new PlayerManager(in, out, bag);
         assertEquals(startSize - 21, bag.numTilesRemaining());
@@ -60,9 +64,7 @@ public class PlayerManagerTest {
 
     @Test
     public void testRackInitialization() {
-        PrintStream out = getEmptyPrintStream();
         InputStream in = getInputStream(new String[] {"3", "bob", "rob", "robert"});
-        Bag bag = new Bag();
         PlayerManager pm = new PlayerManager(in, out, bag);
         Player p1 = pm.getCurrentPlayer();
         pm.goToNextPlayer();
@@ -76,9 +78,7 @@ public class PlayerManagerTest {
 
     @Test
     public void testRackInitializationSpecificLetters() {
-        PrintStream out = getEmptyPrintStream();
         InputStream in = getInputStream(new String[] {"1", "bob"});
-        Bag bag = new Bag();
         bag.drawTiles(bag.numTilesRemaining() - 7); //
         Character[] chars = new Character[] {'A', 'B','C', 'D', 'E', 'F', 'G'};
         List<Tile> playerTiles = charsToTiles(chars);
@@ -86,14 +86,12 @@ public class PlayerManagerTest {
         PlayerManager pm = new PlayerManager(in, out, bag);
         Player player = pm.getCurrentPlayer();
         assertEquals(7, player.getRackSize());
-        assertTrue(player.hasLetters(List.of(chars)));
+        assertTrue(player.hasLetters(Arrays.asList(chars)));
     }
 
     @Test
     public void testUpdatingTiles() {
-        PrintStream out = getEmptyPrintStream();
         InputStream in = getInputStream(new String[] {"1", "bob"});
-        Bag bag = new Bag();
         bag.drawTiles(bag.numTilesRemaining() - 7); //
         List<Tile> playerTiles = charsToTiles(new Character[] {'A', 'A','B', 'C', 'D', 'E', 'F'} );
         bag.swapTiles(playerTiles);
@@ -103,16 +101,14 @@ public class PlayerManagerTest {
         pm.updateCurrentPlayer(tilesToAdd, playerTiles);
         Player player = pm.getCurrentPlayer();
         assertEquals(7, player.getRackSize());
-        assertTrue(player.hasLetters(List.of(lettersToAdd)));
+        assertTrue(player.hasLetters(Arrays.asList(lettersToAdd)));
         assertFalse(player.hasLetter('A'));
         assertFalse(player.hasLetter('F'));
     }
 
     @Test
     public void testUpdatingScore() {
-        PrintStream out = getEmptyPrintStream();
         InputStream in = getInputStream(new String[] {"1", "bob"});
-        Bag bag = new Bag();
         PlayerManager pm = new PlayerManager(in, out, bag);
         List<Tile> L = new ArrayList<>();
         int[] points = {1, 321, 32, 123};
@@ -120,8 +116,8 @@ public class PlayerManagerTest {
         for (int num : points) {
             sum += num;
             pm.updateCurrentPlayer(num, L, L);
+            assertEquals(sum, pm.getCurrentPlayer().getPoints());
         }
-        assertEquals(sum, pm.getCurrentPlayer().getPoints());
     }
 
     private void emptyPlayerRack(Player player) {
@@ -134,9 +130,7 @@ public class PlayerManagerTest {
 
     @Test
     public void testGetLeaderAdjustsPointsCorrect() {
-        PrintStream out = getEmptyPrintStream();
         InputStream in = getInputStream(new String[] {"3", "bob", "rob", "robert"});
-        Bag bag = new Bag();
         PlayerManager pm = new PlayerManager(in, out, bag);
         ArrayList<Tile> tiles = new ArrayList<>();
         int[] points = {0, 35, 0};
@@ -161,9 +155,7 @@ public class PlayerManagerTest {
 
     @Test
     public void testGetLeaderTieBreaker() {
-        PrintStream out = getEmptyPrintStream();
         InputStream in = getInputStream(new String[] {"3", "bob", "rob", "robert"});
-        Bag bag = new Bag();
         PlayerManager pm = new PlayerManager(in, out, bag);
         ArrayList<Tile> tiles = new ArrayList<>();
         int[] points = {0, 0, 50};

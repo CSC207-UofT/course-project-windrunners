@@ -1,36 +1,40 @@
 package main.java;
 
 import org.junit.Test;
+import org.junit.Before;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 
 public class BagTest {
+    private Bag bag;
+    private int startSize;
+    private int tilesToDraw;
+
+    @Before
+    public void setUp() {
+        bag = new Bag();
+        startSize = bag.numTilesRemaining();
+        tilesToDraw = Math.floorDiv(startSize, 3);
+    }
 
     @Test
     public void testDrawChangesNumTilesCorrectly() {
-        Bag bag = new Bag();
-        int startSize = bag.numTilesRemaining();
-        int tilesToDraw = Math.floorDiv(startSize, 3);
         bag.drawTiles(tilesToDraw);
         assertEquals(startSize - tilesToDraw, bag.numTilesRemaining());
     }
 
     @Test
     public void testDrawReturnsCorrectAmount() {
-        Bag bag = new Bag();
-        int startSize = bag.numTilesRemaining();
-        int tilesToDraw = Math.floorDiv(startSize, 3);
         List<Tile> tiles = bag.drawTiles(tilesToDraw);
         assertEquals(tilesToDraw, tiles.size());
     }
 
     @Test
     public void testDrawingToEmpty() {
-        Bag bag = new Bag();
-        int startSize = bag.numTilesRemaining();
-        int tilesToDraw = Math.floorDiv(startSize, 3);
         bag.drawTiles(startSize - tilesToDraw);
         List<Tile> tiles = bag.drawTiles(tilesToDraw + 20);
         assertEquals(tilesToDraw, tiles.size());
@@ -39,9 +43,6 @@ public class BagTest {
 
     @Test
     public void testSwapReturnsCorrectAmount() {
-        Bag bag = new Bag();
-        int startSize = bag.numTilesRemaining();
-        int tilesToDraw = Math.floorDiv(startSize, 3);
         List<Tile> tiles = bag.drawTiles(tilesToDraw);
         List<Tile> swappedTiles = bag.swapTiles(tiles);
         assertEquals(tilesToDraw, swappedTiles.size());
@@ -49,9 +50,6 @@ public class BagTest {
 
     @Test
     public void testSwapChangesNumTilesCorrectly() {
-        Bag bag = new Bag();
-        int startSize = bag.numTilesRemaining();
-        int tilesToDraw = Math.floorDiv(startSize, 3);
         List<Tile> tiles = bag.drawTiles(tilesToDraw);
         bag.swapTiles(tiles);
         assertEquals(bag.numTilesRemaining(), startSize - tilesToDraw);
@@ -59,16 +57,15 @@ public class BagTest {
 
     @Test
     public void testSwapReturnsCorrect() {
-        Bag bag = new Bag();
-        bag.drawTiles(bag.numTilesRemaining() - 3);
-        List<Tile> tiles = List.of(new Tile[] {new Tile('A'), new Tile('B'), new Tile('C') });
+        bag.drawTiles(startSize - 3);
+        List<Tile> tiles = Arrays.asList(new Tile('A'), new Tile('B'), new Tile('C'));
         bag.swapTiles(tiles);
         List<Tile> drawnTiles = bag.drawTiles(3);
         List<Character> charsDrawn = new ArrayList<>();
         for (Tile tile : drawnTiles) {
             charsDrawn.add(tile.getLetter());
         }
-        List<Character> c = List.of(new Character[] {'A', 'B', 'C'});
+        List<Character> c = Arrays.asList('A', 'B', 'C');
         assertTrue(charsDrawn.containsAll(c));
         assertEquals(3, c.size());
     }

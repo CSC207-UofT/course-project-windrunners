@@ -2,6 +2,7 @@ package main.java;
 
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -84,7 +85,7 @@ public class PlayerTest {
         Player player = new Player("bob");
         List<Tile> tiles = charsToTiles(new char[] {'H', 'I', 'J'});
         player.addTiles(tiles);
-        boolean hasLetters = player.hasLetters(List.of('J', 'J'));
+        boolean hasLetters = player.hasLetters(Arrays.asList('J', 'J'));
         assertFalse(hasLetters);
     }
 
@@ -93,7 +94,7 @@ public class PlayerTest {
         Player player = new Player("bob");
         List<Tile> tiles = charsToTiles(new char[] {'H', 'I', 'J', 'J'});
         player.addTiles(tiles);
-        boolean hasLetters = player.hasLetters(List.of('J', 'J', 'J'));
+        boolean hasLetters = player.hasLetters(Arrays.asList('J', 'J', 'J'));
         assertFalse(hasLetters);
     }
 }

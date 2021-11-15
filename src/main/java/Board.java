@@ -2,6 +2,7 @@ package main.java;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A Scrabble Board, which is a collection of Squares, each of which comes in different types
@@ -77,6 +78,7 @@ public class Board {
      * @return true iff the word can be placed on the board
      */
     public boolean checkWord(int x, int y, boolean direction, String word, Dictionary dictionary) {
+        word = word.toUpperCase(Locale.ROOT);
         if (!dictionary.isValid(word)) {
             return false;
         }
@@ -86,16 +88,16 @@ public class Board {
         int length = word.length();
         final int D = (direction == DOWN) ? 1 : 0;
         final int R = (direction == RIGHT) ? 1 : 0;
-        int endOfWordPosition = x * R + y * D + length - 1; // position of the last letter of the word
 
-        if (containsNoTiles()) {
-            return (D == 1 && x == MIDDLE_SQUARE && y <= MIDDLE_SQUARE && endOfWordPosition >= MIDDLE_SQUARE) ||
-                    (R == 1 && x <= MIDDLE_SQUARE && y == MIDDLE_SQUARE && endOfWordPosition >= MIDDLE_SQUARE);
-        }
-
-        if (endOfWordPosition > BOARD_WIDTH) {
+        if (x < 0 || y < 0 || x + R * (length - 1) >= BOARD_WIDTH || y + D * (length - 1) >= BOARD_WIDTH) {
             return false;
         }
+
+        if (containsNoTiles()) {
+            return ((x * D + y * R == MIDDLE_SQUARE) && (x * R + y * D <= MIDDLE_SQUARE) &&
+                    (x * R + y * D + length - 1 >= MIDDLE_SQUARE) );
+        }
+
         for (int i = 0; i < length; i++) {
             int d = D * i;
             int r = R * i;
