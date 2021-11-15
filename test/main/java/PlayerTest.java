@@ -4,21 +4,19 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import static org.junit.Assert.*;
 
 public class PlayerTest {
-    // Because Players addTiles, not characters.
+
     public List<Tile> charToTiles(char[] letters) {
         List<Tile> tiles = new ArrayList<>();
         for (char letter : letters) tiles.add(new Tile(letter));
         return tiles;
     }
+
     @Test
     public void testAddPoints() {
         Player player = new Player("bob");
@@ -62,7 +60,7 @@ public class PlayerTest {
         assertEquals('H', t1.getLetter());
         assertEquals('H', t2.getLetter());
         assertNull(t3);
-        assertTrue(playerHasH);
+        assertFalse(playerHasH);
     }
 
     @Test
