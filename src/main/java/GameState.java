@@ -3,6 +3,8 @@ package main.java;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.InputStream;
+import java.io.PrintStream;
 
 /**
  * This class holds all the states of the game
@@ -17,9 +19,17 @@ public class GameState {
     /**
      * Constructs an object that holds Game's important states.
      */
-    public GameState(){
+    public GameState() {
         this.bag = new Bag();
-        this.playerManager = new PlayerManager(System.in, System.out, bag);
+        this.playerManager = new PlayerManager();
+        this.board = new Board();
+        this.currentPlayerNum = playerManager.getCurrentPlayerNum();
+        this.numberOfPlayers = playerManager.getPlayers().length;
+    }
+
+    public GameState(InputStream in, PrintStream out){
+        this.bag = new Bag();
+        this.playerManager = new PlayerManager(in, out, bag);
         this.board = new Board();
         this.currentPlayerNum = playerManager.getCurrentPlayerNum();
         this.numberOfPlayers = playerManager.getPlayers().length;

@@ -1,5 +1,6 @@
 package main.java;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -35,6 +36,14 @@ public class Player {
      */
     public int getPoints() { return points; }
 
+    /**
+     * @return the points of the tiles on the Players rack (needed to compute winner at end of game)
+     */
+    public int getRackPoints() {
+        int sum = 0;
+        for (Tile tile: rack) sum += tile.getValue();
+        return sum;
+    }
     /**
      * @param value is added to the Player's points
      */
@@ -230,4 +239,12 @@ public class Player {
         String word = sc.next().toUpperCase();
         return new PlaceMove(x, y, direction, word);
     }
+
+    public void renderRack(Graphics g) {
+        g.drawString(this.getName() + "'s rack:", 40, 16 * 40 + 20);
+        for (int i = 0; i < this.getRackSize(); i++) {
+            this.rack.get(i).renderTile(g, i + 5, 16);
+        }
+    }
+
 }

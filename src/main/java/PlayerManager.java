@@ -1,9 +1,13 @@
 package main.java;
 
+import java.awt.*;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
 import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Arrays;
 
 /**
  * A Player Manager which keeps track of the Players, and the current Player
@@ -37,6 +41,10 @@ public class PlayerManager {
         }
     }
 
+    public PlayerManager(){
+        this.players = new Player[0];
+    }
+
     /**
      * Class constructor.
      * @param players the list of players
@@ -63,7 +71,7 @@ public class PlayerManager {
     /**
      * @return the current Player
      */
-    private Player getCurrentPlayer() {
+    public Player getCurrentPlayer() {
         return players[currentPlayerNum];
     }
 
@@ -126,14 +134,24 @@ public class PlayerManager {
      * @return the Player with maximum points so far
      */
     public Player getLeader() {
-        Player leader = players[0];
-        int leaderPoints = 0;
-        for (Player player : players) {
-            if (player.getPoints() >= leaderPoints) {
-                leader = player;
-                leaderPoints = player.getPoints();
-            }
-        }
-        return leader;
+        int totalRackPoints = 0;
+        for (Player player : players) totalRackPoints += player.getRackPoints();
+        final int finalTotalRackPoints = totalRackPoints;
+        Comparator<Player> comp = (Player p1, Player p2) -> {
+            int m1 = p1.getPoints();
+            int m2 = p2.getPoints();
+            m1 += p1.getRackPoints() == 0 ? finalTotalRackPoints : -p1.getRackPoints();
+            m2 += p2.getRackPoints() == 0 ? finalTotalRackPoints : -p2.getRackPoints();
+            return m1 - m2;
+        };
+        return Collections.max(Arrays.asList(players), comp.thenComparing(Player::getPoints));
     }
+
+    public void renderScoreboard(Graphics g) {
+        for (int i = 0; i < players.length; i++) {
+            Player player = players[i];
+            g.drawString(player.getName() + ": " + player.getPoints(), 600, 100 + 40 * i);
+        }
+    }
+
 }

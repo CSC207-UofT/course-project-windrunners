@@ -1,5 +1,6 @@
 package main.java;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -8,18 +9,29 @@ import java.util.Scanner;
  * The Game class which controls the Game
  */
 public class Game {
+    private static Board board = new Board();
+    private static Bag bag = new Bag();
+    private static PlayerManager playerManager = new PlayerManager(System.in, System.out, bag);
 
     /**
      * The main method. Sets up and controls the state of the Game.
      * The Game ends when the Bag empties.
      */
     public static void main(String[] args) {
+        JFrame window = new JFrame("Scrabble");
+        GamePanel gamePanel = new GamePanel();
+        window.setContentPane(gamePanel);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setResizable(false);
+        window.pack();
+        window.setLocationRelativeTo(null);
+        window.setVisible(true);
         Dictionary dictionary = new Dictionary();
         GameState gameState;
         Scanner sc = new Scanner(System.in);
         System.out.println("Start a new game (answer true) or load from previously saved game (answer false)?");
         if (sc.nextBoolean()) {
-            gameState = new GameState();
+            gameState = new GameState(System.in, System.out);
         } else {
             // TODO: come up with an actual file path
             gameState = new GameState("REPLACE");
@@ -29,6 +41,7 @@ public class Game {
         Board board = gameState.getBoard();
         PlayerManager playerManager = gameState.getPlayerManager();
         while (bag.numTilesRemaining() > 0) {
+            gamePanel.repaint();
             Move move = playerManager.getNextMove(System.in, System.out, board, bag.numTilesRemaining());
             if (move.getMoveType().equals("SWAP")) {
                 handleSwapMove((SwapMove) move, bag, playerManager);
@@ -89,5 +102,17 @@ public class Game {
         int points = board.insertWord(x,y,direction,tilesForWord);
         List<Tile> tilesToAdd = bag.drawTiles(tilesForWord.size());
         pm.updateCurrentPlayer(points, tilesToAdd, tilesForWord);
+    }
+
+    public static Board getBoard() {
+        return board;
+    }
+
+    public static Player getCurrentPlayer() {
+        return playerManager.getCurrentPlayer();
+    }
+
+    public static PlayerManager getPlayerManager() {
+        return playerManager;
     }
 }
