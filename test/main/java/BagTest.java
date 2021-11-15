@@ -58,7 +58,7 @@ public class BagTest {
     @Test
     public void testSwapReturnsCorrect() {
         bag.drawTiles(startSize - 3);
-        List<Tile> tiles = Arrays.asList(new Tile('A'), new Tile('B'), new Tile('C'));
+        List<Tile> tiles = Tile.charsToTiles("ABC".toCharArray());
         bag.swapTiles(tiles);
         List<Tile> drawnTiles = bag.drawTiles(3);
         List<Character> charsDrawn = new ArrayList<>();
