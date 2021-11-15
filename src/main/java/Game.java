@@ -2,6 +2,7 @@ package main.java;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * The Game class which controls the Game
@@ -14,10 +15,19 @@ public class Game {
      */
     public static void main(String[] args) {
         Dictionary dictionary = new Dictionary();
-        Bag bag = new Bag();
+        GameState gameState;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Start a new game (answer true) or load from previously saved game (answer false)?");
+        if (sc.nextBoolean()) {
+            gameState = new GameState();
+        } else {
+            // TODO: come up with an actual file path
+            gameState = new GameState("REPLACE");
+        }
+        Bag bag = gameState.getBag();
         System.out.println(bag.numTilesRemaining());
-        Board board = new Board();
-        PlayerManager playerManager = new PlayerManager(System.in, System.out, bag);
+        Board board = gameState.getBoard();
+        PlayerManager playerManager = gameState.getPlayerManager();
         while (bag.numTilesRemaining() > 0) {
             Move move = playerManager.getNextMove(System.in, System.out, board, bag.numTilesRemaining());
             if (move.getMoveType().equals("SWAP")) {
@@ -26,9 +36,16 @@ public class Game {
                 handlePlaceMove((PlaceMove) move, bag, playerManager, board, dictionary);
             }
             playerManager.goToNextPlayer();
+            updateGameState(gameState, bag, board, playerManager);
         }
         Player winner = playerManager.getLeader();
         System.out.println("Congratulations " + winner.getName() + "! You won with " + winner.getPoints() + " points");
+    }
+
+    private static void updateGameState(GameState gameState, Bag bag, Board board, PlayerManager playerManager) {
+        gameState.setBag(bag);
+        gameState.setBoard(board);
+        gameState.setPlayerManager(playerManager);
     }
 
     /**

@@ -46,8 +46,18 @@ public class PlayerManager {
         this.currentPlayerNum = currentPlayerNum;
     }
 
+    /**
+     * @return the list of players
+     */
     public Player[] getPlayers() {
         return players;
+    }
+
+    /**
+     * @return the number of the current player
+     */
+    public int getCurrentPlayerNum() {
+        return currentPlayerNum;
     }
 
     /**
