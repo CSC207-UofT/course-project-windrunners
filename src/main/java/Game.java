@@ -43,11 +43,18 @@ public class Game {
         System.out.println("Congratulations " + winner.getName() + "! You won with " + winner.getPoints() + " points");
     }
 
-
+    /**
+     * Creates a GameState object from the Game
+     * @return the created GameState object
+     */
     private static GameState getGameState() {
         return new GameState(new Bag(bag), new PlayerManager(playerManager), new Board(board));
     }
 
+    /**
+     * Updates the Game attributes with information from a GameState
+     * @param gameState the GameState object to get the information from
+     */
     private static void loadGameState(GameState gameState) {
         bag = gameState.getBag();
         playerManager = gameState.getPlayerManager();
