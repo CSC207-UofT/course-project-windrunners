@@ -58,6 +58,7 @@ public class Bag {
      * @return the tile drawn from the Bag
      */
     private Tile drawTile() {
+        if (tiles.size() == 0) return null;
         Random rnd = new Random();
         int i = rnd.nextInt(tiles.size());
         return tiles.remove(i);
@@ -70,11 +71,11 @@ public class Bag {
      * @return the List of Tiles drawn from the Bag
      */
     public List<Tile> drawTiles(int num) {
-        List<Tile> tiles = new ArrayList<>();
-        for (int i = 0; i < num; i++) {
-            tiles.add(drawTile());
-        }
-        return tiles;
+       List<Tile> tiles = new ArrayList<>();
+       for (int i = 0; i < num && this.tiles.size() > 0; i++) { 
+           tiles.add(drawTile());
+       }
+       return tiles;
     }
 
     /**

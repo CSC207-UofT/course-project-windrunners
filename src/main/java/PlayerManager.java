@@ -32,12 +32,12 @@ public class PlayerManager {
         int numPlayers = Math.max(sc.nextInt(), 1);
         this.players = new Player[numPlayers];
         for (int i = 0; i < numPlayers; i++) {
+            out.println();
             out.print("Enter Player " + (i+1) + "'s Name: ");
             String name = sc.next();
             Player player = new Player(name);
             player.addTiles(bag.drawTiles(7));
             players[i] = player;
-            out.println();
         }
     }
 
@@ -117,8 +117,8 @@ public class PlayerManager {
         Comparator<Player> comp = (Player p1, Player p2) -> {
             int m1 = p1.getPoints();
             int m2 = p2.getPoints();
-            m1 += p1.getRackPoints() == 0 ? finalTotalRackPoints : -p1.getRackPoints();
-            m2 += p2.getRackPoints() == 0 ? finalTotalRackPoints : -p2.getRackPoints();
+            m1 += (p1.getRackPoints() == 0) ? finalTotalRackPoints : -p1.getRackPoints();
+            m2 += (p2.getRackPoints() == 0) ? finalTotalRackPoints : -p2.getRackPoints();
             return m1 - m2;
         };
         return Collections.max(Arrays.asList(players), comp.thenComparing(Player::getPoints));
