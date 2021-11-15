@@ -1,5 +1,7 @@
 package main.java;
 
+import java.io.PrintStream;
+
 /**
  * An abstract class representing a move made by a Player
  * A move can be of 3 types:
@@ -7,20 +9,7 @@ package main.java;
  * PLACE
  * PASS
  */
-public abstract class Move {
-    private final String moveType;
-
-    /**
-     * Class Constructor.
-     * @param moveType is the type of move made by the Player
-     */
-    public Move(String moveType) {
-        this.moveType = moveType;
-    }
-
-    /**
-     * @return the type of Move made by the Player
-     */
-    public String getMoveType() { return moveType; }
+public interface  Move {
+    void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict, PrintStream out);
 }
 
