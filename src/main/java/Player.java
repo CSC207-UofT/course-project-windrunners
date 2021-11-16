@@ -26,6 +26,12 @@ public class Player {
         this.rack = new ArrayList<>();
     }
 
+    public Player(Player that){
+        this.name = that.name;
+        this.points = that.points;
+        this.rack.addAll(that.rack);
+    }
+
     /**
      * @return the Player's name
      */

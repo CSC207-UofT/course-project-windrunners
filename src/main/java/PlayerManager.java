@@ -55,7 +55,10 @@ public class PlayerManager {
      * @param that the PlayerManager to copy from
      */
     public PlayerManager(PlayerManager that){
-        this.players = that.getPlayers();
+        this.players = new Player[that.getPlayers().length];
+        for (int i = 0; i < this.players.length; i++){
+            this.players[i] = new Player(that.getPlayers()[i]);
+        }
         this.currentPlayerNum = that.getCurrentPlayerNum();
     }
 
