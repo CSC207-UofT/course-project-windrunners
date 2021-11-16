@@ -1,4 +1,4 @@
-package main.java;
+package main.java.scrabblegame.game;
 
 import java.util.*;
 
@@ -52,30 +52,34 @@ public class Bag {
 
     /**
      * CLass Constructor. Creates new Tile objects and adds them to the Bag
+     *
      * @param letters the letters of the tiles in the bag (from the saved GameState)
      */
     public Bag(char[] letters) {
-        for (char letter : letters){
+        for (char letter : letters) {
             tiles.add(new Tile(letter));
         }
     }
 
     /**
      * Copy constructor. Makes a deep copy of the Bag.
+     *
      * @param that the Bag to copy from
      */
     public Bag(Bag that) {
         tiles.addAll(that.getTiles());
     }
 
-    public List<Tile> getTiles() { return tiles; }
+    public List<Tile> getTiles() {
+        return tiles;
+    }
 
     /**
      * @return an ArrayList with just the letters of the tiles that are left in the bag (with repeats)
      */
-    public ArrayList<Character> getBagLetters(){
+    public ArrayList<Character> getBagLetters() {
         ArrayList<Character> bagLetters = new ArrayList<>();
-        for (Tile tile : tiles){
+        for (Tile tile : tiles) {
             bagLetters.add(tile.getLetter());
         }
         return bagLetters;
@@ -100,11 +104,11 @@ public class Bag {
      * @return the List of Tiles drawn from the Bag.
      */
     public List<Tile> drawTiles(int num) {
-       List<Tile> tiles = new ArrayList<>();
-       for (int i = 0; i < num && this.tiles.size() > 0; i++) { 
-           tiles.add(drawTile());
-       }
-       return tiles;
+        List<Tile> tiles = new ArrayList<>();
+        for (int i = 0; i < num && this.tiles.size() > 0; i++) {
+            tiles.add(drawTile());
+        }
+        return tiles;
     }
 
     /**

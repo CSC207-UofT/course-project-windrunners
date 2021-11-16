@@ -1,6 +1,5 @@
-package main.java;
+package main.java.scrabblegame.game;
 
-import java.io.PrintStream;
 import java.util.List;
 
 /**
@@ -11,6 +10,7 @@ public class SwapMove implements Move {
 
     /**
      * Class constructor.
+     *
      * @param tilesToSwap is the List of Tiles to swap with the Bag
      */
     public SwapMove(List<Tile> tilesToSwap) {
@@ -21,13 +21,11 @@ public class SwapMove implements Move {
      * Attempts to swap tilesToSwap with the bag
      */
     @Override
-    public void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict, PrintStream out) {
+    public void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict) {
         boolean hasLetters = pm.currentPlayerHasLetters(Tile.tilesToChars(tilesToSwap));
         if (hasLetters) {
             List<Tile> tilesReturned = bag.swapTiles(tilesToSwap);
             pm.updateCurrentPlayer(tilesReturned, tilesToSwap);
-        } else {
-            out.println("You don't have the correct letters");
         }
     }
 }

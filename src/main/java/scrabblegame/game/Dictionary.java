@@ -1,4 +1,4 @@
-package main.java;
+package main.java.scrabblegame.game;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -35,10 +35,13 @@ public class Dictionary {
     /**
      * @return the valid Scrabble words
      */
-    public HashSet<String> getDictionary() { return words; }
+    public HashSet<String> getDictionary() {
+        return words;
+    }
 
     /**
      * check if word is a valid Scrabble word
+     *
      * @param word is the word that is to be checked for validity
      * @return true iff word is a valid Scrabble word
      */

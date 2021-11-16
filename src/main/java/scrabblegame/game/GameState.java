@@ -1,4 +1,4 @@
-package main.java;
+package main.java.scrabblegame.game;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -9,28 +9,18 @@ import java.util.List;
  * Has methods for saving and loading the game to/from csv files.
  */
 public class GameState {
-    private Bag bag;  // the current state of the bag
-    private Board board;  // the current state of the board
-    private PlayerManager playerManager;  // the current state of the player manager
-    private int currentPlayerNum;  // the index of the current player in the list of players in the player manager
+    private final Bag bag;  // the current state of the bag
+    private final Board board;  // the current state of the board
+    private final PlayerManager playerManager;  // the current state of the player manager
+    private final int currentPlayerNum;  // the index of the current player in the list of players in the player manager
     private final int numberOfPlayers;
 
     /**
-     * Class constructor. Initializes a GameState object that represents the beginning of a game.
-     */
-    public GameState() {
-        this.bag = new Bag();
-        this.playerManager = new PlayerManager(System.in, System.out, bag);
-        this.board = new Board();
-        this.currentPlayerNum = playerManager.getCurrentPlayerNum();
-        this.numberOfPlayers = playerManager.getPlayers().length;
-    }
-
-    /**
      * Class constructor. Initializes a GameState object
-     * @param bag the current state of the bag
+     *
+     * @param bag           the current state of the bag
      * @param playerManager the current state of the playerManager
-     * @param board the current state of the board
+     * @param board         the current state of the board
      */
     public GameState(Bag bag, PlayerManager playerManager, Board board) {
         this.bag = bag;
@@ -42,6 +32,7 @@ public class GameState {
 
     /**
      * Class constructor. Initialize a GameState object from a saved game (that is saved into three csv files)
+     *
      * @param filePath path to the folder containing all the filed relevant to the game
      */
     public GameState(String filePath) {
@@ -75,9 +66,10 @@ public class GameState {
 
     /**
      * Saves the game state into three csv files.
+     *
      * @param filePath the path to folder to save the three csv files to
      */
-    public void saveGameState(String filePath){
+    public void saveGameState(String filePath) {
         savePlayerInfo(filePath);
         saveBoardInfo(filePath);
         saveBagCurrentPlayerNumberOfPlayers(filePath);
@@ -85,6 +77,7 @@ public class GameState {
 
     /**
      * Helper method that loads the player information (player's name, number of points, and rack) from a csv file
+     *
      * @param filePath the path to the folder with the csv files
      * @return the playerManager represented in playerInfo.csv
      */
@@ -115,6 +108,7 @@ public class GameState {
 
     /**
      * Helper method that loads the board information (which tiles are placed where) from a csv file
+     *
      * @param filePath the path to the folder with the csv files
      * @return the board represented in boardInfo.csv
      */
@@ -147,10 +141,11 @@ public class GameState {
     /**
      * Helper method that loads the information about the bag, who the current player is,
      * and the number of players in the game from a csv file
+     *
      * @param filePath the path to the folder with the csv files
      * @return the board represented in bagInfo.csv
      */
-    private Object[] loadBagCurrentPlayerNumberOfPlayers(String filePath){
+    private Object[] loadBagCurrentPlayerNumberOfPlayers(String filePath) {
         Object[] info = new Object[3];
         try {
             String line;
@@ -180,9 +175,10 @@ public class GameState {
 
     /**
      * Helper method to save the information about the players (names, number of points so far, rack) in a csv file
+     *
      * @param filePath the path to the folder to save the csv file in
      */
-    private void savePlayerInfo(String filePath){
+    private void savePlayerInfo(String filePath) {
         try {
             File playerInfoCsv = new File(filePath + "playerInfo.csv");
             FileWriter playerInfoCsvWriter = new FileWriter(playerInfoCsv);
@@ -202,9 +198,10 @@ public class GameState {
 
     /**
      * Helper method to save the information about the baord in a csv file
+     *
      * @param filePath the path to the folder to save the csv file in
      */
-    private void saveBoardInfo(String filePath){
+    private void saveBoardInfo(String filePath) {
         try {
             File boardCsv = new File(filePath + "boardInfo.csv");
             FileWriter boardCsvWriter = new FileWriter(boardCsv);
@@ -226,9 +223,10 @@ public class GameState {
     /**
      * Helper method to save the information about the bag, who the current player is,
      * and the number of players in the game in a csv file
+     *
      * @param filePath the path to the folder to save the csv file in
      */
-    private void saveBagCurrentPlayerNumberOfPlayers(String filePath){
+    private void saveBagCurrentPlayerNumberOfPlayers(String filePath) {
         try {
             File bagCsv = new File(filePath + "bagInfo.csv");
             FileWriter bagCsvWriter = new FileWriter(bagCsv);

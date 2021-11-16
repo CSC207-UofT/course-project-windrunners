@@ -1,22 +1,28 @@
-package main.java;
+package main.java.scrabblegame.gui;
+
+import main.java.scrabblegame.game.Player;
+import main.java.scrabblegame.game.PlayerManager;
+import main.java.scrabblegame.game.Board;
+import main.java.scrabblegame.game.Square;
+import main.java.scrabblegame.game.Tile;
 
 import java.awt.*;
 
 public class Renderer {
 
-    public static final int TILE_WIDTH = 40;
-    public static final int SQUARE_WIDTH = 40;
+    public static final int TILE_SIZE = 40;
+    public static final int SQUARE_SIZE = 40;
 
     public void renderTile(Graphics g, Tile tile, int x, int y) {
         Font font = new Font("TimesRoman", Font.BOLD, 30);
         g.setFont(font);
         FontMetrics metrics = g.getFontMetrics(font);
-        g.setColor(new Color(150,75,0));
-        g.fillRoundRect(TILE_WIDTH * x, TILE_WIDTH * y, TILE_WIDTH, TILE_WIDTH, 10, 10);
+        g.setColor(new Color(150, 75, 0));
+        g.fillRoundRect(TILE_SIZE * x, TILE_SIZE * y, TILE_SIZE, TILE_SIZE, 10, 10);
         g.setColor(Color.BLACK);
-        g.drawRoundRect(TILE_WIDTH * x, TILE_WIDTH * y, TILE_WIDTH, TILE_WIDTH, 10, 10);
+        g.drawRoundRect(TILE_SIZE * x, TILE_SIZE * y, TILE_SIZE, TILE_SIZE, 10, 10);
         String letter = String.valueOf(tile.getLetter());
-        g.drawString(String.valueOf(letter), TILE_WIDTH * x + (TILE_WIDTH - metrics.stringWidth(letter)) / 2, TILE_WIDTH * y + (TILE_WIDTH - metrics.getHeight()) / 2 + metrics.getAscent());
+        g.drawString(letter, TILE_SIZE * x + (TILE_SIZE - metrics.stringWidth(letter)) / 2, TILE_SIZE * y + (TILE_SIZE - metrics.getHeight()) / 2 + metrics.getAscent());
     }
 
     public void renderSquare(Graphics g, Square square, int x, int y) {
@@ -37,12 +43,12 @@ public class Renderer {
         Font font = new Font("TimesRoman", Font.BOLD, 20);
         g.setFont(font);
         FontMetrics metrics = g.getFontMetrics(font);
-        g.fillRect(SQUARE_WIDTH * x, SQUARE_WIDTH * y, SQUARE_WIDTH, SQUARE_WIDTH);
+        g.fillRect(SQUARE_SIZE * x, SQUARE_SIZE * y, SQUARE_SIZE, SQUARE_SIZE);
         g.setColor(Color.WHITE);
-        g.drawRect(SQUARE_WIDTH * x, SQUARE_WIDTH * y, SQUARE_WIDTH, SQUARE_WIDTH);
+        g.drawRect(SQUARE_SIZE * x, SQUARE_SIZE * y, SQUARE_SIZE, SQUARE_SIZE);
         g.setColor(Color.BLACK);
         String mult = square.toString();
-        g.drawString(mult, SQUARE_WIDTH * x + (SQUARE_WIDTH - metrics.stringWidth(mult)) / 2, SQUARE_WIDTH * y + (SQUARE_WIDTH - metrics.getHeight()) / 2 + metrics.getAscent());
+        g.drawString(mult, SQUARE_SIZE * x + (SQUARE_SIZE - metrics.stringWidth(mult)) / 2, SQUARE_SIZE * y + (SQUARE_SIZE - metrics.getHeight()) / 2 + metrics.getAscent());
     }
 
     public void renderBoard(Graphics g, Board board) {
@@ -50,8 +56,7 @@ public class Renderer {
             for (int j = 0; j < Board.BOARD_WIDTH; j++) {
                 if (board.getBoard()[j][i].getTile() == null) {
                     renderSquare(g, board.getBoard()[j][i], i, j);
-                }
-                else {
+                } else {
                     renderTile(g, board.getBoard()[j][i].getTile(), i, j);
                 }
             }

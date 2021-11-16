@@ -1,5 +1,7 @@
-package main.java;
+package main.java.scrabblegame.game;
 
+import main.java.scrabblegame.game.Square;
+import main.java.scrabblegame.game.Tile;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

@@ -1,6 +1,5 @@
-package main.java;
+package main.java.scrabblegame.game;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +14,7 @@ public class PlaceMove implements Move {
 
     /**
      * Class constructor.
+     *
      * @param word      is the word to be placed on the Board
      * @param x         is the column of the first letter of the word
      * @param y         is the row of the first letter of the word
@@ -31,14 +31,14 @@ public class PlaceMove implements Move {
      * Attempts to put the given word on the board in the given direction starting at the given coordinates.
      */
     @Override
-    public void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict, PrintStream out) {
+    public void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict) {
         if (!board.checkWord(x, y, direction, word, dict)) {
-            System.out.println("Invalid word/placement");
+            // throw invalid word error
             return;
         }
         List<Character> lettersNeeded = board.lettersNeeded(x, y, direction, word);
         if (!pm.currentPlayerHasLetters(lettersNeeded)) {
-            System.out.println("Do not have letters required to make move");
+            // throw invalid move error
             return;
         }
         List<Tile> tilesForWord = new ArrayList<>();

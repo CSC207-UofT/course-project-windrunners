@@ -1,6 +1,5 @@
-package main.java;
+package main.java.scrabblegame.game;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -8,23 +7,26 @@ import java.util.Map;
 import static java.util.Map.entry;
 
 /**
- *  Each Tile object has a letter and points associated with the letter
+ * Each Tile object has a letter and points associated with the letter
  */
 
 public class Tile {
     private final char letter;
     private final int value;
 
-    public static final int TILE_WIDTH = 40;
+    public char getLetter() {
+        return letter;
+    }
 
-    public char getLetter() { return letter; }
-    public int getValue() { return value; }
+    public int getValue() {
+        return value;
+    }
 
     /**
      * Class constructor. The points of a tile depend on its letter
+     *
      * @param letter is the letter on the tile
      */
-
     public Tile(char letter) {
         this.letter = letter;
         this.value = Tile.VALUE_DICT.get(letter);
@@ -59,20 +61,9 @@ public class Tile {
             entry('Z', 10)
     );
 
-    public void renderTile(Graphics g, int x, int y) {
-        Font font = new Font("TimesRoman", Font.BOLD, 30);
-        g.setFont(font);
-        FontMetrics metrics = g.getFontMetrics(font);
-        g.setColor(new Color(150,75,0));
-        g.fillRoundRect(TILE_WIDTH * x, TILE_WIDTH * y, TILE_WIDTH, TILE_WIDTH, 10, 10);
-        g.setColor(Color.BLACK);
-        g.drawRoundRect(TILE_WIDTH * x, TILE_WIDTH * y, TILE_WIDTH, TILE_WIDTH, 10, 10);
-        String letter = String.valueOf(this.letter);
-        g.drawString(String.valueOf(letter), TILE_WIDTH * x + (TILE_WIDTH - metrics.stringWidth(letter)) / 2, TILE_WIDTH * y + (TILE_WIDTH - metrics.getHeight()) / 2 + metrics.getAscent());
-    }
-
     /**
      * Takes a List of Characters and returns a List of tiles with those Characters.
+     *
      * @param letters the List of Characters to be converted into a List of Tiles
      * @return a List of Tiles
      */
@@ -86,6 +77,7 @@ public class Tile {
 
     /**
      * Takes an array of chars and returns a List of tiles with those chars.
+     *
      * @param letters the array of chars[] to be converted into Tiles
      * @return a List of Tiles
      */
@@ -99,6 +91,7 @@ public class Tile {
 
     /**
      * Takes a List of Tiles and returns a List of Characters with the letters from those tiles.
+     *
      * @param tiles the List of Tiles to be converted into Characters
      * @return a List of Characters
      */
