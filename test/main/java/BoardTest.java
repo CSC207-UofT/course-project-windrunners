@@ -182,6 +182,12 @@ public class BoardTest {
     }
 
     @Test
+    public void testCheckWordOnlyMeetAtEnd() {
+        board.insertWord(7, 7, Board.DOWN, Tile.charsToTiles("tee".toCharArray()));
+        assertTrue(board.checkWord(3, 10, Board.DOWN, "nails", dict));
+    }
+
+    @Test
     public void testLettersNeeded() {
         board.insertWord(7, 7, Board.RIGHT, Tile.charsToTiles("at".toCharArray()));
         board.insertWord(7, 7+2, Board.RIGHT, Tile.charsToTiles("at".toCharArray()));
