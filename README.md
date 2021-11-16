@@ -10,3 +10,5 @@ And here are the rest of the files:
     phase0/crc_cards.docx
     phase0/walkthrough.md
     phase0/progress_report.md
+
+    phase1/Design Document.pdf
