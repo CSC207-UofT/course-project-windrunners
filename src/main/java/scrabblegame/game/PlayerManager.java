@@ -1,8 +1,5 @@
 package main.java.scrabblegame.game;
 
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.util.Scanner;
 import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,15 +11,16 @@ import java.util.Arrays;
  */
 
 public class PlayerManager {
-    private Player[] players;
+    private final Player[] players;
     private int currentPlayerNum = 0;
 
     /**
      * Class constructor. Initializes Player objects and distributes
      * Tiles to each player from the Bag
+     *
      * @param numPlayers the number of players
-     * @param names a list of the names of the players
-     * @param bag the Bag used to distribute Tiles from
+     * @param names      a list of the names of the players
+     * @param bag        the Bag used to distribute Tiles from
      */
     public PlayerManager(int numPlayers, List<String> names, Bag bag) {
         this.players = new Player[numPlayers];
@@ -35,21 +33,23 @@ public class PlayerManager {
 
     /**
      * Class constructor.
-     * @param players the list of players
+     *
+     * @param players          the list of players
      * @param currentPlayerNum the number of players
      */
-    public PlayerManager(Player[] players, int currentPlayerNum){
+    public PlayerManager(Player[] players, int currentPlayerNum) {
         this.players = players;
         this.currentPlayerNum = currentPlayerNum;
     }
 
     /**
      * Copy constructor. Used to make a deep copy of a player manager.
+     *
      * @param that the PlayerManager to copy from
      */
-    public PlayerManager(PlayerManager that){
+    public PlayerManager(PlayerManager that) {
         this.players = new Player[that.getPlayers().length];
-        for (int i = 0; i < this.players.length; i++){
+        for (int i = 0; i < this.players.length; i++) {
             this.players[i] = new Player(that.getPlayers()[i]);
         }
         this.currentPlayerNum = that.getCurrentPlayerNum();
@@ -72,7 +72,10 @@ public class PlayerManager {
     /**
      * @return the list of players
      */
-    public Player[] getPlayers() { return players; }
+    public Player[] getPlayers() {
+        return players;
+    }
+
     /**
      * move to the next player
      */
@@ -82,6 +85,7 @@ public class PlayerManager {
 
     /**
      * check whether the current Player has all the letters in the List
+     *
      * @param letters the List of letters; to be checked if it's contained in the Player's rack
      * @return true iff the Player's rack contains all the letters in the List
      */
@@ -92,6 +96,7 @@ public class PlayerManager {
     /**
      * called when the current Player decides to insert a word into the Board
      * adds tilesToAdd to the Player's rack and removes tilesToRemove
+     *
      * @param pointsToAdd   the points the payer gains on inserting the word
      * @param tilesToAdd    the tiles to be added to the Player's rack (drawn from the Bag)
      * @param tilesToRemove the tiles to be removed from the Player's rack (required for the word)
@@ -104,7 +109,8 @@ public class PlayerManager {
     /**
      * called when the current Player decides to swap Tiles with the Bag
      * adds tilesToAdd to the Player's rack and removes tilesToRemove
-     * @param tilesToAdd the tiles to be added to the Player's rack
+     *
+     * @param tilesToAdd    the tiles to be added to the Player's rack
      * @param tilesToRemove the tiles to be removed from the Player's rack
      */
     public void updateCurrentPlayer(List<Tile> tilesToAdd, List<Tile> tilesToRemove) {
@@ -118,6 +124,7 @@ public class PlayerManager {
      * Points for determining lead is points - points of the tiles on rack unless your rack is empty.
      * In that case it is points + points of tiles on everyone elses rack.
      * In the case of a tie, points is used as a tiebreaker.
+     *
      * @return the Player with maximum points so far
      */
     public Player getLeader() {

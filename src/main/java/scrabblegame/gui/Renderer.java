@@ -17,7 +17,7 @@ public class Renderer {
         Font font = new Font("TimesRoman", Font.BOLD, 30);
         g.setFont(font);
         FontMetrics metrics = g.getFontMetrics(font);
-        g.setColor(new Color(150,75,0));
+        g.setColor(new Color(150, 75, 0));
         g.fillRoundRect(TILE_SIZE * x, TILE_SIZE * y, TILE_SIZE, TILE_SIZE, 10, 10);
         g.setColor(Color.BLACK);
         g.drawRoundRect(TILE_SIZE * x, TILE_SIZE * y, TILE_SIZE, TILE_SIZE, 10, 10);
@@ -56,8 +56,7 @@ public class Renderer {
             for (int j = 0; j < Board.BOARD_WIDTH; j++) {
                 if (board.getBoard()[j][i].getTile() == null) {
                     renderSquare(g, board.getBoard()[j][i], i, j);
-                }
-                else {
+                } else {
                     renderTile(g, board.getBoard()[j][i].getTile(), i, j);
                 }
             }

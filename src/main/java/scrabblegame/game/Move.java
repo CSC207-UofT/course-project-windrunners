@@ -3,9 +3,10 @@ package main.java.scrabblegame.game;
 /**
  * An interface representing a move made by a Player. Implements the Command design pattern.
  */
-public interface  Move {
+public interface Move {
     /**
      * A function to execute the move.
+     *
      * @param bag   the bag to replenish the currentPlayer's rack after the move has been made
      * @param pm    the Player Manager
      * @param board the Scrabble Board on which the word is to be inserted

@@ -7,18 +7,24 @@ import java.util.Map;
 import static java.util.Map.entry;
 
 /**
- *  Each Tile object has a letter and points associated with the letter
+ * Each Tile object has a letter and points associated with the letter
  */
 
 public class Tile {
     private final char letter;
     private final int value;
 
-    public char getLetter() { return letter; }
-    public int getValue() { return value; }
+    public char getLetter() {
+        return letter;
+    }
+
+    public int getValue() {
+        return value;
+    }
 
     /**
      * Class constructor. The points of a tile depend on its letter
+     *
      * @param letter is the letter on the tile
      */
     public Tile(char letter) {
@@ -57,6 +63,7 @@ public class Tile {
 
     /**
      * Takes a List of Characters and returns a List of tiles with those Characters.
+     *
      * @param letters the List of Characters to be converted into a List of Tiles
      * @return a List of Tiles
      */
@@ -70,6 +77,7 @@ public class Tile {
 
     /**
      * Takes an array of chars and returns a List of tiles with those chars.
+     *
      * @param letters the array of chars[] to be converted into Tiles
      * @return a List of Tiles
      */
@@ -83,6 +91,7 @@ public class Tile {
 
     /**
      * Takes a List of Tiles and returns a List of Characters with the letters from those tiles.
+     *
      * @param tiles the List of Tiles to be converted into Characters
      * @return a List of Characters
      */

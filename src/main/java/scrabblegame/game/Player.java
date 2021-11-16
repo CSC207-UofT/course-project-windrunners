@@ -2,18 +2,15 @@ package main.java.scrabblegame.game;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import java.io.InputStream;
-import java.io.PrintStream;
 
 /**
  * A Player of Scrabble
  * Each player has a name, the points earned so far, and a rack of Tiles
  */
 public class Player {
-    private String name;
+    private final String name;
     private int points;
-    private List<Tile> rack;
+    private final List<Tile> rack;
 
     /**
      * Class constructor. A player initially has 0 points
@@ -157,20 +154,6 @@ public class Player {
             }
         }
         return false;
-    }
-
-    /**
-     * try to remove a Tile containing letter from Player's rack
-     * @param letter the letter to be removed
-     * @return true iff a Tile containing letter was succesfully removed
-     */
-    public boolean tryRemove(char letter, List<Tile> output) {
-        if (hasLetter(letter)) {
-            output.add(removeTile(letter));
-            return true;
-        } else {
-            return false;
-        }
     }
 
     @Override

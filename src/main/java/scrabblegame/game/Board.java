@@ -50,9 +50,10 @@ public class Board {
 
     /**
      * Class constructor. Fills the squares on the Board with the tiles in the locations as specified by boardLetters
+     *
      * @param boardLetters a BOARD_WIDTH^2 array with the letters that are already on the Board
      */
-    public Board(char[][] boardLetters){
+    public Board(char[][] boardLetters) {
         int filled = 0;
         for (int i = 0; i < BOARD_WIDTH; i++) {
             for (int j = 0; j < BOARD_WIDTH; j++) {
@@ -60,7 +61,7 @@ public class Board {
                 int L = (squareType.equals("3L")) ? 3 : (squareType.equals("2L")) ? 2 : 1;
                 int W = (squareType.equals("3W")) ? 3 : (squareType.equals("2W")) ? 2 : 1;
                 board[i][j] = new Square(L, W);
-                if (boardLetters[i][j] != '\0'){
+                if (boardLetters[i][j] != '\0') {
                     filled++;
                     board[i][j].setTile(new Tile(boardLetters[i][j]));
                     board[i][j].setMultUsed();
@@ -72,6 +73,7 @@ public class Board {
 
     /**
      * Copy constructor. Make a deep copy of the Board from another Board
+     *
      * @param that the Board to copy from
      */
     public Board(Board that) {
@@ -91,13 +93,12 @@ public class Board {
     }
 
     /**
-     *
      * @return a 2D array of chars containing only the string values of the tiles that are on the board
      */
     public char[][] getBoardLetters() {
         char[][] boardLetters = new char[BOARD_WIDTH][BOARD_WIDTH];
-        for (int i = 0; i < BOARD_WIDTH; i++){
-            for (int j = 0; j < BOARD_WIDTH; j++){
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+            for (int j = 0; j < BOARD_WIDTH; j++) {
                 if (!board[i][j].isEmpty())
                     boardLetters[i][j] = board[i][j].getTile().getLetter();
             }
@@ -151,7 +152,7 @@ public class Board {
 
         if (containsNoTiles()) {
             return ((x * D + y * R == MIDDLE_SQUARE) && (x * R + y * D <= MIDDLE_SQUARE) &&
-                    (x * R + y * D + length - 1 >= MIDDLE_SQUARE) );
+                    (x * R + y * D + length - 1 >= MIDDLE_SQUARE));
         }
 
         for (int i = 0; i < length; i++) {
