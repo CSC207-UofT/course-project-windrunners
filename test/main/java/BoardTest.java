@@ -68,11 +68,11 @@ public class BoardTest {
     public void testCheckWordFirstMoveWrongSpotTooFarRight() {
         assertFalse(board.checkWord(7 + 1, 7, Board.RIGHT, "at", dict));
     }
-    
+
     @Test
     public void testCheckWordOverflowsEdgeDown() {
-       board.insertWord(7, 7, Board.DOWN, Tile.charsToTiles("abject".toCharArray()));
-       assertFalse(board.checkWord(7 + 1, 7 + 5, Board.DOWN, "objectively", dict));
+        board.insertWord(7, 7, Board.DOWN, Tile.charsToTiles("abject".toCharArray()));
+        assertFalse(board.checkWord(7 + 1, 7 + 5, Board.DOWN, "objectively", dict));
     }
 
     @Test
@@ -184,7 +184,25 @@ public class BoardTest {
     @Test
     public void testCheckWordOnlyMeetAtEnd() {
         board.insertWord(7, 7, Board.DOWN, Tile.charsToTiles("tee".toCharArray()));
-        assertTrue(board.checkWord(3, 10, Board.DOWN, "nails", dict));
+        assertTrue(board.checkWord(7-4, 7+3, Board.RIGHT, "nails", dict));
+    }
+    @Test
+    public void testCheckWordOnlyMeetAtEnd2() {
+        board.insertWord(7, 7, Board.DOWN, Tile.charsToTiles("seats".toCharArray()));
+        assertTrue(board.checkWord(7-4, 7+4, Board.RIGHT, "wears", dict));
+    }
+
+    @Test
+    public void testCheckWordLetterRightBeforeWord() {
+        board.insertWord(7, 7-3, Board.DOWN, Tile.charsToTiles("barn".toCharArray()));
+        board.insertWord(6, 7, Board.RIGHT, Tile.charsToTiles("at".toCharArray()));
+        assertFalse(board.checkWord(8,6, Board.RIGHT, "attic", dict));
+    }
+
+    @Test
+    public void testCheckWordLetterRightAfterWord() {
+        board.insertWord(7-2, 7, Board.RIGHT, Tile.charsToTiles("abandon".toCharArray()));
+        assertFalse(board.checkWord(7+2,7-3, Board.DOWN, "ban", dict));
     }
 
     @Test
