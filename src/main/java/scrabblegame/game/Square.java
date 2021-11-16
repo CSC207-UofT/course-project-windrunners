@@ -1,6 +1,5 @@
-package main.java;
+package main.java.scrabblegame.game;
 
-import java.awt.*;
 /**
  * Tiles are placed on Squares, a collection of which form a Board
  */

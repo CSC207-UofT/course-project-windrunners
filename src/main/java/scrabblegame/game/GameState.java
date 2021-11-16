@@ -1,4 +1,4 @@
-package main.java;
+package main.java.scrabblegame.game;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -14,17 +14,6 @@ public class GameState {
     private PlayerManager playerManager;  // the current state of the player manager
     private int currentPlayerNum;  // the index of the current player in the list of players in the player manager
     private final int numberOfPlayers;
-
-    /**
-     * Class constructor. Initializes a GameState object that represents the beginning of a game.
-     */
-    public GameState() {
-        this.bag = new Bag();
-        this.playerManager = new PlayerManager(System.in, System.out, bag);
-        this.board = new Board();
-        this.currentPlayerNum = playerManager.getCurrentPlayerNum();
-        this.numberOfPlayers = playerManager.getPlayers().length;
-    }
 
     /**
      * Class constructor. Initializes a GameState object

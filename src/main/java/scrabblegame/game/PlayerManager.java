@@ -1,6 +1,5 @@
-package main.java;
+package main.java.scrabblegame.game;
 
-import java.awt.*;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -21,21 +20,14 @@ public class PlayerManager {
     /**
      * Class constructor. Initializes Player objects and distributes
      * Tiles to each player from the Bag
+     * @param numPlayers the number of players
+     * @param names a list of the names of the players
      * @param bag the Bag used to distribute Tiles from
-     * @param in is an InputStream to allow the playerManager to ask the user
-     *          for the number and names of players
-     * @param out is a PrintStream to allow the playerManager to ask a user for input
      */
-    public PlayerManager(InputStream in, PrintStream out, Bag bag) {
-        Scanner sc = new Scanner(in);
-        out.print("How many players are there?");
-        int numPlayers = Math.max(sc.nextInt(), 1);
+    public PlayerManager(int numPlayers, List<String> names, Bag bag) {
         this.players = new Player[numPlayers];
         for (int i = 0; i < numPlayers; i++) {
-            out.println();
-            out.print("Enter Player " + (i+1) + "'s Name: ");
-            String name = sc.next();
-            Player player = new Player(name);
+            Player player = new Player(names.get(i));
             player.addTiles(bag.drawTiles(7));
             players[i] = player;
         }
@@ -44,6 +36,7 @@ public class PlayerManager {
     /**
      * Class constructor.
      * @param players the list of players
+     * @param currentPlayerNum the number of players
      */
     public PlayerManager(Player[] players, int currentPlayerNum){
         this.players = players;
@@ -85,18 +78,6 @@ public class PlayerManager {
      */
     public void goToNextPlayer() {
         currentPlayerNum = (currentPlayerNum + 1) % players.length;
-    }
-
-    /**
-     * get the Move made by the current Player
-     * @param in is an InputStream to allow the Player to get data from a user
-     * @param out is a PrintStream to allow the Player to output data to a user
-     * @param board the Scrabble Board
-     * @param numTilesRemaining is the number of Tiles remaining in the Bag
-     * @return the Move made by the current Player
-     */
-    public Move getNextMove(InputStream in, PrintStream out, Board board, int numTilesRemaining) {
-        return getCurrentPlayer().makeMove(in, out, board, numTilesRemaining);
     }
 
     /**

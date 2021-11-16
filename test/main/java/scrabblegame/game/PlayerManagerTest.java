@@ -1,5 +1,9 @@
-package main.java;
+package main.java.scrabblegame.game;
 
+import main.java.scrabblegame.game.Bag;
+import main.java.scrabblegame.game.Player;
+import main.java.scrabblegame.game.PlayerManager;
+import main.java.scrabblegame.game.Tile;
 import org.junit.Test;
 import org.junit.Before;
 
@@ -10,6 +14,7 @@ import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -35,8 +40,7 @@ public class PlayerManagerTest {
 
     @Test
     public void testCreatesCorrectPlayers() {
-        InputStream in = getInputStream(new String[] {"3", "bob", "rob", "robert", "joe"});
-        PlayerManager pm = new PlayerManager(in, out, bag);
+        PlayerManager pm = new PlayerManager(3, Arrays.asList("bob", "rob", "robert"), bag);
         Player p1 = pm.getCurrentPlayer();
         pm.goToNextPlayer();
         Player p2 = pm.getCurrentPlayer();
@@ -52,16 +56,14 @@ public class PlayerManagerTest {
 
     @Test
     public void testUsesBagCorrectly() {
-        InputStream in = getInputStream(new String[] {"3", "bob", "rob", "robert"});
         int startSize = bag.numTilesRemaining();
-        new PlayerManager(in, out, bag);
+        PlayerManager pm = new PlayerManager(3, Arrays.asList("bob", "rob", "robert"), bag);
         assertEquals(startSize - 21, bag.numTilesRemaining());
     }
 
     @Test
     public void testRackInitialization() {
-        InputStream in = getInputStream(new String[] {"3", "bob", "rob", "robert"});
-        PlayerManager pm = new PlayerManager(in, out, bag);
+        PlayerManager pm = new PlayerManager(3, Arrays.asList("bob", "rob", "robert"), bag);
         Player p1 = pm.getCurrentPlayer();
         pm.goToNextPlayer();
         Player p2 = pm.getCurrentPlayer();
@@ -74,12 +76,11 @@ public class PlayerManagerTest {
 
     @Test
     public void testRackInitializationSpecificLetters() {
-        InputStream in = getInputStream(new String[] {"1", "bob"});
         bag.drawTiles(bag.numTilesRemaining() - 7); //
         List<Character> chars = Arrays.asList('A', 'B','C', 'D', 'E', 'F', 'G');
         List<Tile> playerTiles = Tile.charsToTiles(chars);
         bag.swapTiles(playerTiles);
-        PlayerManager pm = new PlayerManager(in, out, bag);
+        PlayerManager pm = new PlayerManager(1, Collections.singletonList("bob"), bag);
         Player player = pm.getCurrentPlayer();
         assertEquals(7, player.getRackSize());
         assertTrue(player.hasLetters(chars));
@@ -87,11 +88,10 @@ public class PlayerManagerTest {
 
     @Test
     public void testUpdatingTiles() {
-        InputStream in = getInputStream(new String[] {"1", "bob"});
         bag.drawTiles(bag.numTilesRemaining() - 7); //
         List<Tile> playerTiles = Tile.charsToTiles("AABCDEF".toCharArray());
         bag.swapTiles(playerTiles);
-        PlayerManager pm = new PlayerManager(in, out, bag);
+        PlayerManager pm = new PlayerManager(1, Collections.singletonList("bob"), bag);
         List<Character> lettersToAdd = Arrays.asList('G', 'H', 'I', 'J', 'K','L','M');
         List<Tile> tilesToAdd = Tile.charsToTiles(lettersToAdd);
         pm.updateCurrentPlayer(tilesToAdd, playerTiles);
@@ -104,8 +104,7 @@ public class PlayerManagerTest {
 
     @Test
     public void testUpdatingScore() {
-        InputStream in = getInputStream(new String[] {"1", "bob"});
-        PlayerManager pm = new PlayerManager(in, out, bag);
+        PlayerManager pm = new PlayerManager(1, Collections.singletonList("bob"), bag);
         List<Tile> L = new ArrayList<>();
         int[] points = {1, 321, 32, 123};
         int sum = 0;
@@ -126,8 +125,7 @@ public class PlayerManagerTest {
 
     @Test
     public void testGetLeaderAdjustsPointsCorrect() {
-        InputStream in = getInputStream(new String[] {"3", "bob", "rob", "robert"});
-        PlayerManager pm = new PlayerManager(in, out, bag);
+        PlayerManager pm = new PlayerManager(3, Arrays.asList("bob", "rob", "robert"), bag);
         ArrayList<Tile> tiles = new ArrayList<>();
         int[] points = {0, 35, 0};
         for (int i = 0; i < 3; i++) {
@@ -151,8 +149,7 @@ public class PlayerManagerTest {
 
     @Test
     public void testGetLeaderTieBreaker() {
-        InputStream in = getInputStream(new String[] {"3", "bob", "rob", "robert"});
-        PlayerManager pm = new PlayerManager(in, out, bag);
+        PlayerManager pm = new PlayerManager(3, Arrays.asList("bob", "rob", "robert"), bag);
         ArrayList<Tile> tiles = new ArrayList<>();
         int[] points = {0, 0, 50};
         for (int i = 0; i < 3; i++) {

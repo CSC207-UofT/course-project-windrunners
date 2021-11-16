@@ -1,6 +1,5 @@
-package main.java;
+package main.java.scrabblegame.game;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class PlaceMove implements Move {
      * Attempts to put the given word on the board in the given direction starting at the given coordinates.
      */
     @Override
-    public void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict, PrintStream out) {
+    public void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict) {
         if (!board.checkWord(x, y, direction, word, dict)) {
             System.out.println("Invalid word/placement");
             return;

@@ -1,4 +1,4 @@
-package main.java;
+package main.java.scrabblegame.game;
 
 import java.util.*;
 

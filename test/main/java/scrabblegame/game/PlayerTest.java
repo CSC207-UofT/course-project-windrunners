@@ -1,9 +1,10 @@
-package main.java;
+package main.java.scrabblegame.game;
 
+import main.java.scrabblegame.game.Player;
+import main.java.scrabblegame.game.Tile;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
