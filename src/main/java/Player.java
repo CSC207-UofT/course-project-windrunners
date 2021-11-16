@@ -43,7 +43,7 @@ public class Player {
     public int getPoints() { return points; }
 
     /**
-     * @return the points of the tiles on the Players rack (needed to compute winner at end of game)
+     * @return the points of the tiles on the Players rack (needed to find the winner at the end of the game)
      */
     public int getRackPoints() {
         int sum = 0;
@@ -80,6 +80,22 @@ public class Player {
     }
 
     /**
+     * Remove the Tiles containing the letters from the rack
+     * @param letters is a list of letters to be removed
+     * @return a list containing the Tiles that were removed
+     */
+    public List<Tile> removeTiles(List<Character> letters) {
+        List<Tile> tiles = new ArrayList<>();
+        for (char letter : letters) {
+            Tile tile = removeTile(letter);
+            if (tile != null) {
+                tiles.add(tile);
+            }
+        }
+        return tiles;
+    }
+
+    /**
      * @return the list of tiles in the Player's rack
      */
     public List<Tile> getRack() { return rack; }
@@ -105,6 +121,7 @@ public class Player {
     }
 
     /**
+
      * @return a string with the letters on the rack only
      */
     public String getRackLetters() {
@@ -116,17 +133,17 @@ public class Player {
     }
 
     /**
-     * check if the Player's rack has all the letter in letterList
+     * check if the Player's rack has all the letters in letterList
      * @param letterList: to be checked if it's contained in the rack
      * @return true iff letterList is a subset of the rack
      */
     public boolean hasLetters(List<Character> letterList) {
-        for (char letter : letterList) {
-            if (!hasLetter(letter)) {
-                return false;
-            }
+        List<Character> playerLetters = Tile.tilesToChars(rack);
+        List<Character> letterListCopy = new ArrayList<>(letterList);
+        for (Character playerLetter : playerLetters) {
+            letterListCopy.remove(playerLetter);
         }
-        return true;
+        return letterListCopy.size() == 0;
     }
 
     /**
@@ -146,7 +163,7 @@ public class Player {
     /**
      * displays the board to the Player and asks it for a move
      * @param in is an InputStream to allow the Player to get data from a user
-     * @param out is an PrintStream to allow the Player to output data to a user
+     * @param out is a PrintStream to allow the Player to output data to a user
      * @param board is the Scrabble board
      * @param numTilesRemaining is the number of tiles remaining in the Bag
      *                       important if the player wishes to swap tiles with the bag
@@ -168,7 +185,7 @@ public class Player {
     /**
      * displays the Player's information as well as important information
      * about the current state of the game
-     * @param out is an PrintStream to allow the Player to output data to a user
+     * @param out is a PrintStream to allow the Player to output data to a user
      * @param board is the Scrabble board
      * @param numTilesRemaining is the number of tiles remaining in the Bag
      */
@@ -198,7 +215,7 @@ public class Player {
 
     /**
      * ask the Player for the number of tiles it wishes to swap with the bag, and swap accordingly
-     * @param sc is a Scanner object to the read the Player's input
+     * @param sc is a Scanner object to read the Player's input
      * @param out is an PrintStream to allow for asking a user for specific input
      * @param numTilesRemaining is the number of tiles remaining in the Bag
      * @return a SwapMove object, which is later used by Game to update the Player's rack
@@ -235,7 +252,7 @@ public class Player {
     /**
      * ask the Player for the word it wishes to place on the board along with its co-ordinates
      * @param sc is a Scanner object to the read the Player's input
-     * @param out is an PrintStream to allow for asking a user for specific input
+     * @param out is a PrintStream to allow for asking a user for specific input
      * @return a PlaceMove object, which is later used by Game to place the word on the board
      */
     private Move makePlaceMove(Scanner sc, PrintStream out) {

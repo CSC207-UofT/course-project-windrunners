@@ -1,9 +1,13 @@
 package main.java;
 
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * A subclass of Move created when a Player decides to place a word on the Board
+ * An implementation of Move created when a Player decides to place a word on the Board
  */
-public class PlaceMove extends Move {
+public class PlaceMove implements Move {
     private final int x;
     private final int y;
     private final boolean direction;
@@ -11,14 +15,12 @@ public class PlaceMove extends Move {
 
     /**
      * Class constructor.
-     * the moveType is set to "PLACE"
-     * @param word is the word that maybe placed on the Board
-     * @param x is the column of the first letter of the word
-     * @param y is the row of the first letter of the word
-     * @param direction is the direction along which the word maybe placed
+     * @param word      is the word to be placed on the Board
+     * @param x         is the column of the first letter of the word
+     * @param y         is the row of the first letter of the word
+     * @param direction is the direction along which the word is to be placed
      */
     public PlaceMove(int x, int y, boolean direction, String word) {
-        super("PLACE");
         this.x = x;
         this.y = y;
         this.direction = direction;
@@ -26,22 +28,25 @@ public class PlaceMove extends Move {
     }
 
     /**
-     * @return the column of the first letter of the word
+     * Attempts to put the given word on the board in the given direction starting at the given coordinates.
      */
-    public int getX() { return x; }
-
-    /**
-     * @return the row of the first letter of the word
-     */
-    public int getY() { return y; }
-
-    /**
-     * @return the direction along which the word maybe placed
-     */
-    public boolean getDirection() { return direction; }
-
-    /**
-     * @return the word
-     */
-    public String getWord() { return word; }
+    @Override
+    public void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict, PrintStream out) {
+        if (!board.checkWord(x, y, direction, word, dict)) {
+            System.out.println("Invalid word/placement");
+            return;
+        }
+        List<Character> lettersNeeded = board.lettersNeeded(x, y, direction, word);
+        if (!pm.currentPlayerHasLetters(lettersNeeded)) {
+            System.out.println("Do not have letters required to make move");
+            return;
+        }
+        List<Tile> tilesForWord = new ArrayList<>();
+        for (char c : lettersNeeded) {
+            tilesForWord.add(new Tile(c));
+        }
+        int points = board.insertWord(x, y, direction, tilesForWord);
+        List<Tile> tilesToAdd = bag.drawTiles(tilesForWord.size());
+        pm.updateCurrentPlayer(points, tilesToAdd, tilesForWord);
+    }
 }

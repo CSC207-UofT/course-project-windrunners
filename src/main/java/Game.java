@@ -1,6 +1,7 @@
 package main.java;
 
 import javax.swing.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -14,8 +15,8 @@ public class Game {
     private static PlayerManager playerManager = new PlayerManager(System.in, System.out, bag);
 
     /**
-     * The main method. Sets up and controls the state of the Game
-     * The Game ends when the Bag empties
+     * The main method. Sets up and controls the state of the Game.
+     * The Game ends when the Bag empties.
      */
     public static void main(String[] args) {
         JFrame window = new JFrame("Scrabble");
@@ -36,11 +37,7 @@ public class Game {
         while (bag.numTilesRemaining() > 0) {
             gamePanel.repaint();
             Move move = playerManager.getNextMove(System.in, System.out, board, bag.numTilesRemaining());
-            if (move.getMoveType().equals("SWAP")) {
-                handleSwapMove((SwapMove) move, bag, playerManager);
-            } else if (move.getMoveType().equals("PLACE")) {
-                handlePlaceMove((PlaceMove) move, bag, playerManager, board, dictionary);
-            }
+            move.execute(bag, playerManager, board, dictionary, System.out);
             playerManager.goToNextPlayer();
 
             // below is the code I used to test saving
@@ -50,6 +47,7 @@ public class Game {
         Player winner = playerManager.getLeader();
         System.out.println("Congratulations " + winner.getName() + "! You won with " + winner.getPoints() + " points");
     }
+
 
     /**
      * Creates a GameState object from the Game

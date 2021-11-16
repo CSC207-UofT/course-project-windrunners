@@ -24,7 +24,7 @@ public class PlayerManager {
      * @param bag the Bag used to distribute Tiles from
      * @param in is an InputStream to allow the playerManager to ask the user
      *          for the number and names of players
-     * @param out is an PrintStream to allow the playerManager to ask a user for input
+     * @param out is a PrintStream to allow the playerManager to ask a user for input
      */
     public PlayerManager(InputStream in, PrintStream out, Bag bag) {
         Scanner sc = new Scanner(in);
@@ -90,7 +90,7 @@ public class PlayerManager {
     /**
      * get the Move made by the current Player
      * @param in is an InputStream to allow the Player to get data from a user
-     * @param out is an PrintStream to allow the Player to output data to a user
+     * @param out is a PrintStream to allow the Player to output data to a user
      * @param board the Scrabble Board
      * @param numTilesRemaining is the number of Tiles remaining in the Bag
      * @return the Move made by the current Player
@@ -111,8 +111,8 @@ public class PlayerManager {
     /**
      * called when the current Player decides to insert a word into the Board
      * adds tilesToAdd to the Player's rack and removes tilesToRemove
-     * @param pointsToAdd the points the payer gains on inserting the word
-     * @param tilesToAdd the tiles to be added to the Player's rack (drawn from the Bag)
+     * @param pointsToAdd   the points the payer gains on inserting the word
+     * @param tilesToAdd    the tiles to be added to the Player's rack (drawn from the Bag)
      * @param tilesToRemove the tiles to be removed from the Player's rack (required for the word)
      */
     public void updateCurrentPlayer(int pointsToAdd, List<Tile> tilesToAdd, List<Tile> tilesToRemove) {
@@ -128,14 +128,15 @@ public class PlayerManager {
      */
     public void updateCurrentPlayer(List<Tile> tilesToAdd, List<Tile> tilesToRemove) {
         Player currentPlayer = getCurrentPlayer();
-        for (Tile tile: tilesToRemove) {
-            currentPlayer.removeTile(tile.getLetter());
-        }
+        currentPlayer.removeTiles(Tile.tilesToChars(tilesToRemove));
         currentPlayer.addTiles(tilesToAdd);
     }
 
     /**
-     * get the Player with maximum points so far
+     * get the Player with currently in the lead.
+     * Points for determining lead is points - points of the tiles on rack unless your rack is empty.
+     * In that case it is points + points of tiles on everyone elses rack.
+     * In the case of a tie, points is used as a tiebreaker.
      * @return the Player with maximum points so far
      */
     public Player getLeader() {

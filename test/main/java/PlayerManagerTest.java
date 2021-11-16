@@ -24,11 +24,7 @@ public class PlayerManagerTest {
         inputStr.append(strings[strings.length - 1]);
         return new ByteArrayInputStream(inputStr.toString().getBytes());
     }
-    private List<Tile> charsToTiles(Character[] letters) {
-        List<Tile> tiles = new ArrayList<>();
-        for (char letter : letters) tiles.add(new Tile(letter));
-        return tiles;
-    }
+
     private PrintStream out;
     private Bag bag;
     @Before
@@ -80,28 +76,28 @@ public class PlayerManagerTest {
     public void testRackInitializationSpecificLetters() {
         InputStream in = getInputStream(new String[] {"1", "bob"});
         bag.drawTiles(bag.numTilesRemaining() - 7); //
-        Character[] chars = new Character[] {'A', 'B','C', 'D', 'E', 'F', 'G'};
-        List<Tile> playerTiles = charsToTiles(chars);
+        List<Character> chars = Arrays.asList('A', 'B','C', 'D', 'E', 'F', 'G');
+        List<Tile> playerTiles = Tile.charsToTiles(chars);
         bag.swapTiles(playerTiles);
         PlayerManager pm = new PlayerManager(in, out, bag);
         Player player = pm.getCurrentPlayer();
         assertEquals(7, player.getRackSize());
-        assertTrue(player.hasLetters(Arrays.asList(chars)));
+        assertTrue(player.hasLetters(chars));
     }
 
     @Test
     public void testUpdatingTiles() {
         InputStream in = getInputStream(new String[] {"1", "bob"});
         bag.drawTiles(bag.numTilesRemaining() - 7); //
-        List<Tile> playerTiles = charsToTiles(new Character[] {'A', 'A','B', 'C', 'D', 'E', 'F'} );
+        List<Tile> playerTiles = Tile.charsToTiles("AABCDEF".toCharArray());
         bag.swapTiles(playerTiles);
         PlayerManager pm = new PlayerManager(in, out, bag);
-        Character[] lettersToAdd = new Character[] {'G', 'H', 'I', 'J', 'K','L','M'};
-        List<Tile> tilesToAdd = charsToTiles(lettersToAdd);
+        List<Character> lettersToAdd = Arrays.asList('G', 'H', 'I', 'J', 'K','L','M');
+        List<Tile> tilesToAdd = Tile.charsToTiles(lettersToAdd);
         pm.updateCurrentPlayer(tilesToAdd, playerTiles);
         Player player = pm.getCurrentPlayer();
         assertEquals(7, player.getRackSize());
-        assertTrue(player.hasLetters(Arrays.asList(lettersToAdd)));
+        assertTrue(player.hasLetters(lettersToAdd));
         assertFalse(player.hasLetter('A'));
         assertFalse(player.hasLetter('F'));
     }
