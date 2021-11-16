@@ -1,7 +1,5 @@
 package main.java.scrabblegame.game;
 
-import main.java.scrabblegame.game.Square;
-import main.java.scrabblegame.game.Tile;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -13,7 +11,7 @@ public class SquareTest {
         Square square = new Square(1, 1);
         square.setTile(tile);
         assertEquals('Z', square.getTile().getLetter());
-        assertEquals( tile.getValue(), square.getTile().getValue());
+        assertEquals(tile.getValue(), square.getTile().getValue());
     }
 
     @Test
@@ -28,7 +26,7 @@ public class SquareTest {
 
     @Test
     public void testIsEmpty() {
-        Square square = new Square(3,1);
+        Square square = new Square(3, 1);
         assertTrue(square.isEmpty());
         square.setTile(new Tile('D'));
         assertFalse(square.isEmpty());

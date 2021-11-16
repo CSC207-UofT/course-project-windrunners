@@ -1,7 +1,5 @@
 package main.java.scrabblegame.game;
 
-import main.java.scrabblegame.game.Player;
-import main.java.scrabblegame.game.Tile;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,6 +11,7 @@ import static org.junit.Assert.*;
 
 public class PlayerTest {
     private Player player;
+
     @Before
     public void setUp() {
         player = new Player("bob");
@@ -42,7 +41,7 @@ public class PlayerTest {
         List<Tile> tiles = Tile.charsToTiles("ABCAADE".toCharArray());
         player.addTiles(tiles);
         int sum = 0;
-        for (Tile tile: tiles) sum += tile.getValue();
+        for (Tile tile : tiles) sum += tile.getValue();
         assertEquals(sum, player.getRackPoints());
     }
 
@@ -62,10 +61,10 @@ public class PlayerTest {
 
     @Test
     public void testRemoveTilesTooMany() {
-        List<Character> addLetters = Arrays.asList('H', 'H','I', 'J');
+        List<Character> addLetters = Arrays.asList('H', 'H', 'I', 'J');
         List<Tile> tiles = Tile.charsToTiles(addLetters);
         player.addTiles(tiles);
-        List<Character> letters = Arrays.asList('H', 'I','J', 'H','Y');
+        List<Character> letters = Arrays.asList('H', 'I', 'J', 'H', 'Y');
         List<Tile> removedTiles = player.removeTiles(letters);
         List<Character> removedLetters = Tile.tilesToChars(removedTiles);
         Collections.sort(removedLetters);

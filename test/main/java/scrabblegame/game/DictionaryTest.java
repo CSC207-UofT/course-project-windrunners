@@ -1,6 +1,5 @@
 package main.java.scrabblegame.game;
 
-import main.java.scrabblegame.game.Dictionary;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

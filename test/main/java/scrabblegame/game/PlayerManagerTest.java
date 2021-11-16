@@ -1,9 +1,5 @@
 package main.java.scrabblegame.game;
 
-import main.java.scrabblegame.game.Bag;
-import main.java.scrabblegame.game.Player;
-import main.java.scrabblegame.game.PlayerManager;
-import main.java.scrabblegame.game.Tile;
 import org.junit.Test;
 import org.junit.Before;
 
@@ -32,6 +28,7 @@ public class PlayerManagerTest {
 
     private PrintStream out;
     private Bag bag;
+
     @Before
     public void setUp() {
         out = new PrintStream(new ByteArrayOutputStream(), false, StandardCharsets.UTF_8);
@@ -77,7 +74,7 @@ public class PlayerManagerTest {
     @Test
     public void testRackInitializationSpecificLetters() {
         bag.drawTiles(bag.numTilesRemaining() - 7); //
-        List<Character> chars = Arrays.asList('A', 'B','C', 'D', 'E', 'F', 'G');
+        List<Character> chars = Arrays.asList('A', 'B', 'C', 'D', 'E', 'F', 'G');
         List<Tile> playerTiles = Tile.charsToTiles(chars);
         bag.swapTiles(playerTiles);
         PlayerManager pm = new PlayerManager(1, Collections.singletonList("bob"), bag);
@@ -92,7 +89,7 @@ public class PlayerManagerTest {
         List<Tile> playerTiles = Tile.charsToTiles("AABCDEF".toCharArray());
         bag.swapTiles(playerTiles);
         PlayerManager pm = new PlayerManager(1, Collections.singletonList("bob"), bag);
-        List<Character> lettersToAdd = Arrays.asList('G', 'H', 'I', 'J', 'K','L','M');
+        List<Character> lettersToAdd = Arrays.asList('G', 'H', 'I', 'J', 'K', 'L', 'M');
         List<Tile> tilesToAdd = Tile.charsToTiles(lettersToAdd);
         pm.updateCurrentPlayer(tilesToAdd, playerTiles);
         Player player = pm.getCurrentPlayer();
@@ -116,7 +113,7 @@ public class PlayerManagerTest {
     }
 
     private void emptyPlayerRack(Player player) {
-        for (char letter='A'; letter <= 'Z'; letter++) {
+        for (char letter = 'A'; letter <= 'Z'; letter++) {
             while (player.hasLetter(letter)) {
                 player.removeTile(letter);
             }
