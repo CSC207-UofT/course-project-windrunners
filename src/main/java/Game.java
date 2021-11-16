@@ -2,6 +2,10 @@ package main.java;
 
 import javax.swing.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 /**
  * The Game class which controls the Game
  */
@@ -26,16 +30,86 @@ public class Game {
         Dictionary dictionary = new Dictionary();
         System.out.println(bag.numTilesRemaining());
 
+        // below is the code I used to test loading
+        // GameState gameState = new GameState("gamestates/");
+        // loadGameState(gameState);
+
         while (bag.numTilesRemaining() > 0) {
             gamePanel.repaint();
             Move move = playerManager.getNextMove(System.in, System.out, board, bag.numTilesRemaining());
             move.execute(bag, playerManager, board, dictionary, System.out);
             playerManager.goToNextPlayer();
+
+            // below is the code I used to test saving
+            // GameState gameState = new GameState(bag, playerManager, board);
+            // gameState.saveGameState("gamestates/");
         }
         Player winner = playerManager.getLeader();
         System.out.println("Congratulations " + winner.getName() + "! You won with " + winner.getPoints() + " points");
     }
 
+
+    /**
+     * Creates a GameState object from the Game
+     * @return the created GameState object
+     */
+    private static GameState getGameState() {
+        return new GameState(new Bag(bag), new PlayerManager(playerManager), new Board(board));
+    }
+
+    /**
+     * Updates the Game attributes with information from a GameState
+     * @param gameState the GameState object to get the information from
+     */
+    private static void loadGameState(GameState gameState) {
+        bag = gameState.getBag();
+        playerManager = gameState.getPlayerManager();
+        board = gameState.getBoard();
+    }
+
+    /**
+     * calls the Player Manager to enable the Player swap tiles with the Bag
+     *
+     * @param move a SwapMove which stores the tiles to swap
+     * @param bag  the bag to swap tiles with
+     * @param pm   is the Player Manager
+     */
+    public static void handleSwapMove(SwapMove move, Bag bag, PlayerManager pm) {
+        List<Tile> tilesToSwap = move.getTilesToSwap();
+        List<Tile> tilesReturned = bag.swapTiles(tilesToSwap);
+        pm.updateCurrentPlayer(tilesReturned, tilesToSwap);
+    }
+
+    /**
+     * @param move  a PlaceMove which stores the word to be inserted on the board, its co-ordinates,
+     *              and the direction along which the word is to be inserted
+     * @param bag   the bag to replenish the currentPlayer's rack after the move has been made
+     * @param pm    the Player Manager
+     * @param board the Scrabble Board on which the word is to be inserted
+     * @param dict  the Scrabble dictionary
+     */
+    public static void handlePlaceMove(PlaceMove move, Bag bag, PlayerManager pm, Board board, Dictionary dict) {
+        int x = move.getX(), y = move.getY();
+        boolean direction = move.getDirection();
+        String word = move.getWord();
+        if (!board.checkWord(x, y, direction, word, dict)) {
+            System.out.println("Invalid word/placement");
+            return;
+        }
+        List<Character> lettersNeeded = board.lettersNeeded(x, y, direction, word);
+        if (!pm.currentPlayerHasLetters(lettersNeeded)) {
+            System.out.println("Do not have letters required to make move");
+            return;
+        }
+        List<Tile> tilesForWord = new ArrayList<>();
+        for (char c : lettersNeeded) {
+            tilesForWord.add(new Tile(c));
+        }
+        int points = board.insertWord(x, y, direction, tilesForWord);
+        List<Tile> tilesToAdd = bag.drawTiles(tilesForWord.size());
+        pm.updateCurrentPlayer(points, tilesToAdd, tilesForWord);
+    }
+  
     public static Board getBoard() {
         return board;
     }

@@ -26,6 +26,12 @@ public class Player {
         this.rack = new ArrayList<>();
     }
 
+    public Player(Player that){
+        this.name = that.name;
+        this.points = that.points;
+        this.rack.addAll(that.rack);
+    }
+
     /**
      * @return the Player's name
      */
@@ -112,6 +118,18 @@ public class Player {
         }
         rackString.append("]");
         return rackString.toString();
+    }
+
+    /**
+
+     * @return a string with the letters on the rack only
+     */
+    public String getRackLetters() {
+        StringBuilder rackLetters = new StringBuilder();
+        for (Tile tile : rack) {
+            rackLetters.append(tile.getLetter());
+        }
+        return rackLetters.toString();
     }
 
     /**
