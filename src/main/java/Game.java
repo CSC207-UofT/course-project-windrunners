@@ -29,6 +29,10 @@ public class Game {
         Dictionary dictionary = new Dictionary();
         System.out.println(bag.numTilesRemaining());
 
+        // below is the code I used to test loading
+        // GameState gameState = new GameState("gamestates/");
+        // loadGameState(gameState);
+
         while (bag.numTilesRemaining() > 0) {
             gamePanel.repaint();
             Move move = playerManager.getNextMove(System.in, System.out, board, bag.numTilesRemaining());
@@ -38,6 +42,10 @@ public class Game {
                 handlePlaceMove((PlaceMove) move, bag, playerManager, board, dictionary);
             }
             playerManager.goToNextPlayer();
+
+            // below is the code I used to test saving
+            // GameState gameState = new GameState(bag, playerManager, board);
+            // gameState.saveGameState("gamestates/");
         }
         Player winner = playerManager.getLeader();
         System.out.println("Congratulations " + winner.getName() + "! You won with " + winner.getPoints() + " points");
