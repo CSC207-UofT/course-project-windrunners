@@ -54,6 +54,7 @@ public class Board {
      * @param boardLetters a BOARD_WIDTH^2 array with the letters that are already on the Board
      */
     public Board(char[][] boardLetters){
+        int filled = 0;
         for (int i = 0; i < BOARD_WIDTH; i++) {
             for (int j = 0; j < BOARD_WIDTH; j++) {
                 String squareType = SQUARE_TYPES[i][j];
@@ -61,11 +62,13 @@ public class Board {
                 int W = (squareType.equals("3W")) ? 3 : (squareType.equals("2W")) ? 2 : 1;
                 board[i][j] = new Square(L, W);
                 if (boardLetters[i][j] != '\0'){
+                    filled++;
                     board[i][j].setTile(new Tile(boardLetters[i][j]));
                     board[i][j].setMultUsed();
                 }
             }
         }
+        this.filledSquares = filled;
     }
 
     /**

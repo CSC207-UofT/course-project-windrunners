@@ -30,9 +30,9 @@ public class Game {
         Dictionary dictionary = new Dictionary();
         System.out.println(bag.numTilesRemaining());
 
-        // below is the code I used to test loading
-        // GameState gameState = new GameState("gamestates/");
-        // loadGameState(gameState);
+         // below is the code I used to test loading
+         // GameState gameState = new GameState("gamestates/");
+         // loadGameState(gameState);
 
         while (bag.numTilesRemaining() > 0) {
             gamePanel.repaint();
