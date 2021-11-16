@@ -50,10 +50,61 @@ public class Board {
     }
 
     /**
+     * Class constructor. Fills the squares on the Board with the tiles in the locations as specified by boardLetters
+     * @param boardLetters a BOARD_WIDTH^2 array with the letters that are already on the Board
+     */
+    public Board(char[][] boardLetters){
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+            for (int j = 0; j < BOARD_WIDTH; j++) {
+                String squareType = SQUARE_TYPES[i][j];
+                int L = (squareType.equals("3L")) ? 3 : (squareType.equals("2L")) ? 2 : 1;
+                int W = (squareType.equals("3W")) ? 3 : (squareType.equals("2W")) ? 2 : 1;
+                board[i][j] = new Square(L, W);
+                if (boardLetters[i][j] != '\0'){
+                    board[i][j].setTile(new Tile(boardLetters[i][j]));
+                    board[i][j].setMultUsed();
+                }
+            }
+        }
+    }
+
+    /**
+     * Copy constructor. Make a deep copy of the Board from another Board
+     * @param that the Board to copy from
+     */
+    public Board(Board that) {
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+            for (int j = 0; j < BOARD_WIDTH; j++) {
+                board[i][j] = new Square(that.board[i][j]);
+            }
+        }
+        this.filledSquares = that.getFilledSquares();
+    }
+
+    /**
      * @return the board
      */
     public Square[][] getBoard() {
         return board;
+    }
+
+    /**
+     *
+     * @return a 2D array of chars containing only the string values of the tiles that are on the board
+     */
+    public char[][] getBoardLetters() {
+        char[][] boardLetters = new char[BOARD_WIDTH][BOARD_WIDTH];
+        for (int i = 0; i < BOARD_WIDTH; i++){
+            for (int j = 0; j < BOARD_WIDTH; j++){
+                if (!board[i][j].isEmpty())
+                    boardLetters[i][j] = board[i][j].getTile().getLetter();
+            }
+        }
+        return boardLetters;
+    }
+
+    public int getFilledSquares() {
+        return filledSquares;
     }
 
     /**

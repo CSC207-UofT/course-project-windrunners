@@ -51,6 +51,37 @@ public class Bag {
     }
 
     /**
+     * CLass Constructor. Creates new Tile objects and adds them to the Bag
+     * @param letters the letters of the tiles in the bag (from the saved GameState)
+     */
+    public Bag(char[] letters) {
+        for (char letter : letters){
+            tiles.add(new Tile(letter));
+        }
+    }
+
+    /**
+     * Copy constructor. Makes a deep copy of the Bag.
+     * @param that the Bag to copy from
+     */
+    public Bag(Bag that) {
+        tiles.addAll(that.getTiles());
+    }
+
+    public List<Tile> getTiles() { return tiles; }
+
+    /**
+     * @return an ArrayList with just the letters of the tiles that are left in the bag (with repeats)
+     */
+    public ArrayList<Character> getBagLetters(){
+        ArrayList<Character> bagLetters = new ArrayList<>();
+        for (Tile tile : tiles){
+            bagLetters.add(tile.getLetter());
+        }
+        return bagLetters;
+    }
+
+    /**
      * draw a random tile from the Bag
      *
      * @return the tile drawn from the Bag. Returns null if empty.
