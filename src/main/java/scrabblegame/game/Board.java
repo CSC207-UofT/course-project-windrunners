@@ -309,7 +309,7 @@ public class Board {
             if (board[y + d][x + r].isEmpty()) {
                 board[y + d][x + r].setTile(tiles.get(used));
                 filledSquares++;
-                i++;
+                used++;
                 ArrayList<Square> crossingWord = getWordAt(x + r, y + d, OTHER_DIRECTION);
                 if (crossingWord.size() >= 2) {
                     crossingWords.add(crossingWord);
