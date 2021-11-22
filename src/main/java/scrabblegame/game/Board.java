@@ -139,15 +139,14 @@ public class Board {
     */
 
     /**
-     * check if the given word can be placed on the board at the given location in the given direction.
-     * Specifically, it wouldn't go over the bounds of the board or overwrite an already filled square
-     * and is adjacent to an already existing word (or the board is empty, and it uses the middle square)
+     * check if the given word can be legallu placed on the board at the given location in the given direction.
+     * (but not whether the words formed are valid)
      *
      * @param x          is the column of the first letter of the word
      * @param y          is the row of the first letter of the word
      * @param direction  is the direction along which the word may be placed
      * @param word       is the word that is being checked
-     * @return true iff the word can be placed on the board
+     * @return true iff the word can be legallu placed at the given spot. Specifically, it doesn't
      */
     public boolean isLegalPlacement(int x, int y, boolean direction, String word) {
         word = word.toUpperCase(Locale.ROOT);
@@ -206,11 +205,11 @@ public class Board {
             int d = D * i;
             if (board[y + d][x + r].isEmpty()) {
                 StringBuilder addWord = new StringBuilder();
-                for (Square square : SquaresOnLineFrom(x + r, y + d, oppDir, false)) {
+                for (Square square : squaresOnLineFrom(x + r, y + d, oppDir, false)) {
                     addWord.append(square.getTile().getLetter());
                 }
                 addWord.append(word.charAt(i));
-                for (Square square : SquaresOnLineFrom(x + r, y + d, oppDir, true)) {
+                for (Square square : squaresOnLineFrom(x + r, y + d, oppDir, true)) {
                     addWord.append(square.getTile().getLetter());
                 }
                 if (addWord.length() > 1) {
@@ -247,7 +246,7 @@ public class Board {
      * @return ArrayList of squares (ordered left to right/top to bottom) that are traversed by going either
      *   forward or backward from the given square (board[y][x]) in the given direction until reaching an empty square
      */
-    private ArrayList<Square> SquaresOnLineFrom(int x, int y, boolean direction, boolean goForward) {
+    public ArrayList<Square> squaresOnLineFrom(int x, int y, boolean direction, boolean goForward) {
         final int F = goForward ? 1 : -1;
         final int R = (direction == RIGHT) ? F : 0;
         final int D = (direction == DOWN) ? F : 0;
@@ -343,9 +342,9 @@ public class Board {
      * @return a List of Squares containing the word in the given direction containing the given location
      */
     private ArrayList<Square> getWordAt(int x, int y, boolean direction) {
-        ArrayList<Square> word = SquaresOnLineFrom(x, y, direction, false);
+        ArrayList<Square> word = squaresOnLineFrom(x, y, direction, false);
         word.add(board[x][y]);
-        word.addAll(SquaresOnLineFrom(x, y, direction, true));
+        word.addAll(squaresOnLineFrom(x, y, direction, true));
         return word;
     }
 
