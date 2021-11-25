@@ -51,7 +51,7 @@ public class PlaceMoveTest {
         pm.updateCurrentPlayer(Tile.charsToTiles("STEERAM".toCharArray()), pm.getCurrentPlayer().getRack());
         PlaceMove placeMoveB = new PlaceMove(7, 5, true, "STR");
         placeMoveB.execute(bag, pm, board, dict);
-        assert pm.getCurrentPlayer().getPoints() == 20; // second word hasn't been added
+        assert pm.getCurrentPlayer().getPoints() == 20; // second word has not been inserted
     }
 
     @Test
@@ -62,7 +62,7 @@ public class PlaceMoveTest {
         pm.updateCurrentPlayer(Tile.charsToTiles("STEERAM".toCharArray()), pm.getCurrentPlayer().getRack());
         PlaceMove placeMoveB = new PlaceMove(7, 5, true, "STEER");
         placeMoveB.execute(bag, pm, board, dict);
-        assert pm.getCurrentPlayer().getPoints() == 27; // second word hasn't been added
+        assert pm.getCurrentPlayer().getPoints() == 27; // second word has not been inserted
     }
 
     @Test
