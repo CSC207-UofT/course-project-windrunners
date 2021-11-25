@@ -60,9 +60,9 @@ public class PlaceMoveTest {
         placeMoveA.execute(bag, pm, board, dict);
         assert pm.getCurrentPlayer().getPoints() == 20; // word has been inserted
         pm.updateCurrentPlayer(Tile.charsToTiles("STEERAM".toCharArray()), pm.getCurrentPlayer().getRack());
-        PlaceMove placeMoveB = new PlaceMove(7, 5, true, "STEER");
+        PlaceMove placeMoveB = new PlaceMove(8, 5, true, "STEER");
         placeMoveB.execute(bag, pm, board, dict);
-        assert pm.getCurrentPlayer().getPoints() == 27; // second word has not been inserted
+        assert pm.getCurrentPlayer().getPoints() == 20; // second word has not been inserted
     }
 
     @Test
