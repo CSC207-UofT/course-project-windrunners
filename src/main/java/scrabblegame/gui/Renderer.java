@@ -77,4 +77,15 @@ public class Renderer {
             g.drawString(player.getName() + ": " + player.getPoints(), 600, 100 + 40 * i);
         }
     }
+
+    public void renderCompleteMoveBox(Graphics g) {
+        g.setColor(new Color(255, 167, 61));
+        int x = Board.BOARD_WIDTH * SQUARE_SIZE;
+        int y = (Board.BOARD_WIDTH + 1) * SQUARE_SIZE;
+        g.fillRect(x, y,3 * SQUARE_SIZE, SQUARE_SIZE);
+        g.setColor(Color.BLACK);
+        Font font = new Font("TimesRoman", Font.BOLD, 12);
+        g.setFont(font);
+        g.drawString("Complete Move", x, y + SQUARE_SIZE);
+    }
 }

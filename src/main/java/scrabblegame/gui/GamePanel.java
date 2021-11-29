@@ -24,5 +24,6 @@ public class GamePanel extends JPanel {
         renderer.renderBoard(g, currGame.getBoard());
         renderer.renderRack(g, currGame.getCurrentPlayer());
         renderer.renderScoreboard(g, currGame.getPlayerManager());
+        renderer.renderCompleteMoveBox(g);
     }
 }

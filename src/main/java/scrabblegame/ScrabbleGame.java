@@ -3,6 +3,7 @@ package main.java.scrabblegame;
 
 import main.java.scrabblegame.game.*;
 import main.java.scrabblegame.gui.GamePanel;
+import main.java.scrabblegame.gui.InputHandler;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class ScrabbleGame {
 
     private static Game game;
     private static GamePanel gamePanel;
-
+    private static InputHandler inputHandler;
     /**
      * The main method. Sets up and controls the state of the Game.
      * The Game ends when the Bag empties.
@@ -28,6 +29,38 @@ public class ScrabbleGame {
         initGame(sc, window);
 
         while (game.getBag().numTilesRemaining() > 0) {
+//            cliGameLoopBody(sc);
+            guiGameLoopBody();
+        }
+        Player winner = game.getLeader();
+        System.out.println("Congratulations " + winner.getName() + "! You won with " + winner.getPoints() + " points");
+    }
+
+    private static void initGame(Scanner sc, JFrame window) {
+
+        game = new Game();
+        inputHandler = new InputHandler();
+        System.out.println("How many players are there?");
+        int numPlayers = Math.max(sc.nextInt(), 1);
+        List<String> names = new ArrayList<>();
+        for (int i = 0; i < numPlayers; i++) {
+            System.out.println();
+            System.out.print("Enter Player " + (i + 1) + "'s Name: ");
+            names.add(sc.next());
+        }
+        game.initPlayers(numPlayers, names);
+
+        gamePanel = new GamePanel(game);
+        window.setContentPane(gamePanel);
+        window.getContentPane().addMouseListener(inputHandler);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setResizable(false);
+        window.pack();
+        window.setLocationRelativeTo(null);
+        window.setVisible(true);
+    }
+
+    public static void cliGameLoopBody(Scanner sc) {
             gamePanel.repaint();
 
             Player currPlayer = game.getCurrentPlayer();
@@ -41,32 +74,15 @@ public class ScrabbleGame {
 
             game.nextTurn();
 
-        }
-        Player winner = game.getLeader();
-        System.out.println("Congratulations " + winner.getName() + "! You won with " + winner.getPoints() + " points");
     }
 
-    private static void initGame(Scanner sc, JFrame window) {
-
-        game = new Game();
-        System.out.println("How many players are there?");
-        int numPlayers = Math.max(sc.nextInt(), 1);
-        List<String> names = new ArrayList<>();
-        for (int i = 0; i < numPlayers; i++) {
-            System.out.println();
-            System.out.print("Enter Player " + (i + 1) + "'s Name: ");
-            names.add(sc.next());
+    public static void guiGameLoopBody() {
+        Player currPlayer = game.getCurrentPlayer();
+        while (!inputHandler.getMoveComplete()) {
+            gamePanel.repaint();
+            inputHandler.processInput(game.getBoard(), currPlayer);
         }
-        game.initPlayers(numPlayers, names);
-
-        gamePanel = new GamePanel(game);
-        window.setContentPane(gamePanel);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setResizable(false);
-        window.pack();
-        window.setLocationRelativeTo(null);
-        window.setVisible(true);
-
+        game.nextTurn();
     }
 
     private static void makeMove(Scanner sc) {
@@ -80,6 +96,7 @@ public class ScrabbleGame {
         } else if (moveType.equals("swap")) {
             makeSwapMove(sc);
         } else {
+
             makePlaceMove(sc);
         }
 
