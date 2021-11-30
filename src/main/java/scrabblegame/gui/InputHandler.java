@@ -8,6 +8,8 @@ import main.java.scrabblegame.game.Tile;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.Math;
+import java.util.HashMap;
+import java.util.List;
 
 public class InputHandler extends MouseAdapter {
     private int indexOfRackTile = -1;
@@ -37,6 +39,7 @@ public class InputHandler extends MouseAdapter {
         return moveComplete;
     }
 
+
     public int getIndexOfRackTile() {
         return indexOfRackTile;
     }
@@ -63,7 +66,7 @@ public class InputHandler extends MouseAdapter {
     }
 
     public boolean isValidBoardSquare(Board board, int col, int row) {
-        return col <= Board.BOARD_WIDTH && row <= Board.BOARD_WIDTH && board.getBoard()[row][col].isEmpty();
+        return col < Board.BOARD_WIDTH && row < Board.BOARD_WIDTH && board.getBoard()[row][col].isEmpty();
     }
 
     public void updateIndexOfRackTile(Player player, int index) {
@@ -72,27 +75,32 @@ public class InputHandler extends MouseAdapter {
         }
     }
 
-    public void updateBoardAndRack(Board board, Player player) {
+    public void updateBoardAndRack(Board board, Player player, List<Tile> tiles, List<Integer> rows,
+                                   List<Integer> cols) {
         int col = this.currColumn;
         int row = this.currRow;
         Square square = board.getBoard()[row][col];
-        Tile newTile = player.getRack().get(indexOfRackTile);
-        square.setTile(newTile);
-        player.removeTile(newTile.getLetter());
+        Tile tileInserted = player.getRack().get(indexOfRackTile);
+        square.setTile(tileInserted);
+        player.removeTile(tileInserted.getLetter());
         this.indexOfRackTile = -1;
+        tiles.add(tileInserted);
+        rows.add(row);
+        cols.add(col);
     }
 
     public boolean clickCompleteMoveBox(int col, int row) {
         return row == Board.BOARD_WIDTH + 1 && Board.BOARD_WIDTH <= col && col <= Board.BOARD_WIDTH + 2;
     }
 
-    public void processInput(Board board, Player player) {
+    public void processInput(Board board, Player player, List<Tile> tiles, List<Integer> rows,
+                             List<Integer> cols) {
         if (clickCompleteMoveBox(this.currColumn, this.currRow)) {
             this.moveComplete = true;
         }
         updateIndexOfRackTile(player, convertClickToRackIndex(this.currColumn, this.currRow));
         if (isValidBoardSquare(board, this.currColumn, this.currRow) && this.indexOfRackTile != -1) {
-            updateBoardAndRack(board, player);
+            updateBoardAndRack(board, player, tiles, rows, cols);
         }
     }
 }

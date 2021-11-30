@@ -1,6 +1,6 @@
 package main.java.scrabblegame.game;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * The Game class which stores and controls all the resources needed for a game
@@ -17,7 +17,7 @@ public class Game {
      * @return the created GameState object
      */
     public GameState getGameState() {
-        return new GameState(new Bag(bag), new PlayerManager(playerManager), new Board(board));
+        return new GameState(bag, playerManager, board);
     }
 
     /**

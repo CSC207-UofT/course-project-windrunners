@@ -1,8 +1,10 @@
 package main.java.scrabblegame.game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.*;
 
 /**
  * A Scrabble Board, which is a collection of Squares, each of which comes in different types
@@ -330,6 +332,19 @@ public class Board {
         return word;
     }
 
+    public String tilesInSameRowOrColumn(List<Integer> rows, List<Integer> cols)  {
+        String rowOrColumn = "none";
+        if (rows.stream().distinct().limit(2).count() <= 1) {
+            rowOrColumn = "row"; // all Tiles in same row
+        }
+        else {
+            if (cols.stream().distinct().limit(2).count() <= 1) {
+                rowOrColumn = "col"; // all Tiles in same column
+            }
+        }
+        return rowOrColumn;
+    }
+
     /**
      * return the points earned according to the word placed on the List word
      *
@@ -349,6 +364,52 @@ public class Board {
             }
         }
         return mult * wordValue;
+    }
+
+    // the list of tiles are the ones the player inserts, r is the fixed row/column all the tiles belong to.
+    // positionsAlongDirection is the list of the other co-ordinate of each tile. the list is sorted to get the order
+    // in which the tiles appear on the board
+    // method returns the new word formed by the Tiles with the letters of the board (if the placement is valid).
+    // the word is returned along with the co-ordinates of its first letter (i.e. [row, col, word] is returned)
+    public List<Object> findWordFormedByTiles(List<Tile> tiles, List<Integer> positionsAlongDirection, int r,
+                                                  boolean direction) {
+        List<Object> wordInfo = new ArrayList<>();
+        if (r == -1) {return wordInfo;}
+        final int D = (direction == DOWN) ? 1 : 0;
+        final int R = (direction == RIGHT) ? 1 : 0;
+        int firstPosition = positionsAlongDirection.get(0);
+        int row = firstPosition * D + r * R;
+        int col = firstPosition * R + r * D;
+        List<Integer> duplicate = new ArrayList<>(positionsAlongDirection);
+        Collections.sort(duplicate);
+        StringBuilder word = new StringBuilder();
+        while (row >= 1 && col >= 1 && !board[row - D][col - R].isEmpty()) {
+            row -= D;
+            col -= R;
+        }
+        while (row < BOARD_WIDTH && col < BOARD_WIDTH && (!duplicate.isEmpty() || !board[row][col].isEmpty())) {
+            if (!board[row][col].isEmpty()) {
+                if (word.length() == 0) {
+                    wordInfo.add(row);
+                    wordInfo.add(col);
+                }
+                word.append(board[row][col].getTile().getLetter());
+            } else {
+                if ((direction == RIGHT && col == duplicate.get(0)) || (direction == DOWN && row == duplicate.get(0))) {
+                    if (word.length() == 0) {
+                        wordInfo.add(row);
+                        wordInfo.add(col);
+                    }
+                    word.append(tiles.get(duplicate.remove(0)).getLetter());
+                } else {
+                    return new ArrayList<>();
+                }
+            }
+            row += D;
+            col += R;
+        }
+        wordInfo.add(word.toString());
+        return wordInfo;
     }
 
     /**

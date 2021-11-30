@@ -6,14 +6,13 @@ import main.java.scrabblegame.gui.GamePanel;
 import main.java.scrabblegame.gui.InputHandler;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ScrabbleGame {
 
     private static Game game;
+    private static GameState gameState;
     private static GamePanel gamePanel;
     private static InputHandler inputHandler;
     /**
@@ -49,7 +48,8 @@ public class ScrabbleGame {
             names.add(sc.next());
         }
         game.initPlayers(numPlayers, names);
-
+        gameState = game.getGameState();
+        gameState.saveGameState("ho.csv");
         gamePanel = new GamePanel(game);
         window.setContentPane(gamePanel);
         window.getContentPane().addMouseListener(inputHandler);
@@ -78,11 +78,43 @@ public class ScrabbleGame {
 
     public static void guiGameLoopBody() {
         Player currPlayer = game.getCurrentPlayer();
+        inputHandler.setMoveIncomplete();
+        List<Tile> tilesAccumulated = new ArrayList<>();
+        List<Integer> rowsOfTilesAccumulated = new ArrayList<>();
+        List<Integer> colsOfTilesAccumulated = new ArrayList<>();
         while (!inputHandler.getMoveComplete()) {
             gamePanel.repaint();
-            inputHandler.processInput(game.getBoard(), currPlayer);
+            inputHandler.processInput(game.getBoard(), currPlayer, tilesAccumulated,
+                    rowsOfTilesAccumulated, colsOfTilesAccumulated);
         }
-        game.nextTurn();
+        game.loadGameState(gameState);
+        String val = game.getBoard().tilesInSameRowOrColumn(rowsOfTilesAccumulated, colsOfTilesAccumulated);
+        boolean direction = Objects.equals(val, "row");
+        if (!Objects.equals(val, "none")) {
+            int r;
+            int c;
+            String word;
+            List<Object> wordInfo;
+            if (direction) {
+                r = rowsOfTilesAccumulated.size() > 0 ? rowsOfTilesAccumulated.get(0) : -1;
+                wordInfo = game.getBoard().findWordFormedByTiles(tilesAccumulated, colsOfTilesAccumulated,
+                        r, true);
+            }
+            else {
+                r = colsOfTilesAccumulated.size() > 0 ? colsOfTilesAccumulated.get(0) : -1;
+                wordInfo = game.getBoard().findWordFormedByTiles(tilesAccumulated, rowsOfTilesAccumulated,
+                        r, false);
+            }
+            if (wordInfo.size() == 3) {
+                r = (int) wordInfo.get(0);
+                c = (int) wordInfo.get(0);
+                word = (String) wordInfo.get(0);
+                System.out.println("Hello");
+                game.doPlaceMove(c, r, direction, word);
+                gameState.saveGameState("ho.csv");
+                game.nextTurn();
+            }
+        }
     }
 
     private static void makeMove(Scanner sc) {
