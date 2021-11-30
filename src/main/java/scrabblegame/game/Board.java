@@ -400,7 +400,7 @@ public class Board {
                         wordInfo.add(row);
                         wordInfo.add(col);
                     }
-                    word.append(tiles.get(duplicate.remove(0)).getLetter());
+                    word.append(tiles.get(positionsAlongDirection.indexOf(duplicate.remove(0))).getLetter());
                 } else {
                     return new ArrayList<>();
                 }
