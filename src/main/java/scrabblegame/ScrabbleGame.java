@@ -50,6 +50,7 @@ public class ScrabbleGame {
         game.initPlayers(numPlayers, names);
         gameState = game.getGameState();
         gameState.saveGameState("ho.csv");
+        gameState = new GameState("ho.csv");
         gamePanel = new GamePanel(game);
         window.setContentPane(gamePanel);
         window.getContentPane().addMouseListener(inputHandler);
@@ -82,18 +83,22 @@ public class ScrabbleGame {
         List<Tile> tilesAccumulated = new ArrayList<>();
         List<Integer> rowsOfTilesAccumulated = new ArrayList<>();
         List<Integer> colsOfTilesAccumulated = new ArrayList<>();
-        System.out.println(inputHandler.getMoveComplete()); //debugging
         while (!inputHandler.getMoveComplete()) {
             gamePanel.repaint();
             inputHandler.processInput(game.getBoard(), currPlayer, tilesAccumulated,
                     rowsOfTilesAccumulated, colsOfTilesAccumulated);
-            System.out.println(inputHandler.getMoveComplete()); //debugging
         }
+        System.out.println(inputHandler.getMoveComplete()); //debugging
+        gameState = new GameState("ho.csv");
         game.loadGameState(gameState);
+        System.out.println(game.getPlayerManager().getCurrentPlayer()); // debugging
         String val = game.getBoard().tilesInSameRowOrColumn(rowsOfTilesAccumulated, colsOfTilesAccumulated);
         boolean direction = Objects.equals(val, "row");
         if (!Objects.equals(val, "none")) {
             int r;
+            for (Tile tile : tilesAccumulated) {
+                System.out.println(tile.getLetter());
+            }
             int c;
             String word;
             List<Object> wordInfo;
@@ -107,12 +112,14 @@ public class ScrabbleGame {
                 wordInfo = game.getBoard().findWordFormedByTiles(tilesAccumulated, rowsOfTilesAccumulated,
                         r, false);
             }
+            System.out.println(wordInfo.size());
             if (wordInfo.size() == 3) {
                 r = (int) wordInfo.get(0);
-                c = (int) wordInfo.get(0);
-                word = (String) wordInfo.get(0);
+                c = (int) wordInfo.get(1);
+                word = (String) wordInfo.get(2);
                 System.out.println("Hello");
                 game.doPlaceMove(c, r, direction, word);
+                gameState = game.getGameState();
                 gameState.saveGameState("ho.csv");
                 game.nextTurn();
             }

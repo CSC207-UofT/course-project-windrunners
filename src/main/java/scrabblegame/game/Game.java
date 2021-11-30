@@ -17,7 +17,7 @@ public class Game {
      * @return the created GameState object
      */
     public GameState getGameState() {
-        return new GameState(bag, playerManager, board);
+        return new GameState(new Bag (bag), new PlayerManager (playerManager), new Board (board));
     }
 
     /**

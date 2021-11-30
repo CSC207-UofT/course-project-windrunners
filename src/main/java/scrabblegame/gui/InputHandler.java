@@ -97,6 +97,8 @@ public class InputHandler extends MouseAdapter {
                              List<Integer> cols) {
         if (clickCompleteMoveBox(this.currColumn, this.currRow)) {
             this.moveComplete = true;
+            currColumn = 20;
+            currRow = 20;
         }
         updateIndexOfRackTile(player, convertClickToRackIndex(this.currColumn, this.currRow));
         if (isValidBoardSquare(board, this.currColumn, this.currRow) && this.indexOfRackTile != -1) {
