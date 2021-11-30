@@ -377,11 +377,11 @@ public class Board {
         if (r == -1) {return wordInfo;}
         final int D = (direction == DOWN) ? 1 : 0;
         final int R = (direction == RIGHT) ? 1 : 0;
-        int firstPosition = positionsAlongDirection.get(0);
-        int row = firstPosition * D + r * R;
-        int col = firstPosition * R + r * D;
         List<Integer> duplicate = new ArrayList<>(positionsAlongDirection);
         Collections.sort(duplicate);
+        int firstPosition = duplicate.get(0);
+        int row = firstPosition * D + r * R;
+        int col = firstPosition * R + r * D;
         StringBuilder word = new StringBuilder();
         while (row >= 1 && col >= 1 && !board[row - D][col - R].isEmpty()) {
             row -= D;

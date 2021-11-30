@@ -82,10 +82,12 @@ public class ScrabbleGame {
         List<Tile> tilesAccumulated = new ArrayList<>();
         List<Integer> rowsOfTilesAccumulated = new ArrayList<>();
         List<Integer> colsOfTilesAccumulated = new ArrayList<>();
+        System.out.println(inputHandler.getMoveComplete()); //debugging
         while (!inputHandler.getMoveComplete()) {
             gamePanel.repaint();
             inputHandler.processInput(game.getBoard(), currPlayer, tilesAccumulated,
                     rowsOfTilesAccumulated, colsOfTilesAccumulated);
+            System.out.println(inputHandler.getMoveComplete()); //debugging
         }
         game.loadGameState(gameState);
         String val = game.getBoard().tilesInSameRowOrColumn(rowsOfTilesAccumulated, colsOfTilesAccumulated);
