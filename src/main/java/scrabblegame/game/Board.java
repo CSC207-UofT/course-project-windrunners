@@ -138,7 +138,7 @@ public class Board {
      */
     public boolean checkWord(int x, int y, boolean direction, String word, Dictionary dictionary) {
         word = word.toUpperCase(Locale.ROOT);
-        if (!dictionary.isValid(word)) {
+        if (word.length() > 1 && !dictionary.isValid(word)) {
             return false;
         }
 

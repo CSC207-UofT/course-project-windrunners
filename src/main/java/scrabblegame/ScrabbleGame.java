@@ -118,10 +118,13 @@ public class ScrabbleGame {
                 c = (int) wordInfo.get(1);
                 word = (String) wordInfo.get(2);
                 System.out.println("Hello");
+                int currentPlayersPointsBeforeMove = game.getCurrentPlayer().getPoints();
                 game.doPlaceMove(c, r, direction, word);
+                if (currentPlayersPointsBeforeMove < game.getCurrentPlayer().getPoints()) {
+                    game.nextTurn();
+                }
                 gameState = game.getGameState();
                 gameState.saveGameState("ho.csv");
-                game.nextTurn();
             }
         }
     }
