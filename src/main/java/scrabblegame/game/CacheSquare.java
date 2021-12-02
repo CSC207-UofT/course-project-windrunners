@@ -20,7 +20,7 @@ class CacheSquare extends Square {
     public boolean[] canStart = new boolean[7];
     public int[] nthEmptySquare = new int[8];
     public CacheSquare[] wordSquares = new CacheSquare[1]; //
-    public HashSet<Character> validChars; // the characters that could complete crossing word
+    public HashSet<Character> validChars = new HashSet<>(); // the characters that could complete crossing word
 
     public String crossingWordBefore = "";
     public String crossingWordAfter = "";
@@ -28,10 +28,6 @@ class CacheSquare extends Square {
 
     public CacheSquare(Square sq) {
         super(sq);
-        validChars = new HashSet<>();
-        for (char c = 'A'; c <= 'Z'; c++) {
-            validChars.add(c);
-        }
     }
 
     public void filterValidCharacters(HashSet<String> words) {
@@ -39,7 +35,7 @@ class CacheSquare extends Square {
             for (char c = 'A'; c <= 'Z'; c++) {
                 String str = crossingWordBefore + c + crossingWordAfter;
                 if (words.contains(str)) {
-                    validChars.remove(c);
+                    validChars.add(c);
                 }
             }
         }

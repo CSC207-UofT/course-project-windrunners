@@ -1,9 +1,6 @@
 package main.java.scrabblegame.game;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * A Scrabble Board, which is a collection of Squares, each of which comes in different types
@@ -318,7 +315,7 @@ public class Board {
             d += (direction == DOWN) ? 1 : 0;
             r += (direction == RIGHT) ? 1 : 0;
         }
-
+        System.out.println(x + " " + y + " " + direction + Tile.tilesToChars(tiles));
         int points = countValue(word);
         for (ArrayList<Square> crossingWord : crossingWords) {
             points += countValue(crossingWord);
@@ -343,7 +340,7 @@ public class Board {
      */
     private ArrayList<Square> getWordAt(int x, int y, boolean direction) {
         ArrayList<Square> word = squaresOnLineFrom(x, y, direction, false);
-        word.add(board[x][y]);
+        word.add(board[y][x]);
         word.addAll(squaresOnLineFrom(x, y, direction, true));
         return word;
     }

@@ -95,16 +95,16 @@ public class CacheBoard {
 
     /**
      * sets the word before and after the square in row/column i
-     * @param n the row (if direction=Board.DOWN) or column(if direction=Board.RIGHT) we are setting
+     * @param lineNum the row (if direction=Board.DOWN) or column(if direction=Board.RIGHT) we are setting
      */
-    private void initializeCrossingWords(int n) {
+    private void initializeCrossingWords(int lineNum) {
         String word = "";
         CacheSquare prevEmpty = null;
         int prevWordPoints = 0;
         int currentWordPoints = 0;
         for (int coord = 0; coord < Board.BOARD_WIDTH; coord++) {
-            // if going Board.DOWN then trying to find words across so second coord should be varying
-            CacheSquare sq = board[R * n + D * coord][D * n + R * coord];
+            // if going Board.DOWN then D = 1 and trying to find words across so second coordinate has D*coord
+            CacheSquare sq = board[D * lineNum + R * coord][R * lineNum + D * coord];
             if (sq.isEmpty()) {
                 sq.crossingWordBefore = word;
                 prevWordPoints = currentWordPoints;
@@ -112,6 +112,9 @@ public class CacheBoard {
                 word = "";
                 prevEmpty = sq;
             } else {
+                sq.crossingWordBefore = "";
+                sq.crossingWordAfter = "";
+                sq.crossingWordPoints = 0;
                 word += sq.getTile().getLetter();
                 currentWordPoints += sq.getTile().getValue();
             }
