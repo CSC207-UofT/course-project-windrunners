@@ -54,7 +54,7 @@ class CacheSquare extends Square {
     public boolean areCrossingWordsValid(char[] letters) {
         for (int i = 0; i < letters.length; i++) {
             HashSet<Character> validChars = wordSquares[nthEmptySquare[i]].validChars;
-            if (validChars.size() < 26 && !validChars.contains(letters[i])) {
+            if (!validChars.contains(letters[i])) {
                 return false;
             }
         }

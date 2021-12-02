@@ -7,23 +7,22 @@ import java.util.HashSet;
 public abstract class AbstractAI {
 
     private final HashSet<String> words;
-    private final Board board;
     private final char[] charRack;
 
     public AbstractAI(char[] rack) {
         Arrays.sort(rack);
         Dictionary dict = new Dictionary();
         words = dict.getDictionary();
-        board = new Board();
         this.charRack = rack;
     }
 
-    public static int factorial(int n) {
+    private static int factorial(int n) {
         int num = 1;
         for (int i = 1; i <= n; i++) num *= i;
         return num;
     }
-    public static int[] numToPerm(int n, int k, int permNum) {
+
+    private static int[] numToPerm(int n, int k, int permNum) {
         int fact = factorial(n);
         int[] perm = new int[n];
         for (int i = 0; i < n; i++) {
@@ -39,16 +38,17 @@ public abstract class AbstractAI {
         }
         return Arrays.copyOf(perm, k);
     }
-    public ArrayList<char[]> getRackPerms(int lengthOfPerms) {
-        int fact = factorial(charRack.length);
-        int gaps = factorial(charRack.length-lengthOfPerms);
+
+    public static ArrayList<char[]> getRackPerms(int lengthOfPerms, char[] letters) {
+        int fact = factorial(letters.length);
+        int gaps = factorial(letters.length - lengthOfPerms);
         HashSet<String> permsSet = new HashSet<>();
         ArrayList<char[]> perms = new ArrayList<>(fact / gaps);
         for (int i = 0; i < fact; i += gaps) {
-            int[] numPerm = numToPerm(charRack.length, lengthOfPerms, i);
+            int[] numPerm = numToPerm(letters.length, lengthOfPerms, i);
             char[] perm = new char[lengthOfPerms];
             for (int j = 0; j < lengthOfPerms; j++) {
-                perm[j] = charRack[numPerm[j]];
+                perm[j] = letters[numPerm[j]];
             }
             if (permsSet.add(new String(perm))) {
                 perms.add(perm);
@@ -57,10 +57,11 @@ public abstract class AbstractAI {
 
         return perms;
     }
-    public ArrayList<char[]> getRackPerms() {
-        ArrayList<char[]> perms = new ArrayList<>(factorial(charRack.length) * 2);
-        for (int i = 1; i <= charRack.length; i++) {
-            perms.addAll(getRackPerms(i));
+
+    public static ArrayList<char[]> getRackPerms(char[] letters) {
+        ArrayList<char[]> perms = new ArrayList<>(factorial(letters.length) * 2);
+        for (int i = 1; i <= letters.length; i++) {
+            perms.addAll(getRackPerms(i, letters));
         }
         return perms;
     }
@@ -75,10 +76,11 @@ public abstract class AbstractAI {
         }
         return validPerms;
     }
+
     public abstract int evaluateMove(int x, int y, CacheBoard cb, char[] move);
 
-    public Move makeMove() {
-        ArrayList<char[]> perms = getRackPerms();
+    public Move makeMove(Board board) {
+        ArrayList<char[]> perms = getRackPerms(charRack);
         int bestPoints = Integer.MIN_VALUE;
         int bestX = -1;
         int bestY = -1;
@@ -107,5 +109,3 @@ public abstract class AbstractAI {
         return new PlaceMove(bestX, bestY, bestDirection, bestWord);
     }
 }
-
-

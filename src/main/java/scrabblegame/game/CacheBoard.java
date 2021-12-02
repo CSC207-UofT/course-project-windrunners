@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 /**
- * Takes a Board and creates a board of Cachesquares corresponding to it and caches all the information for it.
+ * Takes a Board and creates a board of CacheSquares corresponding to it and caches all the information for it.
  */
 public class CacheBoard {
     public final CacheSquare[][] board;
@@ -46,6 +46,7 @@ public class CacheBoard {
         int[] nthEmptySquare = new int[8];
         CacheSquare[] wordSquares = new CacheSquare[Board.BOARD_WIDTH];
         Arrays.fill(canStart, false);
+        Arrays.fill(nthEmptySquare, Board.BOARD_WIDTH - (x*R + y*D));
         if (isEmpty()) {
             // for a move to start at the square, it must be in middle row(/column if Board.DOWN) 0 to 6 slots before Board.MIDDLE_SQUARE
             int squaresFromMiddle = Board.MIDDLE_SQUARE - (x * R + y * D);
@@ -58,16 +59,16 @@ public class CacheBoard {
             }
         } else if (x - R == -1 || y - D == -1 || board[y - D][x - R].isEmpty()) {
             // placing a move is possible unless the square before this one is nonempty
-            int numsSet = 0;
+            int emptySquares = 0;
             int fx = x;
             int fy = y;
             boolean hasTouchedLetter = false;
-            while (fx < Board.BOARD_WIDTH && fy < Board.BOARD_WIDTH && numsSet <= 7) {
+            while (fx < Board.BOARD_WIDTH && fy < Board.BOARD_WIDTH && emptySquares <= 7) {
                 int diff = fy - y + fx - x;
                 if (board[fy][fx].isEmpty()) {
                     wordSquares[diff] = board[fy][fx];
-                    nthEmptySquare[numsSet] = diff; // = fy * D + fx * R;
-                    numsSet++;
+                    nthEmptySquare[emptySquares] = diff; // = fy * D + fx * R;
+                    emptySquares++;
                 } else {
                     wordSquares[diff] = board[fy][fx];
                     hasTouchedLetter = true;
@@ -77,9 +78,10 @@ public class CacheBoard {
                 boolean touchesAfter = (fy + R >= Board.BOARD_WIDTH) && (fx + D >= Board.BOARD_WIDTH) && !board[fy + R][fx + R].isEmpty();
                 hasTouchedLetter = hasTouchedLetter || touchesBefore || touchesAfter;
 
-                if (numsSet > 0) {
-                    canStart[numsSet - 1] = hasTouchedLetter;
+                if (1 <= emptySquares && emptySquares <= 7) {
+                    canStart[emptySquares - 1] = hasTouchedLetter;
                 }
+
                 fx += R;
                 fy += D;
             }
@@ -89,6 +91,7 @@ public class CacheBoard {
         sq.nthEmptySquare = nthEmptySquare;
         sq.wordSquares = Arrays.copyOf(wordSquares, nthEmptySquare[7]);
     }
+
 
     /**
      * sets the word before and after the square in row/column i
