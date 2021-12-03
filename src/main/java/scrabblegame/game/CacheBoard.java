@@ -128,7 +128,15 @@ public class CacheBoard {
     private void initializeValidChars(HashSet<String> words) {
         for (int y = 0; y < Board.BOARD_WIDTH; y++) {
             for (int x = 0; x < Board.BOARD_WIDTH; x++) {
-                board[y][x].filterValidCharacters(words);
+                CacheSquare sq = board[y][x];
+                HashSet<Character> validChars = new HashSet<>();
+                for (char c = 'A'; c <= 'Z'; c++) {
+                    String str = sq.crossingWordBefore + c + sq.crossingWordAfter;
+                    if (words.contains(str)) {
+                        validChars.add(c);
+                    }
+                }
+                sq.validChars = validChars;
             }
         }
 

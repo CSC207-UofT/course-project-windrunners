@@ -315,7 +315,6 @@ public class Board {
             d += (direction == DOWN) ? 1 : 0;
             r += (direction == RIGHT) ? 1 : 0;
         }
-        System.out.println(x + " " + y + " " + direction + Tile.tilesToChars(tiles));
         int points = countValue(word);
         for (ArrayList<Square> crossingWord : crossingWords) {
             points += countValue(crossingWord);

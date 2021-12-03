@@ -30,17 +30,6 @@ class CacheSquare extends Square {
         super(sq);
     }
 
-    public void filterValidCharacters(HashSet<String> words) {
-        if (crossingWordAfter.length() + crossingWordBefore.length() > 0) {
-            for (char c = 'A'; c <= 'Z'; c++) {
-                String str = crossingWordBefore + c + crossingWordAfter;
-                if (words.contains(str)) {
-                    validChars.add(c);
-                }
-            }
-        }
-    }
-
     /**
      * checks whether you can place the letters without adding invalid words
      *
