@@ -8,7 +8,7 @@ public class BasicAI extends AbstractAI {
     private static int[] toLetterVals(char[] letters) {
         int[] letterVals = new int[letters.length];
         for (int i = 0; i < letters.length; i++) {
-            letterVals[i] = Tile.VALUE_DICT.get(letters[i]);
+            letterVals[i] = Tile.getLetterPoints(letters[i]);
         }
         return letterVals;
     }

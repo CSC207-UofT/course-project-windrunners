@@ -32,7 +32,7 @@ public class Tile {
         this.value = Tile.VALUE_DICT.get(letter);
     }
 
-    public static final Map<Character, Integer> VALUE_DICT = Map.ofEntries(
+    private static final Map<Character, Integer> VALUE_DICT = Map.ofEntries(
             entry('A', 1),
             entry('B', 3),
             entry('C', 3),
@@ -60,6 +60,10 @@ public class Tile {
             entry('Y', 4),
             entry('Z', 10)
     );
+
+    public static int getLetterPoints(char letter) {
+        return VALUE_DICT.getOrDefault(letter, 0);
+    }
 
     /**
      * Takes a List of Characters and returns a List of tiles with those Characters.

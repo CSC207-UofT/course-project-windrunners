@@ -5,10 +5,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 public abstract class AbstractAI {
-
+    public final static char WC = '~';
     private final HashSet<String> words;
     private final char[] charRack;
-
     public AbstractAI(char[] rack) {
         Arrays.sort(rack);
         Dictionary dict = new Dictionary();
@@ -20,6 +19,15 @@ public abstract class AbstractAI {
         int num = 1;
         for (int i = 1; i <= n; i++) num *= i;
         return num;
+    }
+
+    private static boolean containsWildcard(char[] perm) {
+        for (char c : perm) {
+            if (c == WC) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static int[] numToPerm(int n, int k, int permNum) {
@@ -66,12 +74,15 @@ public abstract class AbstractAI {
         return perms;
     }
 
-    private ArrayList<char[]> geValidMovesAtSquare(int x, int y, ArrayList<char[]> perms, CacheBoard cb) {
-        ArrayList<char[]> validPerms = new ArrayList<>(perms.size());
-        CacheSquare cs = cb.board[y][x];
+    private ArrayList<char[]> geValidMovesAtSquare(CacheSquare sq, ArrayList<char[]> perms) {
+        ArrayList<char[]> validPerms = new ArrayList<>();
         for (char[] perm : perms) {
-            if (cs.canPlaceLetters(perm, words)) {
-                validPerms.add(perm);
+            if (!containsWildcard(perm)) {
+                if (sq.canPlaceLetters(perm, words)) {
+                    validPerms.add(perm);
+                }
+            } else {
+                validPerms.addAll(sq.getValidPermsWildcard(perm, words));
             }
         }
         return validPerms;
@@ -92,7 +103,7 @@ public abstract class AbstractAI {
             for (int x = 0; x < Board.BOARD_WIDTH; x++) {
                 for (int y = 0; y < Board.BOARD_WIDTH; y++) {
                     CacheSquare sq = cb.board[y][x];
-                    ArrayList<char[]> validMoves = geValidMovesAtSquare(x, y, perms, cb);
+                    ArrayList<char[]> validMoves = geValidMovesAtSquare(sq, perms);
                     for (char[] move : validMoves) {
                         int points = evaluateMove(x, y, cb, move);
                         if (points > bestPoints) {

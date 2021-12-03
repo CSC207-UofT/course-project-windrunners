@@ -1,6 +1,7 @@
 package main.java.scrabblegame.game;
 
 import java.util.HashSet;
+import java.util.ArrayList;
 
 /**
  * Sqaure which has lots of information cached to make checking lots of words faster. Is initialized by CacheBoard.
@@ -17,18 +18,19 @@ import java.util.HashSet;
  * crossingWordPoints is the points of the crossing word.
  **/
 class CacheSquare extends Square {
-    public boolean[] canStart = new boolean[7];
-    public int[] nthEmptySquare = new int[8];
-    public CacheSquare[] wordSquares = new CacheSquare[1]; //
-    public HashSet<Character> validChars = new HashSet<>(); // the characters that could complete crossing word
+    public boolean[] canStart;
+    public int[] nthEmptySquare;
+    public CacheSquare[] wordSquares; //
+    public HashSet<Character> validChars; // the characters that could complete crossing word
 
-    public String crossingWordBefore = "";
-    public String crossingWordAfter = "";
-    public int crossingWordPoints = 0;
+    public String crossingWordBefore;
+    public String crossingWordAfter;
+    public int crossingWordPoints;
 
     public CacheSquare(Square sq) {
         super(sq);
     }
+
 
     /**
      * checks whether you can place the letters without adding invalid words
@@ -39,7 +41,8 @@ class CacheSquare extends Square {
     public boolean areCrossingWordsValid(char[] letters) {
         for (int i = 0; i < letters.length; i++) {
             HashSet<Character> validChars = wordSquares[nthEmptySquare[i]].validChars;
-            if (!validChars.contains(letters[i])) {
+            char letter = letters[i];
+            if (letter != AbstractAI.WC && !validChars.contains(letter)) {
                 return false;
             }
         }
@@ -62,7 +65,6 @@ class CacheSquare extends Square {
         return sb.toString();
     }
 
-
     /** Returns true if the letters can be legally placed in the first available empty squares
      * from this square and only form valid scrabble words
      * @param letters   the letters placed to create the word. Should have 1 <= letters.length <= 7.
@@ -72,5 +74,63 @@ class CacheSquare extends Square {
      */
     public boolean canPlaceLetters(char[] letters, HashSet<String> words) {
         return canStart[letters.length - 1] && areCrossingWordsValid(letters) && words.contains(getWord(letters));
+    }
+
+    /**
+     * Get the perms that are valid if one of the characters is a wildcard.
+     *
+     * @param letters   the letters placed to create the word. Should have 1 <= letters.length <= 7
+     *                  and should all be upper case or a wildcard.
+     * @param words     the words which can be place
+     * @return returns the list of perms which would create valid words when one character is a wild card.
+     * The character replacing a wildcard is lower case.
+     */
+    public ArrayList<char[]> getValidPermsWildcard(char[] letters, HashSet<String> words) {
+        ArrayList<char[]> validPerms = new ArrayList<>();
+        if (!canStart[letters.length - 1] || !areCrossingWordsValid(letters)) {
+            return validPerms;
+        }
+        final String WC = String.valueOf(AbstractAI.WC);
+        String[] wordParts = getWord(letters).split(WC, -1);
+        ArrayList<HashSet<Character>> nthWildcardValidChars = new ArrayList<>(wordParts.length - 1);
+
+        for (int i = 0, prevWildcardSlotWord = -1; i < wordParts.length - 1; i++) {
+            prevWildcardSlotWord += wordParts[i].length() + 1;
+            nthWildcardValidChars.add(wordSquares[prevWildcardSlotWord].validChars);
+        }
+
+        ArrayList<char[]> wildcardChoices = new ArrayList<>();
+        wildcardChoices.add(new char[nthWildcardValidChars.size()]);
+        for (int i = 0; i < nthWildcardValidChars.size(); i++) {
+            ArrayList<char[]> temp = new ArrayList<>();
+            HashSet<Character> validChars = nthWildcardValidChars.get(i);
+            for (char[] wildcardChoice : wildcardChoices) {
+                for (char letter : validChars) {
+                    char[] copy = wildcardChoice.clone();
+                    copy[i] = letter;
+                    temp.add(copy);
+                }
+            }
+            wildcardChoices = temp;
+        }
+        for (char[] wildcardChoice : wildcardChoices) {
+            StringBuilder sb = new StringBuilder(wordParts[0]);
+            for (int i = 0; i < wordParts.length - 1; i++) {
+                sb.append(wildcardChoice[i]);
+                sb.append(wordParts[i + 1]);
+            }
+            if (words.contains(sb.toString())) {
+                char[] dupe = letters.clone();
+                for (int i = 0, wildcardsSeen = 0; i < letters.length; i++) {
+                    if (letters[i] == AbstractAI.WC) {
+                        char wcLetter = wildcardChoice[wildcardsSeen];
+                        dupe[i] = Character.toLowerCase(wcLetter);
+                        wildcardsSeen++;
+                    }
+                }
+                validPerms.add(dupe);
+            }
+        }
+        return validPerms;
     }
 }

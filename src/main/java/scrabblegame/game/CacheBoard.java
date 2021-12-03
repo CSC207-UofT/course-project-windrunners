@@ -132,7 +132,7 @@ public class CacheBoard {
                 HashSet<Character> validChars = new HashSet<>();
                 for (char c = 'A'; c <= 'Z'; c++) {
                     String str = sq.crossingWordBefore + c + sq.crossingWordAfter;
-                    if (words.contains(str)) {
+                    if (str.length() == 1 || words.contains(str)) {
                         validChars.add(c);
                     }
                 }
