@@ -400,7 +400,7 @@ public class Board {
         int row = firstPosition * D + r * R;
         int col = firstPosition * R + r * D;
         StringBuilder word = new StringBuilder();
-        while (row >= 1 && col >= 1 && !board[row - D][col - R].isEmpty()) {
+        while (row >= D && col >= R && !board[row - D][col - R].isEmpty()) {
             row -= D;
             col -= R; }
         while (row < BOARD_WIDTH && col < BOARD_WIDTH && (!duplicate.isEmpty() || !board[row][col].isEmpty())) {
