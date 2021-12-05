@@ -1,7 +1,6 @@
 package main.java.scrabblegame.game;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.*;
@@ -332,6 +331,15 @@ public class Board {
         return word;
     }
 
+    /**
+     * given lists of rows and columns of a list of Tiles, return if the tiles are placed on the same row or column
+     * Precondition: rows.size() > 0 && cols.size() > 0
+     * @param rows the rows of the tiles placed
+     * @param cols the column of the tiles placed
+     * @return "row" if all tiles are placed in the same row or rows.size() == 1 (i.e. only one tile is placed)
+     *         "col" if all tiles are placed in the same column
+     *         "none" otherwise
+     */
     public String tilesInSameRowOrColumn(List<Integer> rows, List<Integer> cols)  {
         String rowOrColumn = "none";
         if (rows.stream().distinct().limit(2).count() <= 1) {
@@ -366,11 +374,21 @@ public class Board {
         return mult * wordValue;
     }
 
-    // the list of tiles are the ones the player inserts, r is the fixed row/column all the tiles belong to.
-    // positionsAlongDirection is the list of the other co-ordinate of each tile. the list is sorted to get the order
-    // in which the tiles appear on the board
-    // method returns the new word formed by the Tiles with the letters of the board (if the placement is valid).
-    // the word is returned along with the co-ordinates of its first letter (i.e. [row, col, word] is returned)
+    /**
+     * return the word formed by placing tiles on the board (in the direction specified),
+     * along with the co-ordinates of the first letter. If the position of the tiles on the board is invalid,
+     * return an empty list.
+     * Precondition: the tiles are placed either in the same row or in the same column
+     * @param tiles the list of tiles placed on the board by the currentPlayer, in the order in which they were placed
+     * @param positionsAlongDirection the co-ordinates of the tiles along the direction in which they are placed
+     *                               positionsAlongDirection[k] is the co-ordinate of tiles[k]
+     * @param r the other co-ordinate of the tiles (from the precondition, this must be the same for all tiles)
+     * @param direction the direction along which the tiles are placed
+     * @return a List wordInfo such that wordInfo[0] = row of the first letter of the word,
+     *                                   wordInfo[1] = row of the first letter of the word,
+     *                                   wordInfo[2] = the word formed by the tiles along direction
+     *         wordInfo is empty if the tiles are placed on invalid position on the board.
+     */
     public List<Object> findWordFormedByTiles(List<Tile> tiles, List<Integer> positionsAlongDirection, int r,
                                                   boolean direction) {
         List<Object> wordInfo = new ArrayList<>();
@@ -384,29 +402,20 @@ public class Board {
         StringBuilder word = new StringBuilder();
         while (row >= 1 && col >= 1 && !board[row - D][col - R].isEmpty()) {
             row -= D;
-            col -= R;
-        }
+            col -= R; }
         while (row < BOARD_WIDTH && col < BOARD_WIDTH && (!duplicate.isEmpty() || !board[row][col].isEmpty())) {
             if (!board[row][col].isEmpty()) {
-                if (word.length() == 0) {
-                    wordInfo.add(row);
-                    wordInfo.add(col);
-                }
                 word.append(board[row][col].getTile().getLetter());
             } else {
-                if ((direction == RIGHT && col == duplicate.get(0)) || (direction == DOWN && row == duplicate.get(0))) {
-                    if (word.length() == 0) {
-                        wordInfo.add(row);
-                        wordInfo.add(col);
-                    }
+                if ((direction ? col : row) == duplicate.get(0)) {
                     word.append(tiles.get(positionsAlongDirection.indexOf(duplicate.remove(0))).getLetter());
                 } else {
-                    return new ArrayList<>();
-                }
-            }
+                    return new ArrayList<>(); } }
+            if (word.length() == 1) {
+                wordInfo.add(row);
+                wordInfo.add(col);}
             row += D;
-            col += R;
-        }
+            col += R; }
         wordInfo.add(word.toString());
         return wordInfo;
     }
