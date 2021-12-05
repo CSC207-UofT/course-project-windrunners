@@ -374,7 +374,6 @@ public class Board {
     public List<Object> findWordFormedByTiles(List<Tile> tiles, List<Integer> positionsAlongDirection, int r,
                                                   boolean direction) {
         List<Object> wordInfo = new ArrayList<>();
-        if (r == -1) {return wordInfo;}
         final int D = (direction == DOWN) ? 1 : 0;
         final int R = (direction == RIGHT) ? 1 : 0;
         List<Integer> duplicate = new ArrayList<>(positionsAlongDirection);

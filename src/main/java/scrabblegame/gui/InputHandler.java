@@ -8,7 +8,7 @@ import main.java.scrabblegame.game.Tile;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.Math;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 
 public class InputHandler extends MouseAdapter {
@@ -16,6 +16,9 @@ public class InputHandler extends MouseAdapter {
     private boolean moveComplete = false;
     private int currRow = 20;
     private int currColumn = 20;
+    private List<Tile> tilesAccumulated = new ArrayList<>();
+    private List<Integer> rowsOfTilesAccumulated = new ArrayList<>();
+    private List<Integer> colsOfTilesAccumulated = new ArrayList<>();
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -39,6 +42,9 @@ public class InputHandler extends MouseAdapter {
         return moveComplete;
     }
 
+    public List<Integer> getRowsOfTilesAccumulated() {
+        return rowsOfTilesAccumulated;
+    }
 
     public int getIndexOfRackTile() {
         return indexOfRackTile;
@@ -70,13 +76,12 @@ public class InputHandler extends MouseAdapter {
     }
 
     public void updateIndexOfRackTile(Player player, int index) {
-        if (index <= player.getRackSize() && this.indexOfRackTile == -1) {
+        if (index <= player.getRackSize() && (this.indexOfRackTile == -1 || index != -1)) {
             this.indexOfRackTile = index;
         }
     }
 
-    public void updateBoardAndRack(Board board, Player player, List<Tile> tiles, List<Integer> rows,
-                                   List<Integer> cols) {
+    public void updateBoardAndRack(Board board, Player player) {
         int col = this.currColumn;
         int row = this.currRow;
         Square square = board.getBoard()[row][col];
@@ -84,17 +89,18 @@ public class InputHandler extends MouseAdapter {
         square.setTile(tileInserted);
         player.removeTile(tileInserted.getLetter());
         this.indexOfRackTile = -1;
-        tiles.add(tileInserted);
-        rows.add(row);
-        cols.add(col);
+        this.tilesAccumulated.add(tileInserted);
+        this.rowsOfTilesAccumulated.add(row);
+        this.colsOfTilesAccumulated.add(col);
     }
 
     public boolean clickCompleteMoveBox(int col, int row) {
-        return row == Board.BOARD_WIDTH + 1 && Board.BOARD_WIDTH <= col && col <= Board.BOARD_WIDTH + 2;
+        return this.rowsOfTilesAccumulated.size() > 0 && row == Board.BOARD_WIDTH + 1
+                && Board.BOARD_WIDTH <= col && col <= Board.BOARD_WIDTH + 2;
     }
 
-    public void processInput(Board board, Player player, List<Tile> tiles, List<Integer> rows,
-                             List<Integer> cols) {
+    public void processInput(Board board, Player player) {
+        System.out.println(indexOfRackTile);
         if (clickCompleteMoveBox(this.currColumn, this.currRow)) {
             this.moveComplete = true;
             currColumn = 20;
@@ -102,7 +108,26 @@ public class InputHandler extends MouseAdapter {
         }
         updateIndexOfRackTile(player, convertClickToRackIndex(this.currColumn, this.currRow));
         if (isValidBoardSquare(board, this.currColumn, this.currRow) && this.indexOfRackTile != -1) {
-            updateBoardAndRack(board, player, tiles, rows, cols);
+            updateBoardAndRack(board, player);
         }
+    }
+
+    public List<Object> completeMove(Board board) {
+        if (!board.tilesInSameRowOrColumn(this.rowsOfTilesAccumulated, this.colsOfTilesAccumulated).equals("none")) {
+            boolean direction = board.tilesInSameRowOrColumn(this.rowsOfTilesAccumulated, this.colsOfTilesAccumulated).equals("row");
+            List<Integer> positionsAlongDirection = direction ? this.colsOfTilesAccumulated : this.rowsOfTilesAccumulated;
+            int r = direction ? this.rowsOfTilesAccumulated.get(0) : this.colsOfTilesAccumulated.get(0);
+            List<Object> wordInfo = board.findWordFormedByTiles(this.tilesAccumulated, positionsAlongDirection, r, direction);
+            System.out.println("die");
+            wordInfo.add(direction);
+            return wordInfo;
+        }
+        return null;
+    }
+
+    public void resetAccumulators() {
+        tilesAccumulated = new ArrayList<>();
+        rowsOfTilesAccumulated = new ArrayList<>();
+        colsOfTilesAccumulated = new ArrayList<>();
     }
 }

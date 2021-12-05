@@ -46,14 +46,14 @@ public class Game {
      *
      * @param move the move to be made
      */
-    public void doMove(Move move) {
+    public void doMove(Move move) throws Exception {
         move.execute(bag, playerManager, board, dict);
     }
 
     /**
      * Passes the turn
      */
-    public void doPassMove() {
+    public void doPassMove() throws Exception {
         Move move = new PassMove();
         doMove(move);
     }
@@ -63,7 +63,7 @@ public class Game {
      *
      * @param tilesRemoved the tiles to be swapped
      */
-    public void doSwapMove(List<Tile> tilesRemoved) {
+    public void doSwapMove(List<Tile> tilesRemoved) throws Exception {
         Move move = new SwapMove(tilesRemoved);
         doMove(move);
     }
@@ -76,7 +76,7 @@ public class Game {
      * @param y         is the row of the first letter of the word
      * @param direction is the direction along which the word is to be placed
      */
-    public void doPlaceMove(int x, int y, boolean direction, String word) {
+    public void doPlaceMove(int x, int y, boolean direction, String word) throws Exception {
         Move move = new PlaceMove(x, y, direction, word);
         doMove(move);
     }

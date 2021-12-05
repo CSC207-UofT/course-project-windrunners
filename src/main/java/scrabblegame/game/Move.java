@@ -12,6 +12,6 @@ public interface Move {
      * @param board the Scrabble Board on which the word is to be inserted
      * @param dict  the Scrabble dictionary to check whether words are valid
      */
-    void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict);
+    void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict) throws Exception;
 }
 
