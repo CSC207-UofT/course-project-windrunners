@@ -17,6 +17,7 @@ public class SwapMoveTest {
         bag = new Bag();
         player = new Player("John");
         List<Tile> tiles = Tile.charsToTiles("STRJJJE".toCharArray());
+        player.addTiles(tiles);
         board = new Board();
         dict = new Dictionary();
     }
