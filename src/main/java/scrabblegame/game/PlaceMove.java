@@ -33,7 +33,7 @@ public class PlaceMove implements Move {
     @Override
     public void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict) {
         if (!board.checkWord(x, y, direction, word, dict)) {
-            // throw invalid move error
+            // throw invalid word error
             return;
         }
         List<Character> lettersNeeded = board.lettersNeeded(x, y, direction, word);
