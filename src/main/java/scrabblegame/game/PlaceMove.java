@@ -28,18 +28,35 @@ public class PlaceMove implements Move {
     }
 
     /**
-     * Attempts to put the given word on the board in the given direction starting at the given coordinates.
+     * Attempts to place the given word on the board in the given direction starting at the given coordinates.
      */
     @Override
     public void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict) {
         if (!board.checkWord(x, y, direction, word, dict)) {
-            // throw invalid word error
+            // throw invalid move error
             return;
         }
         List<Character> lettersNeeded = board.lettersNeeded(x, y, direction, word);
         if (!pm.currentPlayerHasLetters(lettersNeeded)) {
-            // throw invalid move error
-            return;
+            PlayerRack = pm.getCurrentPlayer().rack;
+            int numberOfWildcardTiles = 0;
+            for(Tile tile: PlayerRack){
+                if(tile.getLetter() == '~'){
+                    numberOfWildcardTiles = numberOfWildcardTiles + 1;
+                }
+            }
+            if(numberOfWildcardTiles = 0){
+                return;
+            }
+            else{
+                List<Character> playerLetters = Tile.tilesToChars(pm.getCurrentPlayer().rack);
+                List<Character> lettersNeededCopy = new ArrayList<>(lettersNeeded);
+                for (Character playerLetter : playerLetters) {
+                    lettersNeededCopy.remove(playerLetter);
+                }
+                if(!(numberOfWildcardTiles == lettersNeededCopy.size()))
+                    return;
+            }
         }
         List<Tile> tilesForWord = new ArrayList<>();
         for (char c : lettersNeeded) {
@@ -50,3 +67,4 @@ public class PlaceMove implements Move {
         pm.updateCurrentPlayer(points, tilesToAdd, tilesForWord);
     }
 }
+
