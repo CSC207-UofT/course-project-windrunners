@@ -11,6 +11,7 @@ public class Player {
     private final String name;
     private int points;
     private final List<Tile> rack;
+    private boolean skip;
 
     /**
      * Class constructor. A player initially has 0 points
@@ -20,6 +21,7 @@ public class Player {
         this.name = name;
         this.points = 0;
         this.rack = new ArrayList<>();
+        this.skip = false;
     }
 
     public Player(Player that){
@@ -27,6 +29,7 @@ public class Player {
         this.points = that.points;
         this.rack = new ArrayList<>();
         this.rack.addAll(that.rack);
+        this.skip = false;
     }
 
     /**
@@ -156,6 +159,18 @@ public class Player {
         }
         return false;
     }
+
+    /**
+     * @return whether to skip this player's turn or not
+     */
+    public boolean getSkip() { return skip; }
+
+    /**
+     * Set whether to skip this player's turn or not
+     *
+     * @param skip whether to skip this player's turn
+     */
+    public void setSkip(boolean skip) { this.skip = skip; }
 
     @Override
     public String toString() {

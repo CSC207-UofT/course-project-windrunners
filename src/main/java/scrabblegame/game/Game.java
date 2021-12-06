@@ -81,6 +81,39 @@ public class Game {
         doMove(move);
     }
 
+    /**
+     * challenge the move of placing word into the board
+     *
+     * @param name       name of challenger
+     * @param x          is the column of the first letter of the word
+     * @param y          is the row of the last letter of the word
+     * @param direction  is the direction along which the word may be placed
+     * @param word       is the word that is being checked
+     * @return true      iff placing this word would create an invalid Scrabble words
+     *                      and name is the name of an existing player
+     */
+    public boolean challenge( String name, int x, int y, boolean direction, String word) {
+        Player challenger = null;
+        for (Player p : playerManager.getPlayers()) {
+            if (p.getName().equals(name)) {
+                challenger = p;
+            }
+        }
+        return challenger != null && !board.checkWordValid(x, y, direction, word, dict);
+    }
+
+    /**
+     * Set the player with name "name"'s turn to be skipped later
+     *
+     * @param name      name of player's turn to be skipped
+     */
+    public void setPlayerSkip( String name ) {
+        for (Player p : playerManager.getPlayers()) {
+            if (p.getName().equals(name)) {
+                p.setSkip(true);
+            }
+        }
+    }
 
     public void nextTurn() {
         playerManager.goToNextPlayer();

@@ -170,7 +170,7 @@ public class Board {
     }
 
     /**
-     * check if word being placed on the board creates only valid Scrabble words
+     * Check if word being placed on the board creates only valid Scrabble words
      *
      * @param x          is the column of the first letter of the word
      * @param y          is the row of the last letter of the word

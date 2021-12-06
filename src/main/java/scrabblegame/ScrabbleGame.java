@@ -32,11 +32,17 @@ public class ScrabbleGame {
 
             Player currPlayer = game.getCurrentPlayer();
             System.out.println(currPlayer.getName() + "'s Turn");
-            System.out.println("Number of Tiles in the Bag = " + game.numTilesRemaining());
-            System.out.println(currPlayer);
-            System.out.println(game.getBoard());
 
-            makeMove(sc);
+            if (currPlayer.getSkip()) {
+                System.out.println("This turn will be skipped, due to a previous unsuccessful challenge.\n");
+                currPlayer.setSkip(false);
+            } else {
+                System.out.println("Number of Tiles in the Bag = " + game.numTilesRemaining());
+                System.out.println(currPlayer);
+                System.out.println(game.getBoard());
+
+                makeMove(sc);
+            }
 
             game.nextTurn();
 
@@ -128,16 +134,38 @@ public class ScrabbleGame {
 
     private static void makePlaceMove(Scanner sc) {
 
+        GameState prevState = game.getGameState();
+
         System.out.println("Position of 1st letter (e.g. A5): ");
         String position = sc.next();
         int y = (int) position.charAt(0) - 65;
         int x = Integer.parseInt(position.substring(1)) - 1;
-        System.out.println("Does your word goes from left to right? (answer Y or N)");
+        System.out.println("Does your word goes from left to right? (Y for left to right | N for top to bottom)");
         String directionStr = sc.next();
         boolean direction = (directionStr.charAt(0) == 'Y') ? Board.RIGHT : Board.DOWN;
         System.out.println("What is the word?");
         String word = sc.next().toUpperCase();
         game.doPlaceMove(x, y, direction, word);
+
+        System.out.println(game.getBoard());
+        gamePanel.repaint();
+
+        System.out.println("Would any player like to challenge this move? (Y/N)");
+        if (sc.next().charAt(0) == 'Y') {
+            System.out.println("Who would like to challenge?");
+            String name = sc.next();
+
+            GameState currState = game.getGameState();
+            game.loadGameState(prevState);
+            boolean successful = game.challenge(name, x, y, direction, word);
+            if (successful) {
+                System.out.println("The challenge was succesful! The previous move will be reverted.\n");
+            } else {
+                System.out.println("The challenge was unsuccesful, and the game will continue.\n");
+                game.loadGameState(currState);
+                game.setPlayerSkip(name);
+            }
+        }
 
     }
 }
