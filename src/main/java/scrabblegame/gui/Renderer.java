@@ -6,6 +6,8 @@ import main.java.scrabblegame.game.Board;
 import main.java.scrabblegame.game.Square;
 import main.java.scrabblegame.game.Tile;
 
+import java.util.List;
+
 import java.awt.*;
 
 public class Renderer {
@@ -87,5 +89,25 @@ public class Renderer {
         Font font = new Font("TimesRoman", Font.BOLD, 12);
         g.setFont(font);
         g.drawString("Complete Move", x, y + SQUARE_SIZE);
+    }
+
+    public void renderSwapMoveBox(Graphics g) {
+        g.setColor(new Color(2, 167, 61));
+        int x = Board.BOARD_WIDTH * SQUARE_SIZE;
+        int y = (Board.BOARD_WIDTH - 1) * SQUARE_SIZE;
+        g.fillRect(x, y,3 * SQUARE_SIZE, SQUARE_SIZE);
+        g.setColor(Color.BLACK);
+        Font font = new Font("TimesRoman", Font.BOLD, 12);
+        g.setFont(font);
+        g.drawString("Swap Move", x, y + SQUARE_SIZE);
+    }
+
+    public void renderTilesToSwap(Graphics g, List<Tile> tiles) {
+        if (tiles.size() > 0) {
+            g.drawString("Tile To Swap", 40, 17 * 40 + 20);
+            for (int i = 0; i < tiles.size(); i++) {
+                renderTile(g, tiles.get(i), i + 5, 16);
+            }
+        }
     }
 }

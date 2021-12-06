@@ -14,6 +14,8 @@ import java.util.List;
 public class InputHandler extends MouseAdapter {
     private int indexOfRackTile = -1;
     private boolean moveComplete = false;
+    private boolean swapMove = false;
+    private  List<Tile> tilesToSwap = new ArrayList<>();
     private int currRow = 20;
     private int currColumn = 20;
     private List<Tile> tilesAccumulated = new ArrayList<>();
@@ -34,6 +36,10 @@ public class InputHandler extends MouseAdapter {
         return currColumn;
     }
 
+    public boolean getSwapMove() {
+        return swapMove;
+    }
+
     public int getCurrRow() {
         return currRow;
     }
@@ -48,6 +54,10 @@ public class InputHandler extends MouseAdapter {
 
     public int getIndexOfRackTile() {
         return indexOfRackTile;
+    }
+
+    public List<Tile> getTilesToSwap() {
+        return tilesToSwap;
     }
 
     public void setMoveIncomplete() {
@@ -72,11 +82,11 @@ public class InputHandler extends MouseAdapter {
     }
 
     public boolean isValidBoardSquare(Board board, int col, int row) {
-        return col < Board.BOARD_WIDTH && row < Board.BOARD_WIDTH && board.getBoard()[row][col].isEmpty();
+        return col < Board.BOARD_WIDTH && row < Board.BOARD_WIDTH && board.getBoard()[row][col].isEmpty() && !swapMove;
     }
 
     public void updateIndexOfRackTile(Player player, int index) {
-        if (index <= player.getRackSize() && (this.indexOfRackTile == -1 || index != -1)) {
+        if (index < player.getRackSize() && (this.indexOfRackTile == -1 || index != -1)) {
             this.indexOfRackTile = index;
         }
     }
@@ -95,12 +105,22 @@ public class InputHandler extends MouseAdapter {
     }
 
     public boolean clickCompleteMoveBox(int col, int row) {
-        return this.rowsOfTilesAccumulated.size() > 0 && row == Board.BOARD_WIDTH + 1
+        return (this.rowsOfTilesAccumulated.size() > 0 || this.tilesToSwap.size() > 0) && row == Board.BOARD_WIDTH + 1
                 && Board.BOARD_WIDTH <= col && col <= Board.BOARD_WIDTH + 2;
+    }
+
+    public boolean clickSwapMoveBox(int col, int row) {
+        return this.rowsOfTilesAccumulated.size() == 0 && row == Board.BOARD_WIDTH - 1
+                && Board.BOARD_WIDTH <= col && col <= Board.BOARD_WIDTH + 2 && this.tilesToSwap.size() == 0;
     }
 
     public void processInput(Board board, Player player) {
         System.out.println(indexOfRackTile);
+        if (clickSwapMoveBox(this.currColumn, this.currRow)) {
+            currColumn = 20;
+            currRow = 20;
+            swapMove = true;
+        }
         if (clickCompleteMoveBox(this.currColumn, this.currRow)) {
             this.moveComplete = true;
             currColumn = 20;
@@ -110,24 +130,43 @@ public class InputHandler extends MouseAdapter {
         if (isValidBoardSquare(board, this.currColumn, this.currRow) && this.indexOfRackTile != -1) {
             updateBoardAndRack(board, player);
         }
+        if (this.indexOfRackTile != -1 && swapMove) {
+            updateRack(player);
+        }
+    }
+
+    private void updateRack(Player player) {
+        Tile tileToSwap = player.getRack().get(indexOfRackTile);
+        Tile tileRemoved = player.removeTile(tileToSwap.getLetter());
+        tilesToSwap.add(tileRemoved);
+        this.currColumn = 20;
+        this.currRow = 20;
+        indexOfRackTile = -1;
     }
 
     public List<Object> completeMove(Board board) {
-        if (!board.tilesInSameRowOrColumn(this.rowsOfTilesAccumulated, this.colsOfTilesAccumulated).equals("none")) {
-            boolean direction = board.tilesInSameRowOrColumn(this.rowsOfTilesAccumulated, this.colsOfTilesAccumulated).equals("row");
-            List<Integer> positionsAlongDirection = direction ? this.colsOfTilesAccumulated : this.rowsOfTilesAccumulated;
-            int r = direction ? this.rowsOfTilesAccumulated.get(0) : this.colsOfTilesAccumulated.get(0);
-            List<Object> wordInfo = board.findWordFormedByTiles(this.tilesAccumulated, positionsAlongDirection, r, direction);
-            System.out.println("die");
-            wordInfo.add(direction);
-            return wordInfo;
+        if (swapMove) {
+            return new ArrayList<>(tilesToSwap);
+            }
+        else {
+            if (!board.tilesInSameRowOrColumn(this.rowsOfTilesAccumulated, this.colsOfTilesAccumulated).equals("none")) {
+                boolean direction = board.tilesInSameRowOrColumn(this.rowsOfTilesAccumulated, this.colsOfTilesAccumulated).equals("row");
+                List<Integer> positionsAlongDirection = direction ? this.colsOfTilesAccumulated : this.rowsOfTilesAccumulated;
+                int r = direction ? this.rowsOfTilesAccumulated.get(0) : this.colsOfTilesAccumulated.get(0);
+                List<Object> wordInfo = board.findWordFormedByTiles(this.tilesAccumulated, positionsAlongDirection, r, direction);
+                System.out.println("die");
+                wordInfo.add(direction);
+                return wordInfo;
+            }
+            return null;
         }
-        return null;
     }
 
     public void resetAccumulators() {
         tilesAccumulated = new ArrayList<>();
         rowsOfTilesAccumulated = new ArrayList<>();
         colsOfTilesAccumulated = new ArrayList<>();
+        swapMove = false;
+        tilesToSwap = new ArrayList<>();
     }
 }

@@ -39,7 +39,7 @@ public class ScrabbleGame {
     private static void initGame(Scanner sc, JFrame window) {
 
         game = new Game();
-        inputHandler = new InputHandler();
+        inputHandler = game.getInputHandler();
         System.out.println("How many players are there?");
         int numPlayers = Math.max(sc.nextInt(), 1);
         List<String> names = new ArrayList<>();
@@ -90,14 +90,25 @@ public class ScrabbleGame {
         gameState = new GameState("ho.csv");
         game.loadGameState(gameState);
         List<Object> wordInfo = inputHandler.completeMove(game.getBoard());
-        System.out.println(wordInfo != null);
-        if (wordInfo != null) {
+        if (wordInfo != null && !inputHandler.getSwapMove()) {
             try {
                 game.doPlaceMove((int) wordInfo.get(1), (int) wordInfo.get(0), (boolean) wordInfo.get(3), (String) wordInfo.get(2));
                 game.nextTurn();
                 game.getGameState().saveGameState("ho.csv");
             } catch (Exception ignored) {
 
+            }
+        }
+        if (inputHandler.getSwapMove() && wordInfo != null) {
+            List<Tile> tilesToSwap = new ArrayList<>();
+            for (Object obj : wordInfo) {
+                tilesToSwap.add((Tile) obj);
+            }
+            try {
+                game.doSwapMove(tilesToSwap);
+                game.nextTurn();
+                game.getGameState().saveGameState("ho.csv");
+            } catch (Exception ignored) {
             }
         }
         inputHandler.resetAccumulators();

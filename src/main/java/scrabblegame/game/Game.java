@@ -1,5 +1,7 @@
 package main.java.scrabblegame.game;
 
+import main.java.scrabblegame.gui.InputHandler;
+
 import java.util.*;
 
 /**
@@ -9,6 +11,7 @@ public class Game {
     private Board board = new Board();
     private Bag bag = new Bag();
     private PlayerManager playerManager;
+    private InputHandler inputHandler = new InputHandler();
     Dictionary dict = new Dictionary();
 
     /**
@@ -18,6 +21,10 @@ public class Game {
      */
     public GameState getGameState() {
         return new GameState(new Bag (bag), new PlayerManager (playerManager), new Board (board));
+    }
+
+    public InputHandler getInputHandler() {
+        return inputHandler;
     }
 
     /**

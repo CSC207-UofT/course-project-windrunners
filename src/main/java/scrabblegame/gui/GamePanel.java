@@ -25,5 +25,6 @@ public class GamePanel extends JPanel {
         renderer.renderRack(g, currGame.getCurrentPlayer());
         renderer.renderScoreboard(g, currGame.getPlayerManager());
         renderer.renderCompleteMoveBox(g);
+        renderer.renderSwapMoveBox(g);
     }
 }
