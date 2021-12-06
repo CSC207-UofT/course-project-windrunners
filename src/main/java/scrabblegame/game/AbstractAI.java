@@ -47,7 +47,7 @@ public abstract class AbstractAI {
         return Arrays.copyOf(perm, k);
     }
 
-    public static ArrayList<char[]> getRackPerms(int lengthOfPerms, char[] letters) {
+    private static ArrayList<char[]> getRackPerms(int lengthOfPerms, char[] letters) {
         int fact = factorial(letters.length);
         int gaps = factorial(letters.length - lengthOfPerms);
         HashSet<String> permsSet = new HashSet<>();
@@ -66,7 +66,7 @@ public abstract class AbstractAI {
         return perms;
     }
 
-    public static ArrayList<char[]> getRackPerms(char[] letters) {
+    private static ArrayList<char[]> getRackPerms(char[] letters) {
         ArrayList<char[]> perms = new ArrayList<>(factorial(letters.length) * 2);
         for (int i = 1; i <= letters.length; i++) {
             perms.addAll(getRackPerms(i, letters));
@@ -117,6 +117,10 @@ public abstract class AbstractAI {
                 }
             }
         }
-        return new PlaceMove(bestX, bestY, bestDirection, bestWord);
+        if (bestX == -1) {
+            return new PassMove();
+        } else {
+            return new PlaceMove(bestX, bestY, bestDirection, bestWord);
+        }
     }
 }
