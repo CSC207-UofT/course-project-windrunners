@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 public abstract class AbstractAI {
-    public final static char WC = '~';
     private final HashSet<String> words;
     private final char[] charRack;
     public AbstractAI(char[] rack) {
@@ -23,7 +22,7 @@ public abstract class AbstractAI {
 
     private static boolean containsWildcard(char[] perm) {
         for (char c : perm) {
-            if (c == WC) {
+            if (c == '~') {
                 return true;
             }
         }

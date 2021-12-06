@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.ArrayList;
 
 /**
- * Sqaure which has lots of information cached to make checking lots of words faster. Is initialized by CacheBoard.
+ * Square which has lots of information cached to make checking lots of words faster. Is initialized by CacheBoard.
  *
  * canStart[n] is whether a word that places (n+1) tile from the rack starting at the square can be place legally
  * (i.e. it doesn't go out of bounds, it would touch a filled square etc.)
@@ -42,7 +42,7 @@ class CacheSquare extends Square {
         for (int i = 0; i < letters.length; i++) {
             HashSet<Character> validChars = wordSquares[nthEmptySquare[i]].validChars;
             char letter = letters[i];
-            if (letter != AbstractAI.WC && !validChars.contains(letter)) {
+            if (letter != '~' && !validChars.contains(letter)) {
                 return false;
             }
         }
@@ -90,8 +90,7 @@ class CacheSquare extends Square {
         if (!canStart[letters.length - 1] || !areCrossingWordsValid(letters)) {
             return validPerms;
         }
-        final String WC = String.valueOf(AbstractAI.WC);
-        String[] wordParts = getWord(letters).split(WC, -1);
+        String[] wordParts = getWord(letters).split("~", -1);
         ArrayList<HashSet<Character>> nthWildcardValidChars = new ArrayList<>(wordParts.length - 1);
 
         for (int i = 0, prevWildcardSlotWord = -1; i < wordParts.length - 1; i++) {
@@ -122,7 +121,7 @@ class CacheSquare extends Square {
             if (words.contains(sb.toString())) {
                 char[] dupe = letters.clone();
                 for (int i = 0, wildcardsSeen = 0; i < letters.length; i++) {
-                    if (letters[i] == AbstractAI.WC) {
+                    if (letters[i] == '~') {
                         char wcLetter = wildcardChoice[wildcardsSeen];
                         dupe[i] = Character.toLowerCase(wcLetter);
                         wildcardsSeen++;
