@@ -99,8 +99,8 @@ public class ScrabbleGame {
 
             }
         }
-        if (inputHandler.getSwapMove() && wordInfo != null) {
-            List<Tile> tilesToSwap = new ArrayList<>();
+        if (inputHandler.getSwapMove()) {
+            List<Tile> tilesToSwap = inputHandler.getTilesToSwap();
             for (Object obj : wordInfo) {
                 tilesToSwap.add((Tile) obj);
             }

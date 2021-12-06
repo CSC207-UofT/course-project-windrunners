@@ -120,6 +120,7 @@ public class InputHandler extends MouseAdapter {
             currColumn = 20;
             currRow = 20;
             swapMove = true;
+            indexOfRackTile = -1;
         }
         if (clickCompleteMoveBox(this.currColumn, this.currRow)) {
             this.moveComplete = true;
@@ -145,11 +146,8 @@ public class InputHandler extends MouseAdapter {
     }
 
     public List<Object> completeMove(Board board) {
-        if (swapMove) {
-            return new ArrayList<>(tilesToSwap);
-            }
-        else {
-            if (!board.tilesInSameRowOrColumn(this.rowsOfTilesAccumulated, this.colsOfTilesAccumulated).equals("none")) {
+        if (!swapMove &&
+                !board.tilesInSameRowOrColumn(this.rowsOfTilesAccumulated, this.colsOfTilesAccumulated).equals("none")) {
                 boolean direction = board.tilesInSameRowOrColumn(this.rowsOfTilesAccumulated, this.colsOfTilesAccumulated).equals("row");
                 List<Integer> positionsAlongDirection = direction ? this.colsOfTilesAccumulated : this.rowsOfTilesAccumulated;
                 int r = direction ? this.rowsOfTilesAccumulated.get(0) : this.colsOfTilesAccumulated.get(0);
@@ -160,7 +158,6 @@ public class InputHandler extends MouseAdapter {
             }
             return null;
         }
-    }
 
     public void resetAccumulators() {
         tilesAccumulated = new ArrayList<>();
