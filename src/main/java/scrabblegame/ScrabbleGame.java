@@ -38,7 +38,6 @@ public class ScrabbleGame {
 
             makeMove(sc);
 
-
             game.nextTurn();
 
         }
