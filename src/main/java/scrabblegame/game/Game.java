@@ -47,7 +47,7 @@ public class Game {
      * @param move the move to be made
      */
     public void doMove(Move move) {
-        move.execute(bag, playerManager, board, dict);
+        move.execute(bag, playerManager.getCurrentPlayer(), board, dict);
     }
 
     /**

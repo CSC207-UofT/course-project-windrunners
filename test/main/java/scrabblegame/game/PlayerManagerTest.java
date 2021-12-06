@@ -3,12 +3,6 @@ package main.java.scrabblegame.game;
 import org.junit.Test;
 import org.junit.Before;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -17,21 +11,10 @@ import java.util.ArrayList;
 import static org.junit.Assert.*;
 
 public class PlayerManagerTest {
-    private InputStream getInputStream(String[] strings) {
-        StringBuilder inputStr = new StringBuilder();
-        for (int i = 0; i < strings.length - 1; i++) {
-            inputStr.append(strings[i]).append("\n");
-        }
-        inputStr.append(strings[strings.length - 1]);
-        return new ByteArrayInputStream(inputStr.toString().getBytes());
-    }
-
-    private PrintStream out;
     private Bag bag;
 
     @Before
     public void setUp() {
-        out = new PrintStream(new ByteArrayOutputStream(), false, StandardCharsets.UTF_8);
         bag = new Bag();
     }
 
@@ -54,7 +37,7 @@ public class PlayerManagerTest {
     @Test
     public void testUsesBagCorrectly() {
         int startSize = bag.numTilesRemaining();
-        PlayerManager pm = new PlayerManager(3, Arrays.asList("bob", "rob", "robert"), bag);
+        new PlayerManager(3, Arrays.asList("bob", "rob", "robert"), bag);
         assertEquals(startSize - 21, bag.numTilesRemaining());
     }
 
@@ -83,34 +66,6 @@ public class PlayerManagerTest {
         assertTrue(player.hasLetters(chars));
     }
 
-    @Test
-    public void testUpdatingTiles() {
-        bag.drawTiles(bag.numTilesRemaining() - 7); //
-        List<Tile> playerTiles = Tile.charsToTiles("AABCDEF".toCharArray());
-        bag.swapTiles(playerTiles);
-        PlayerManager pm = new PlayerManager(1, Collections.singletonList("bob"), bag);
-        List<Character> lettersToAdd = Arrays.asList('G', 'H', 'I', 'J', 'K', 'L', 'M');
-        List<Tile> tilesToAdd = Tile.charsToTiles(lettersToAdd);
-        pm.updateCurrentPlayer(tilesToAdd, playerTiles);
-        Player player = pm.getCurrentPlayer();
-        assertEquals(7, player.getRackSize());
-        assertTrue(player.hasLetters(lettersToAdd));
-        assertFalse(player.hasLetter('A'));
-        assertFalse(player.hasLetter('F'));
-    }
-
-    @Test
-    public void testUpdatingScore() {
-        PlayerManager pm = new PlayerManager(1, Collections.singletonList("bob"), bag);
-        List<Tile> L = new ArrayList<>();
-        int[] points = {1, 321, 32, 123};
-        int sum = 0;
-        for (int num : points) {
-            sum += num;
-            pm.updateCurrentPlayer(num, L, L);
-            assertEquals(sum, pm.getCurrentPlayer().getPoints());
-        }
-    }
 
     private void emptyPlayerRack(Player player) {
         for (char letter = 'A'; letter <= 'Z'; letter++) {
