@@ -125,20 +125,17 @@ public class Board {
     */
 
     /**
-     * check if word can be placed on the Board
+     * check if placing this word is valid (does not check for any dictionary validity)
      *
      * @param x          is the column of the first letter of the word
      * @param y          is the row of the last letter of the word
      * @param direction  is the direction along which the word may be placed
      * @param word       is the word that is being checked
-     * @param dictionary is the Scrabble dictionary; used to verify is a word is a valid Scrabble word
      * @return true iff the word can be placed on the board
      */
-    public boolean checkWord(int x, int y, boolean direction, String word, Dictionary dictionary) {
+    public boolean checkWordPlacement(int x, int y, boolean direction, String word) {
+
         word = word.toUpperCase(Locale.ROOT);
-        if (!dictionary.isValid(word)) {
-            return false;
-        }
 
         boolean ifTouchesOtherWord = false;
 
@@ -163,11 +160,6 @@ public class Board {
                 return false;
             }
             boolean oppDirection = !direction;
-            if (board[y + d][x + r].isEmpty()) {
-                if (!checkIfConnectedWordIsValid(y + d, x + r, dictionary, oppDirection, word.charAt(i))) {
-                    return false;
-                }
-            }
             if (!board[y + d][x + r].isEmpty() ||
                     letterTouchesAnotherWord(y + d, x + r, oppDirection)) {
                 ifTouchesOtherWord = true;
@@ -175,6 +167,40 @@ public class Board {
         }
 
         return ifTouchesOtherWord;
+    }
+
+    /**
+     * check if word being placed on the board creates only valid Scrabble words
+     *
+     * @param x          is the column of the first letter of the word
+     * @param y          is the row of the last letter of the word
+     * @param direction  is the direction along which the word may be placed
+     * @param word       is the word that is being checked
+     * @param dictionary is the Scrabble dictionary; used to verify is a word is a valid Scrabble word
+     * @return true iff all words created by placing this word are valid Scrabble words
+     */
+    public boolean checkWordValid(int x, int y, boolean direction, String word, Dictionary dictionary) {
+        word = word.toUpperCase(Locale.ROOT);
+        if (!dictionary.isValid(word)) {
+            return false;
+        }
+
+        int length = word.length();
+        final int D = (direction == DOWN) ? 1 : 0;
+        final int R = (direction == RIGHT) ? 1 : 0;
+
+        for (int i = 0; i < length; i++) {
+            int d = D * i;
+            int r = R * i;
+            boolean oppDirection = !direction;
+            if (board[y + d][x + r].isEmpty()) {
+                if (!checkIfConnectedWordIsValid(y + d, x + r, dictionary, oppDirection, word.charAt(i))) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     /**
