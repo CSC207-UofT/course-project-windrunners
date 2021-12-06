@@ -5,17 +5,10 @@ public class BasicAI extends AbstractAI {
         super(rack);
     }
 
-    private static int[] toLetterVals(char[] letters) {
-        int[] letterVals = new int[letters.length];
-        for (int i = 0; i < letters.length; i++) {
-            letterVals[i] = Tile.getLetterPoints(letters[i]);
-        }
-        return letterVals;
-    }
 
     @Override
     public int evaluateMove(int x, int y, CacheBoard cb, char[] move) {
-        int[] vals = toLetterVals(move);
+        int[] vals = Tile.toLetterVals(move);
         CacheSquare sq = cb.board[y][x];
         int crossingPoints = 0;
         int mult = 1;
