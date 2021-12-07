@@ -87,6 +87,16 @@ public class Bag {
     }
 
     /**
+     * @return an Integer representing number of the tiles that are left in the bag
+     */
+
+    public int getNumOfLettersInBag(){
+        array_of_bag_letters = this.getBagLetters();
+        return array_of_bag_letters.length;
+
+    }
+
+    /**
      * draw a random tile from the Bag
      *
      * @return the tile drawn from the Bag. Returns null if empty.
@@ -134,5 +144,4 @@ public class Bag {
     }
 
 }
-
 
