@@ -26,5 +26,6 @@ public class GamePanel extends JPanel {
         renderer.renderScoreboard(g, currGame.getPlayerManager());
         renderer.renderCompleteMoveBox(g);
         renderer.renderSwapMoveBox(g);
+        renderer.renderTilesToSwap(g, currGame.getInputHandler().getTilesToSwap());
     }
 }

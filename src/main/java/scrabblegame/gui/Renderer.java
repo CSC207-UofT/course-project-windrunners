@@ -88,7 +88,7 @@ public class Renderer {
         g.setColor(Color.BLACK);
         Font font = new Font("TimesRoman", Font.BOLD, 12);
         g.setFont(font);
-        g.drawString("Complete Move", x, y + SQUARE_SIZE);
+        g.drawString("Complete Move", x + SQUARE_SIZE / 2, y + SQUARE_SIZE / 2);
     }
 
     public void renderSwapMoveBox(Graphics g) {
@@ -99,14 +99,19 @@ public class Renderer {
         g.setColor(Color.BLACK);
         Font font = new Font("TimesRoman", Font.BOLD, 12);
         g.setFont(font);
-        g.drawString("Swap Move", x, y + SQUARE_SIZE);
+        g.drawString("Swap Move", x + SQUARE_SIZE / 2, y + SQUARE_SIZE / 2);
     }
 
     public void renderTilesToSwap(Graphics g, List<Tile> tiles) {
         if (tiles.size() > 0) {
-            g.drawString("Tile To Swap", 40, 17 * 40 + 20);
-            for (int i = 0; i < tiles.size(); i++) {
-                renderTile(g, tiles.get(i), i + 5, 16);
+            g.drawString("Tiles To Swap", 40, 18 * 40 + 20);
+            for (int i = 0; i < 7; i++) {
+                if (i < tiles.size()) {
+                    renderTile(g, tiles.get(i), i + 5, 18);
+                }
+                else {
+                    renderSquare(g, new Square(), i + 5, 18);
+                }
             }
         }
     }
