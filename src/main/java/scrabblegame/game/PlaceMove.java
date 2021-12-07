@@ -54,7 +54,7 @@ public class PlaceMove implements Move {
                 for (Character playerLetter : playerLetters) {
                     lettersNeededCopy.remove(playerLetter);
                 }
-                if(!(numberOfWildcardTiles == lettersNeededCopy.size()))
+                if(!(numberOfWildcardTiles > lettersNeededCopy.size()))
                     return;
             }
         }
