@@ -35,7 +35,8 @@ public class Bag {
             entry('W', 2),
             entry('X', 1),
             entry('Y', 2),
-            entry('Z', 1)
+            entry('Z', 1),
+            entry('~', 2)
     );
     private final List<Tile> tiles = new ArrayList<>();
 
@@ -133,4 +134,5 @@ public class Bag {
     }
 
 }
+
 
