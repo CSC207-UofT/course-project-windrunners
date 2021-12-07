@@ -54,7 +54,7 @@ public class PlaceMove implements Move {
                 for (Character playerLetter : playerLetters) {
                     lettersNeededCopy.remove(playerLetter);
                 }
-                if(!(numberOfWildcardTiles >= lettersNeededCopy.size()))
+                if(numberOfWildcardTiles < lettersNeededCopy.size())
                     return;
             }
         }
@@ -70,6 +70,14 @@ public class PlaceMove implements Move {
         int points = board.insertWord(x, y, direction, tilesForWord);
         List<Tile> tilesToAdd = bag.drawTiles(tilesForWord.size());
         pm.updateCurrentPlayer(points, tilesToAdd, tilesForWord);
+        PlayerRack = pm.getCurrentPlayer().rack;
+        for(int i = 0; i < PlayerRack.size();){
+            if(PlayerRack[i].getLetter() == '~'){
+                PlayerRack.remove(PlayerRack[i]);
+            }
+            else{
+                i++;
+            }
+        }
     }
 }
-
