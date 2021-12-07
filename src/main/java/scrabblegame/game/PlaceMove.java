@@ -33,10 +33,11 @@ public class PlaceMove implements Move {
     @Override
     public void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict) {
         if (!board.checkWord(x, y, direction, word, dict)) {
-            // throw invalid word error
+            // throw invalid move error
             return;
         }
         List<Character> lettersNeeded = board.lettersNeeded(x, y, direction, word);
+        List<Character> lettersNeededCopy = new ArrayList<>(lettersNeeded)
         if (!pm.currentPlayerHasLetters(lettersNeeded)) {
             PlayerRack = pm.getCurrentPlayer().rack;
             int numberOfWildcardTiles = 0;
@@ -50,17 +51,21 @@ public class PlaceMove implements Move {
             }
             else{
                 List<Character> playerLetters = Tile.tilesToChars(pm.getCurrentPlayer().rack);
-                List<Character> lettersNeededCopy = new ArrayList<>(lettersNeeded);
                 for (Character playerLetter : playerLetters) {
                     lettersNeededCopy.remove(playerLetter);
                 }
-                if(!(numberOfWildcardTiles > lettersNeededCopy.size()))
+                if(!(numberOfWildcardTiles == lettersNeededCopy.size()))
                     return;
             }
         }
         List<Tile> tilesForWord = new ArrayList<>();
         for (char c : lettersNeeded) {
-            tilesForWord.add(new Tile(c));
+            newTile = new Tile(c);
+            if(lettersNeededCopy.contains(c)){
+                lettersNeededCopy.remove(c);
+                newTile.setValue(0);
+            }
+            tilesForWord.add(newTile);
         }
         int points = board.insertWord(x, y, direction, tilesForWord);
         List<Tile> tilesToAdd = bag.drawTiles(tilesForWord.size());
