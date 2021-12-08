@@ -91,8 +91,7 @@ public class Bag {
      */
 
     public int getNumOfLettersInBag(){
-        array_of_bag_letters = this.getBagLetters();
-        return array_of_bag_letters.length;
+        return this.getBagLetters().size();
 
     }
 

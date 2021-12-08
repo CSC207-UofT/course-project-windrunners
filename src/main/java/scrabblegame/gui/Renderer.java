@@ -130,6 +130,13 @@ public class Renderer {
         }
     }
 
+    public void renderWildcardSelection(Graphics g) {
+        g.drawString("Which Letter Would You Like to Use for your Wildcard Tile", 0, (Board.BOARD_WIDTH + 2) * TILE_SIZE);
+        for (int i = 0; i < 26; i++) {
+            renderTile(g, new Tile((char) (i + 65)), i % 13, Board.BOARD_WIDTH + 3 + (i / 13));
+        }
+    }
+
     private void renderRectangleBox(Graphics g, int x, int y, String text) {
         g.fillRect(x, y,3 * SQUARE_SIZE, SQUARE_SIZE);
         g.setColor(Color.BLACK);

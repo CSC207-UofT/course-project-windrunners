@@ -21,6 +21,7 @@ public class InputHandler extends MouseAdapter {
     private List<Tile> tilesAccumulated = new ArrayList<>();
     private List<Integer> rowsOfTilesAccumulated = new ArrayList<>();
     private List<Integer> colsOfTilesAccumulated = new ArrayList<>();
+    private boolean selectingWildcard = false;
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -72,6 +73,8 @@ public class InputHandler extends MouseAdapter {
         moveComplete = false;
     }
 
+    public boolean getSelectingWildcard() { return selectingWildcard; }
+
     public int[] convertClickToSquare(int x, int y) {
         return new int[]{pixelToBoardCoordinate(x), pixelToBoardCoordinate(y)};
     }
@@ -86,7 +89,7 @@ public class InputHandler extends MouseAdapter {
     }
 
     public int pixelToBoardCoordinate(int num) {
-        return (int) Math.floor(num / Renderer.SQUARE_SIZE);
+        return num / Renderer.SQUARE_SIZE;
     }
 
     public boolean isValidBoardSquare(Board board, int col, int row) {
@@ -96,6 +99,9 @@ public class InputHandler extends MouseAdapter {
     public void updateIndexOfRackTile(Player player, int index) {
         if (index < player.getRackSize() && (this.indexOfRackTile == -1 || index != -1)) {
             this.indexOfRackTile = index;
+            if (this.indexOfRackTile != -1 && !swapMove && player.getRack().get(indexOfRackTile).getLetter() == '~') {
+                selectingWildcard = true;
+            }
         }
     }
 
@@ -126,20 +132,21 @@ public class InputHandler extends MouseAdapter {
                 && Board.BOARD_WIDTH <= col && col <= Board.BOARD_WIDTH + 2 && !this.swapMove;
     }
 
+    public void handleWildcard(Player player) {
+        if (Board.BOARD_WIDTH + 3 <= currRow && currRow <= Board.BOARD_WIDTH + 4 && currColumn < 13) {
+            System.out.println(currColumn + 65 + 13 * (currRow - (Board.BOARD_WIDTH + 3)));
+            player.getRack().get(indexOfRackTile).setLetter((char) (currColumn + 65 + 13 * (currRow - (Board.BOARD_WIDTH + 3))));
+            selectingWildcard = false;
+        }
+    }
+
     public void processInput(Board board, Player player) {
-        System.out.println(indexOfRackTile);
         if (clickPassMoveBox(this.currColumn, this.currRow) || clickCompleteMoveBox(this.currColumn, this.currRow)) {
             this.moveComplete = true;
             currColumn = 20;
             currRow = 20;
-            return;
         }
 
-        if (clickCompleteMoveBox(this.currColumn, this.currRow)) {
-            this.moveComplete = true;
-            currColumn = 20;
-            currRow = 20;
-        }
         if (clickSwapMoveBox(this.currColumn, this.currRow)) {
             currColumn = 20;
             currRow = 20;
@@ -151,7 +158,11 @@ public class InputHandler extends MouseAdapter {
             cancelSwap(player);
         }
 
-        updateIndexOfRackTile(player, convertClickToRackIndex(this.currColumn, this.currRow));
+        if (selectingWildcard) {
+            handleWildcard(player);
+        } else {
+            updateIndexOfRackTile(player, convertClickToRackIndex(this.currColumn, this.currRow));
+        }
         if (isValidBoardSquare(board, this.currColumn, this.currRow)) {
             Square square = board.getBoard()[this.currRow][this.currColumn];
             if (square.isEmpty()) {
@@ -199,7 +210,6 @@ public class InputHandler extends MouseAdapter {
     public boolean checkIfAccumulatorsResetted() {
         return tilesAccumulated.size() == 0 && !swapMove;
     }
-
 
     private void updateRack(Player player) {
         Tile tileToSwap = player.getRack().get(indexOfRackTile);
