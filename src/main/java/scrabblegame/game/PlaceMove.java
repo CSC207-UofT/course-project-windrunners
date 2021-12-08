@@ -31,15 +31,15 @@ public class PlaceMove implements Move {
      * Attempts to put the given word on the board in the given direction starting at the given coordinates.
      */
     @Override
-    public void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict) {
+    public void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict) throws Exception {
         if (!board.checkWord(x, y, direction, word, dict)) {
             // throw invalid word error
-            return;
+            throw new Exception();
         }
         List<Character> lettersNeeded = board.lettersNeeded(x, y, direction, word);
         if (!pm.currentPlayerHasLetters(lettersNeeded)) {
             // throw invalid move error
-            return;
+            throw new Exception();
         }
         List<Tile> tilesForWord = new ArrayList<>();
         for (char c : lettersNeeded) {
