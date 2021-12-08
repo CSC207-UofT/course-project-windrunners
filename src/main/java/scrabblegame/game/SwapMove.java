@@ -22,10 +22,16 @@ public class SwapMove implements Move {
      */
     @Override
     public void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict) {
+        if(bag.getNumOfLettersInBag() < 7){
+            //Move Skipped, does nothing (explicit return for clarity)
+            return;
+        }
         boolean hasLetters = pm.currentPlayerHasLetters(Tile.tilesToChars(tilesToSwap));
         if (hasLetters) {
             List<Tile> tilesReturned = bag.swapTiles(tilesToSwap);
             pm.updateCurrentPlayer(tilesReturned, tilesToSwap);
         }
+        // Else, Move Skipped, does nothing (explicit return for clarity)
+        return;
     }
 }

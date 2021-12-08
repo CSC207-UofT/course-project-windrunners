@@ -28,7 +28,7 @@ public class PlaceMove implements Move {
     }
 
     /**
-     * Attempts to put the given word on the board in the given direction starting at the given coordinates.
+     * Attempts to place the given word on the board in the given direction starting at the given coordinates.
      */
     @Override
     public void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict) throws Exception {
@@ -37,16 +37,47 @@ public class PlaceMove implements Move {
             throw new Exception();
         }
         List<Character> lettersNeeded = board.lettersNeeded(x, y, direction, word);
+        List<Character> lettersNeededCopy = new ArrayList<>(lettersNeeded)
         if (!pm.currentPlayerHasLetters(lettersNeeded)) {
-            // throw invalid move error
-            throw new Exception();
+            PlayerRack = pm.getCurrentPlayer().rack;
+            int numberOfWildcardTiles = 0;
+            for(Tile tile: PlayerRack){
+                if(tile.getLetter() == '~'){
+                    numberOfWildcardTiles = numberOfWildcardTiles + 1;
+                }
+            }
+            if(numberOfWildcardTiles = 0){
+                throw new Exception();
+            }
+            else{
+                List<Character> playerLetters = Tile.tilesToChars(pm.getCurrentPlayer().rack);
+                for (Character playerLetter : playerLetters) {
+                    lettersNeededCopy.remove(playerLetter);
+                }
+                if(numberOfWildcardTiles < lettersNeededCopy.size())
+                    throw new Exception();
+            }
         }
         List<Tile> tilesForWord = new ArrayList<>();
         for (char c : lettersNeeded) {
-            tilesForWord.add(new Tile(c));
+            newTile = new Tile(c);
+            if(lettersNeededCopy.contains(c)){
+                lettersNeededCopy.remove(c);
+                newTile.setValue(0);
+            }
+            tilesForWord.add(newTile);
         }
         int points = board.insertWord(x, y, direction, tilesForWord);
         List<Tile> tilesToAdd = bag.drawTiles(tilesForWord.size());
         pm.updateCurrentPlayer(points, tilesToAdd, tilesForWord);
+        PlayerRack = pm.getCurrentPlayer().rack;
+        for(int i = 0; i < PlayerRack.size();){
+            if(PlayerRack[i].getLetter() == '~'){
+                PlayerRack.remove(PlayerRack[i]);
+            }
+            else{
+                i++;
+            }
+        }
     }
 }
