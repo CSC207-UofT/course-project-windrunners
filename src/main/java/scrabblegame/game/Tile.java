@@ -102,4 +102,14 @@ public class Tile {
         }
         return letters;
     }
+
+    /**
+     * Overriding equals method to check for reference equality. Useful when checking if a tile belongs to a list
+     * @param tile1 the first tile to be compared for reference equality
+     * @param tile2 the first tile to be compared for reference equality
+     * @return true iff tile1 and tile2 have the same reference
+     */
+    public boolean equals(Tile tile1, Tile tile2) {
+        return tile1 == tile2;
+    }
 }

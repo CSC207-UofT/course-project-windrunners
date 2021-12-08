@@ -90,7 +90,7 @@ public class InputHandler extends MouseAdapter {
     }
 
     public boolean isValidBoardSquare(Board board, int col, int row) {
-        return col < Board.BOARD_WIDTH && row < Board.BOARD_WIDTH && board.getBoard()[row][col].isEmpty() && !swapMove;
+        return col < Board.BOARD_WIDTH && row < Board.BOARD_WIDTH && !swapMove;
     }
 
     public void updateIndexOfRackTile(Player player, int index) {
@@ -100,16 +100,20 @@ public class InputHandler extends MouseAdapter {
     }
 
     public void updateBoardAndRack(Board board, Player player) {
-        int col = this.currColumn;
-        int row = this.currRow;
-        Square square = board.getBoard()[row][col];
-        Tile tileInserted = player.getRack().get(indexOfRackTile);
-        square.setTile(tileInserted);
-        player.removeTile(tileInserted.getLetter());
-        this.indexOfRackTile = -1;
-        this.tilesAccumulated.add(tileInserted);
-        this.rowsOfTilesAccumulated.add(row);
-        this.colsOfTilesAccumulated.add(col);
+        if (this.indexOfRackTile != -1) { // in which case a tile from the rack is selected
+            int col = this.currColumn;
+            int row = this.currRow;
+            Square square = board.getBoard()[row][col];
+            Tile tileInserted = player.getRack().get(indexOfRackTile);
+            square.setTile(tileInserted);
+            player.removeTile(tileInserted.getLetter());
+            this.indexOfRackTile = -1;
+            this.tilesAccumulated.add(tileInserted);
+            this.rowsOfTilesAccumulated.add(row);
+            this.colsOfTilesAccumulated.add(col);
+            this.currColumn = 20;
+            this.currRow  = 20;
+        }
     }
 
     private boolean clickCompleteMoveBox(int col, int row) {
@@ -148,11 +152,31 @@ public class InputHandler extends MouseAdapter {
         }
 
         updateIndexOfRackTile(player, convertClickToRackIndex(this.currColumn, this.currRow));
-        if (isValidBoardSquare(board, this.currColumn, this.currRow) && this.indexOfRackTile != -1) {
-            updateBoardAndRack(board, player);
+        if (isValidBoardSquare(board, this.currColumn, this.currRow)) {
+            Square square = board.getBoard()[this.currRow][this.currColumn];
+            if (square.isEmpty()) {
+                updateBoardAndRack(board, player);
+            }
+            else {
+                removeTileFromBoardIfNecessary(board, player);
+            }
         }
         if (this.indexOfRackTile != -1 && swapMove) {
             updateRack(player);
+        }
+    }
+
+    private void removeTileFromBoardIfNecessary(Board board, Player player) {
+        Square squareContainingTile = board.getBoard()[this.currRow][this.currColumn];
+        Tile tileToRemove = squareContainingTile.getTile();
+        if (tilesAccumulated.contains(tileToRemove)) { // remove tile and add to player's rack
+            rowsOfTilesAccumulated.remove(tilesAccumulated.indexOf(tileToRemove));
+            colsOfTilesAccumulated.remove(tilesAccumulated.indexOf(tileToRemove));
+            tilesAccumulated.remove(tileToRemove);
+            squareContainingTile.setTile(null);
+            List<Tile> tile = new ArrayList<>();
+            tile.add(tileToRemove);
+            player.addTiles(tile);
         }
     }
 
