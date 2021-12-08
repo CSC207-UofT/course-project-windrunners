@@ -44,6 +44,8 @@ public class GameState {
     }
 
     /**
+     * Getter method for the bag.
+     *
      * @return the bag
      */
     public Bag getBag() {
@@ -51,6 +53,8 @@ public class GameState {
     }
 
     /**
+     * Getter method for the board.
+     *
      * @return the board
      */
     public Board getBoard() {
@@ -58,6 +62,8 @@ public class GameState {
     }
 
     /**
+     * Getter method for the playerManager.
+     *
      * @return the playerManager
      */
     public PlayerManager getPlayerManager() {
