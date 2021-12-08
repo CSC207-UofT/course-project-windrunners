@@ -48,6 +48,14 @@ public class InputHandler extends MouseAdapter {
         return moveComplete;
     }
 
+    public boolean isAMoveMade() {
+        return tilesAccumulated.size() > 0 || tilesToSwap.size() > 0;
+    }
+
+    public  boolean placeMoveBeingMade() {
+        return tilesAccumulated.size() > 0;
+    }
+
     public List<Integer> getRowsOfTilesAccumulated() {
         return rowsOfTilesAccumulated;
     }
@@ -104,14 +112,14 @@ public class InputHandler extends MouseAdapter {
         this.colsOfTilesAccumulated.add(col);
     }
 
-    public boolean clickCompleteMoveBox(int col, int row) {
+    private boolean clickCompleteMoveBox(int col, int row) {
         return (this.rowsOfTilesAccumulated.size() > 0 || this.tilesToSwap.size() > 0) && row == Board.BOARD_WIDTH + 1
                 && Board.BOARD_WIDTH <= col && col <= Board.BOARD_WIDTH + 2;
     }
 
-    public boolean clickSwapMoveBox(int col, int row) {
+    private boolean clickSwapMoveBox(int col, int row) {
         return this.rowsOfTilesAccumulated.size() == 0 && row == Board.BOARD_WIDTH - 1
-                && Board.BOARD_WIDTH <= col && col <= Board.BOARD_WIDTH + 2 && this.tilesToSwap.size() == 0;
+                && Board.BOARD_WIDTH <= col && col <= Board.BOARD_WIDTH + 2 && !this.swapMove;
     }
 
     public void processInput(Board board, Player player) {
@@ -134,6 +142,11 @@ public class InputHandler extends MouseAdapter {
             swapMove = true;
             indexOfRackTile = -1;
         }
+
+        if (clickCancelSwapMoveBox(this.currColumn, this.currRow)) {
+            cancelSwap(player);
+        }
+
         updateIndexOfRackTile(player, convertClickToRackIndex(this.currColumn, this.currRow));
         if (isValidBoardSquare(board, this.currColumn, this.currRow) && this.indexOfRackTile != -1) {
             updateBoardAndRack(board, player);
@@ -143,7 +156,18 @@ public class InputHandler extends MouseAdapter {
         }
     }
 
-    public boolean clickPassMoveBox(int col, int row) {
+    private void cancelSwap(Player player) {
+        swapMove = false;
+        player.addTiles(tilesToSwap);
+        tilesToSwap = new ArrayList<>();
+    }
+
+    private boolean clickCancelSwapMoveBox(int col, int row) {
+        return swapMove && row == Board.BOARD_WIDTH + 3
+                && Board.BOARD_WIDTH <= col && col <= Board.BOARD_WIDTH + 2;
+    }
+
+    private boolean clickPassMoveBox(int col, int row) {
         return row == Board.BOARD_WIDTH - 3 && Board.BOARD_WIDTH <= col && col <= Board.BOARD_WIDTH + 2 &&
                 checkIfAccumulatorsResetted();
     }

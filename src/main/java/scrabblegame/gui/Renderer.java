@@ -80,22 +80,35 @@ public class Renderer {
         }
     }
 
-    public void renderCompleteMoveBox(Graphics g) {
-        g.setColor(new Color(255, 167, 61));
-        int x = Board.BOARD_WIDTH * SQUARE_SIZE;
-        int y = (Board.BOARD_WIDTH + 1) * SQUARE_SIZE;
-        renderRectangleBox(g, x, y, "Complete Move");
+    public void renderCompleteMoveBox(Graphics g, boolean shouldItRender) {
+        if (shouldItRender) {
+            g.setColor(new Color(255, 167, 61));
+            int x = Board.BOARD_WIDTH * SQUARE_SIZE;
+            int y = (Board.BOARD_WIDTH + 1) * SQUARE_SIZE;
+            renderRectangleBox(g, x, y, "Complete Move");
+        }
     }
 
-    public void renderSwapMoveBox(Graphics g) {
-        g.setColor(new Color(2, 167, 61));
-        int x = Board.BOARD_WIDTH * SQUARE_SIZE;
-        int y = (Board.BOARD_WIDTH - 1) * SQUARE_SIZE;
-        renderRectangleBox(g, x, y, "Swap Move");
+    public void renderSwapMoveBox(Graphics g, boolean shouldItRender) {
+        if (shouldItRender) {
+            g.setColor(new Color(2, 167, 61));
+            int x = Board.BOARD_WIDTH * SQUARE_SIZE;
+            int y = (Board.BOARD_WIDTH - 1) * SQUARE_SIZE;
+            renderRectangleBox(g, x, y, "Swap Move");
+        }
     }
 
-    public void renderTilesToSwap(Graphics g, List<Tile> tiles) {
-        if (tiles.size() > 0) {
+    public void renderCancelSwapMoveBox(Graphics g, boolean isSwapMove) {
+        if (isSwapMove) {
+            g.setColor(new Color(167, 2, 2));
+            int x = Board.BOARD_WIDTH * SQUARE_SIZE;
+            int y = (Board.BOARD_WIDTH + 3) * SQUARE_SIZE;
+            renderRectangleBox(g, x, y, "Cancel Swap Move");
+        }
+    }
+
+    public void renderTilesToSwap(Graphics g, List<Tile> tiles, boolean isSwapMove) {
+        if (isSwapMove) {
             g.drawString("Tiles To Swap", 40, 18 * 40 + 20);
             for (int i = 0; i < 7; i++) {
                 if (i < tiles.size()) {
