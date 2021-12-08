@@ -106,6 +106,7 @@ public class GameState {
                 players[i].addTiles(rack);
                 i++;
             }
+            bufferedReader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -138,6 +139,7 @@ public class GameState {
                 }
                 i++;
             }
+            bufferedReader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -173,6 +175,7 @@ public class GameState {
             line = bufferedReader.readLine();
             String[] numPlayersAsString = line.split(",");
             info[2] = Integer.parseInt(numPlayersAsString[0]);
+            bufferedReader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
