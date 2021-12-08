@@ -31,10 +31,10 @@ public class PlaceMove implements Move {
      * Attempts to place the given word on the board in the given direction starting at the given coordinates.
      */
     @Override
-    public void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict) {
+    public void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict) throws Exception {
         if (!board.checkWord(x, y, direction, word, dict)) {
-            // throw invalid move error
-            return;
+            // throw invalid word error
+            throw new Exception();
         }
         List<Character> lettersNeeded = board.lettersNeeded(x, y, direction, word);
         List<Character> lettersNeededCopy = new ArrayList<>(lettersNeeded)
@@ -47,7 +47,7 @@ public class PlaceMove implements Move {
                 }
             }
             if(numberOfWildcardTiles = 0){
-                return;
+                throw new Exception();
             }
             else{
                 List<Character> playerLetters = Tile.tilesToChars(pm.getCurrentPlayer().rack);
@@ -55,7 +55,7 @@ public class PlaceMove implements Move {
                     lettersNeededCopy.remove(playerLetter);
                 }
                 if(numberOfWildcardTiles < lettersNeededCopy.size())
-                    return;
+                    throw new Exception();
             }
         }
         List<Tile> tilesForWord = new ArrayList<>();
