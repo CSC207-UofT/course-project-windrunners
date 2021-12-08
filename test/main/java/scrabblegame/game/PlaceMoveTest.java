@@ -23,28 +23,28 @@ public class PlaceMoveTest {
     }
 
     @Test
-    public void testPlacingWordNotInDict() {
+    public void testPlacingWordNotInDict() throws Exception {
         PlaceMove placeMove = new PlaceMove(7, 7, true, "ROK");
         placeMove.execute(bag, pm, board, dict);
         assert pm.getCurrentPlayer().getPoints() == 0; // word has not been inserted
     }
 
     @Test
-    public void testFirstWordDoesNotTouchCenterSquare() {
+    public void testFirstWordDoesNotTouchCenterSquare() throws Exception {
         PlaceMove placeMove = new PlaceMove(7, 8, false, "TREE");
         placeMove.execute(bag, pm, board, dict);
         assert pm.getCurrentPlayer().getPoints() == 0; // word has not been inserted
     }
 
     @Test
-    public void testPlacingValidWord() {
+    public void testPlacingValidWord() throws Exception {
         PlaceMove placeMove = new PlaceMove(7, 5, false, "STROKE");
         placeMove.execute(bag, pm, board, dict);
         assert pm.getCurrentPlayer().getPoints() == 20; // word has been inserted
     }
 
     @Test
-    public void testPlacingTwoWordsSecondWordNotInDict() {
+    public void testPlacingTwoWordsSecondWordNotInDict() throws Exception {
         PlaceMove placeMoveA = new PlaceMove(7, 5, false, "STROKE");
         placeMoveA.execute(bag, pm, board, dict);
         assert pm.getCurrentPlayer().getPoints() == 20; // word has been inserted
@@ -55,7 +55,7 @@ public class PlaceMoveTest {
     }
 
     @Test
-    public void testPlacingTwoWordsSecondWordInsertedAtWrongPosition() {
+    public void testPlacingTwoWordsSecondWordInsertedAtWrongPosition() throws Exception {
         PlaceMove placeMoveA = new PlaceMove(7, 5, false, "STROKE");
         placeMoveA.execute(bag, pm, board, dict);
         assert pm.getCurrentPlayer().getPoints() == 20; // word has been inserted
@@ -66,7 +66,7 @@ public class PlaceMoveTest {
     }
 
     @Test
-    public void testPlacingTwoWordsSecondWordValid() {
+    public void testPlacingTwoWordsSecondWordValid() throws Exception {
         PlaceMove placeMoveA = new PlaceMove(7, 5, false, "STROKE");
         placeMoveA.execute(bag, pm, board, dict);
         assert pm.getCurrentPlayer().getPoints() == 20; // word has been inserted
