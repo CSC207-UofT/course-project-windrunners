@@ -116,16 +116,23 @@ public class InputHandler extends MouseAdapter {
 
     public void processInput(Board board, Player player) {
         System.out.println(indexOfRackTile);
+        if (clickPassMoveBox(this.currColumn, this.currRow) || clickCompleteMoveBox(this.currColumn, this.currRow)) {
+            this.moveComplete = true;
+            currColumn = 20;
+            currRow = 20;
+            return;
+        }
+
+        if (clickCompleteMoveBox(this.currColumn, this.currRow)) {
+            this.moveComplete = true;
+            currColumn = 20;
+            currRow = 20;
+        }
         if (clickSwapMoveBox(this.currColumn, this.currRow)) {
             currColumn = 20;
             currRow = 20;
             swapMove = true;
             indexOfRackTile = -1;
-        }
-        if (clickCompleteMoveBox(this.currColumn, this.currRow)) {
-            this.moveComplete = true;
-            currColumn = 20;
-            currRow = 20;
         }
         updateIndexOfRackTile(player, convertClickToRackIndex(this.currColumn, this.currRow));
         if (isValidBoardSquare(board, this.currColumn, this.currRow) && this.indexOfRackTile != -1) {
@@ -135,6 +142,16 @@ public class InputHandler extends MouseAdapter {
             updateRack(player);
         }
     }
+
+    public boolean clickPassMoveBox(int col, int row) {
+        return row == Board.BOARD_WIDTH - 3 && Board.BOARD_WIDTH <= col && col <= Board.BOARD_WIDTH + 2 &&
+                checkIfAccumulatorsResetted();
+    }
+
+    public boolean checkIfAccumulatorsResetted() {
+        return tilesAccumulated.size() == 0 && !swapMove;
+    }
+
 
     private void updateRack(Player player) {
         Tile tileToSwap = player.getRack().get(indexOfRackTile);

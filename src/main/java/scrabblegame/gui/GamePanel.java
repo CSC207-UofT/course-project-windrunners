@@ -27,5 +27,6 @@ public class GamePanel extends JPanel {
         renderer.renderCompleteMoveBox(g);
         renderer.renderSwapMoveBox(g);
         renderer.renderTilesToSwap(g, currGame.getInputHandler().getTilesToSwap());
+        renderer.renderPassMoveBox(g, currGame.getInputHandler().checkIfAccumulatorsResetted());
     }
 }

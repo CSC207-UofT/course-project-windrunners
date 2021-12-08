@@ -86,7 +86,11 @@ public class ScrabbleGame {
             gamePanel.repaint();
             inputHandler.processInput(game.getBoard(), currPlayer);
         }
-
+        if (inputHandler.checkIfAccumulatorsResetted()) {
+            game.nextTurn();
+            game.getGameState().saveGameState("ho.csv");
+            return;
+        }
         gameState = new GameState("ho.csv");
         game.loadGameState(gameState);
         List<Object> wordInfo = inputHandler.completeMove(game.getBoard());

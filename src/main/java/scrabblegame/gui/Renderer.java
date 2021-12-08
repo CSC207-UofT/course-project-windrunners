@@ -84,22 +84,14 @@ public class Renderer {
         g.setColor(new Color(255, 167, 61));
         int x = Board.BOARD_WIDTH * SQUARE_SIZE;
         int y = (Board.BOARD_WIDTH + 1) * SQUARE_SIZE;
-        g.fillRect(x, y,3 * SQUARE_SIZE, SQUARE_SIZE);
-        g.setColor(Color.BLACK);
-        Font font = new Font("TimesRoman", Font.BOLD, 12);
-        g.setFont(font);
-        g.drawString("Complete Move", x + SQUARE_SIZE / 2, y + SQUARE_SIZE / 2);
+        renderRectangleBox(g, x, y, "Complete Move");
     }
 
     public void renderSwapMoveBox(Graphics g) {
         g.setColor(new Color(2, 167, 61));
         int x = Board.BOARD_WIDTH * SQUARE_SIZE;
         int y = (Board.BOARD_WIDTH - 1) * SQUARE_SIZE;
-        g.fillRect(x, y,3 * SQUARE_SIZE, SQUARE_SIZE);
-        g.setColor(Color.BLACK);
-        Font font = new Font("TimesRoman", Font.BOLD, 12);
-        g.setFont(font);
-        g.drawString("Swap Move", x + SQUARE_SIZE / 2, y + SQUARE_SIZE / 2);
+        renderRectangleBox(g, x, y, "Swap Move");
     }
 
     public void renderTilesToSwap(Graphics g, List<Tile> tiles) {
@@ -114,5 +106,22 @@ public class Renderer {
                 }
             }
         }
+    }
+
+    public void renderPassMoveBox(Graphics g, boolean shouldItRender) {
+        if (shouldItRender) {
+            g.setColor(new Color(2, 176, 189));
+            int x = Board.BOARD_WIDTH * SQUARE_SIZE;
+            int y = (Board.BOARD_WIDTH - 3) * SQUARE_SIZE;
+            renderRectangleBox(g, x, y, "Pass Move");
+        }
+    }
+
+    private void renderRectangleBox(Graphics g, int x, int y, String text) {
+        g.fillRect(x, y,3 * SQUARE_SIZE, SQUARE_SIZE);
+        g.setColor(Color.BLACK);
+        Font font = new Font("TimesRoman", Font.BOLD, 12);
+        g.setFont(font);
+        g.drawString(text, x + SQUARE_SIZE / 2, y + SQUARE_SIZE / 2);
     }
 }

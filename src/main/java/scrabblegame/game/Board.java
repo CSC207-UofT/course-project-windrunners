@@ -407,7 +407,8 @@ public class Board {
             if (!board[row][col].isEmpty()) {
                 word.append(board[row][col].getTile().getLetter());
             } else {
-                if ((direction ? col : row) == duplicate.get(0)) {
+                int a = direction ? col : row;
+                if (a == duplicate.get(0)) {
                     word.append(tiles.get(positionsAlongDirection.indexOf(duplicate.remove(0))).getLetter());
                 } else {
                     return new ArrayList<>(); } }
