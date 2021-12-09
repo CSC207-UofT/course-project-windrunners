@@ -1,11 +1,7 @@
 package main.java.scrabblegame.game.ai;
 
-import main.java.scrabblegame.game.elements.Board;
-import main.java.scrabblegame.game.elements.Dictionary;
-import main.java.scrabblegame.game.elements.Tile;
-import main.java.scrabblegame.game.moves.Move;
-import main.java.scrabblegame.game.moves.PassMove;
-import main.java.scrabblegame.game.moves.PlaceMove;
+import main.java.scrabblegame.game.elements.*;
+import main.java.scrabblegame.game.moves.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,6 +1,6 @@
 package main.java.scrabblegame.game.ai;
 
-import main.java.scrabblegame.game.elements.Tile;
+import main.java.scrabblegame.game.elements.*;
 
 import java.util.List;
 
