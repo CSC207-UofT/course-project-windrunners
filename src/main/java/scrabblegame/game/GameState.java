@@ -101,7 +101,7 @@ public class GameState {
                 for (char tileLetter : tileLetters) {
                     rack.add(new Tile(tileLetter));
                 }
-                players[i] = new Player(playerInfo[0], "human");
+                players[i] = new Player(playerInfo[0], playerInfo[3]);
                 players[i].addPoints(Integer.parseInt(playerInfo[1]));
                 players[i].addTiles(rack);
                 i++;
@@ -195,7 +195,8 @@ public class GameState {
             Player[] playerList = playerManager.getPlayers();
 
             for (Player player : playerList) {
-                String playerInfo = player.getName() + "," + player.getPoints() + "," + player.getRackLetters();
+                String playerInfo = player.getName() + "," + player.getPoints() + "," + player.getRackLetters()
+                        + "," + player.getType();
                 playerInfoCsvWriter.append(playerInfo);
                 playerInfoCsvWriter.append("\n");
             }

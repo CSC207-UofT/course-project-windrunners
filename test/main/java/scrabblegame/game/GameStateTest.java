@@ -18,7 +18,7 @@ public class GameStateTest {
     @Before
     public void setUp() {
         bag = new Bag();
-        Player player = new Player("John");
+        Player player = new Player("John", "human");
         List<Tile> tiles = Tile.charsToTiles("STROKEA".toCharArray());
         player.addTiles(tiles);
         Player[] players = {player};
@@ -100,6 +100,19 @@ public class GameStateTest {
             for (int j = 0; j < playerList[i].getRackSize(); j++) {
                 assert (loadedPlayerList[i].getRack().get(j).getLetter() == playerList[i].getRack().get(j).getLetter());
             }
+        }
+    }
+
+    @Test
+    public void testPlayerInfoPlayerTypesLoading() {
+        gameState.saveGameState("gamestate-tests/");
+        gameState = new GameState("gamestate-tests/");
+
+        Player[] loadedPlayerList = gameState.getPlayerManager().getPlayers();
+        Player[] playerList = pm.getPlayers();
+
+        for (int i = 0; i < playerList.length; i++) {
+            assert (loadedPlayerList[i].getType().equals(playerList[i].getType()));
         }
     }
 
