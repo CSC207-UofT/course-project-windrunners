@@ -1,13 +1,12 @@
 package main.java.scrabblegame.gui;
 
-import main.java.scrabblegame.game.Board;
-import main.java.scrabblegame.game.Player;
-import main.java.scrabblegame.game.Square;
-import main.java.scrabblegame.game.Tile;
+import main.java.scrabblegame.game.elements.Board;
+import main.java.scrabblegame.game.elements.Player;
+import main.java.scrabblegame.game.elements.Square;
+import main.java.scrabblegame.game.elements.Tile;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.lang.Math;
 import java.util.ArrayList;
 import java.util.List;
 

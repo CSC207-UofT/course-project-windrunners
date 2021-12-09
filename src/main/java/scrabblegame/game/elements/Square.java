@@ -1,4 +1,4 @@
-package main.java.scrabblegame.game;
+package main.java.scrabblegame.game.elements;
 
 /**
  * Tiles are placed on Squares, a collection of which form a Board
@@ -16,7 +16,6 @@ public class Square {
      * @param letterMult controls the proportion of points gained for every letter placed on the Square
      * @param wordMult   controls the proportion of points gained when a word passed through the
      */
-
     public Square(int letterMult, int wordMult) {
         tile = null;
         multActive = true;
@@ -29,7 +28,6 @@ public class Square {
      * For Squares that don't give extra points when a word/letter is placed on them,
      * letterMult and wordMult are 1 by default
      */
-
     public Square() {
         this(1, 1);
     }

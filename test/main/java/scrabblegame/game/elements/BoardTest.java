@@ -1,5 +1,8 @@
-package main.java.scrabblegame.game;
+package main.java.scrabblegame.game.elements;
 
+import main.java.scrabblegame.game.elements.Board;
+import main.java.scrabblegame.game.elements.Dictionary;
+import main.java.scrabblegame.game.elements.Tile;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;

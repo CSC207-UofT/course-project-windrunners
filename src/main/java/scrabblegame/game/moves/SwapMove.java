@@ -1,4 +1,6 @@
-package main.java.scrabblegame.game;
+package main.java.scrabblegame.game.moves;
+
+import main.java.scrabblegame.game.elements.*;
 
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class SwapMove implements Move {
      */
     @Override
     public void execute(Bag bag, Player player, Board board, Dictionary dict) {
-        if(bag.getNumOfLettersInBag() < 7){
+        if (bag.getNumOfLettersInBag() < 7) {
             //Move Skipped, does nothing (explicit return for clarity)
             return;
         }
@@ -31,7 +33,6 @@ public class SwapMove implements Move {
             List<Tile> tilesReturned = bag.swapTiles(tilesToSwap);
             player.swapTiles(tilesReturned, tilesToSwap);
         }
-        // Else, Move Skipped, does nothing (explicit return for clarity)
-        return;
+        // Else, Move Skipped
     }
 }

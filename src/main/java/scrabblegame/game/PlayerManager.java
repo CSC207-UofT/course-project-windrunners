@@ -1,5 +1,10 @@
 package main.java.scrabblegame.game;
 
+import main.java.scrabblegame.game.ai.BasicAI;
+import main.java.scrabblegame.game.ai.SlightlyMoreAdvancedAI;
+import main.java.scrabblegame.game.elements.Bag;
+import main.java.scrabblegame.game.elements.Player;
+
 import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,18 +31,12 @@ public class PlayerManager {
         this.players = new Player[numPlayers];
         for (int i = 0; i < numPlayers; i++) {
             String type = "";
-            switch (types.get(i)) {
-                case 1: {
-                    type = "human";
-                    break;
-                }
-                case 2: {
-                    type = SlightlyMoreAdvancedAI.checkString;
-                    break;
-                }
-                case 3: {
-                    type = BasicAI.checkString;
-                }
+            if (types.get(i) == 1) {
+                type = "human";
+            } else if (types.get(i) == 2) {
+                type = SlightlyMoreAdvancedAI.checkString;
+            } else if (types.get(i) == 3) {
+                type = BasicAI.checkString;
             }
             Player player = new Player(names.get(i), type);
             player.addTiles(bag.drawTiles(7));

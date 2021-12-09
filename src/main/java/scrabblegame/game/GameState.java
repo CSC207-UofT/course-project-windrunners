@@ -1,5 +1,10 @@
 package main.java.scrabblegame.game;
 
+import main.java.scrabblegame.game.elements.Bag;
+import main.java.scrabblegame.game.elements.Board;
+import main.java.scrabblegame.game.elements.Player;
+import main.java.scrabblegame.game.elements.Tile;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
