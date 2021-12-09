@@ -31,7 +31,7 @@ public class PlaceMove implements Move {
      * Attempts to place the given word on the board in the given direction starting at the given coordinates.
      */
     @Override
-    public void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict) throws Exception {
+    public void execute(Bag bag, Player player, Board board, Dictionary dict) {
         if (!board.checkWord(x, y, direction, word, dict)) {
             // throw invalid word error
             throw new Exception();
@@ -44,6 +44,7 @@ public class PlaceMove implements Move {
         }
         int points = board.insertWord(x, y, direction, tilesForWord);
         List<Tile> tilesToAdd = bag.drawTiles(tilesForWord.size());
-        pm.updateCurrentPlayer(points, tilesToAdd, tilesForWord);
+        player.addPoints(points);
+        player.swapTiles(tilesToAdd, tilesForWord);
     }
 }

@@ -53,10 +53,9 @@ public class Game {
      *
      * @param move the move to be made
      */
-    public void doMove(Move move) throws Exception {
-        move.execute(bag, playerManager, board, dict);
+    public void doMove(Move move) {
+        move.execute(bag, playerManager.getCurrentPlayer(), board, dict);
     }
-
     /**
      * Passes the turn
      */

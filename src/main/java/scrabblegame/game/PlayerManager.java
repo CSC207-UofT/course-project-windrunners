@@ -84,42 +84,6 @@ public class PlayerManager {
     }
 
     /**
-     * check whether the current Player has all the letters in the List
-     *
-     * @param letters the List of letters; to be checked if it's contained in the Player's rack
-     * @return true iff the Player's rack contains all the letters in the List
-     */
-    public boolean currentPlayerHasLetters(List<Character> letters) {
-        return getCurrentPlayer().hasLetters(letters);
-    }
-
-    /**
-     * called when the current Player decides to insert a word into the Board
-     * adds tilesToAdd to the Player's rack and removes tilesToRemove
-     *
-     * @param pointsToAdd   the points the payer gains on inserting the word
-     * @param tilesToAdd    the tiles to be added to the Player's rack (drawn from the Bag)
-     * @param tilesToRemove the tiles to be removed from the Player's rack (required for the word)
-     */
-    public void updateCurrentPlayer(int pointsToAdd, List<Tile> tilesToAdd, List<Tile> tilesToRemove) {
-        getCurrentPlayer().addPoints(pointsToAdd);
-        updateCurrentPlayer(tilesToAdd, tilesToRemove);
-    }
-
-    /**
-     * called when the current Player decides to swap Tiles with the Bag
-     * adds tilesToAdd to the Player's rack and removes tilesToRemove
-     *
-     * @param tilesToAdd    the tiles to be added to the Player's rack
-     * @param tilesToRemove the tiles to be removed from the Player's rack
-     */
-    public void updateCurrentPlayer(List<Tile> tilesToAdd, List<Tile> tilesToRemove) {
-        Player currentPlayer = getCurrentPlayer();
-        currentPlayer.removeTiles(Tile.tilesToChars(tilesToRemove));
-        currentPlayer.addTiles(tilesToAdd);
-    }
-
-    /**
      * get the Player with currently in the lead.
      * Points for determining lead is points - points of the tiles on rack unless your rack is empty.
      * In that case it is points + points of tiles on everyone elses rack.

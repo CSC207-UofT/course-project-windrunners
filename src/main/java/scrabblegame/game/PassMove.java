@@ -8,6 +8,6 @@ public class PassMove implements Move {
      * Does nothing.
      */
     @Override
-    public void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict) {
+    public void execute(Bag bag, Player player, Board board, Dictionary dict) {
     }
 }
