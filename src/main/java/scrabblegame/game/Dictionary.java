@@ -34,6 +34,8 @@ public class Dictionary {
     }
 
     /**
+     * Return the list of valid Scrabble words
+     *
      * @return the valid Scrabble words
      */
     public HashSet<String> getDictionary() {

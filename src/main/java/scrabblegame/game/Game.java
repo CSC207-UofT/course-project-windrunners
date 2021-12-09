@@ -88,35 +88,66 @@ public class Game {
         doMove(move);
     }
 
-
+    /**
+     * Move to the next player (the player who has the next turn)
+     */
     public void nextTurn() {
         playerManager.goToNextPlayer();
     }
 
+    /**
+     * Getter method for the player who is currently winning the game.
+     *
+     * @return the player who is currently winning the game
+     */
     public Player getLeader() {
         return playerManager.getLeader();
     }
 
+    /**
+     * Getter method for the current player
+     * @return the current Player
+     */
     public Player getCurrentPlayer() {
         return playerManager.getCurrentPlayer();
     }
 
+    /**
+     * Getter method for the current player's rack
+     * @return the current player's rack
+     */
     public List<Tile> getCurrPlayerRack() {
         return playerManager.getCurrentPlayer().getRack();
     }
 
+    /**
+     * Getter method for the number of tiles remaining in the bag
+     * @return the number of tiles remaining in the bag
+     */
     public int numTilesRemaining() {
         return bag.numTilesRemaining();
     }
 
+    /**
+     * Getter method for the board
+     * @return the board
+     */
     public Board getBoard() {
         return board;
     }
 
+    /**
+     * Getter method for the player manager
+     * @return the player manager
+     */
     public PlayerManager getPlayerManager() {
         return playerManager;
     }
 
+    /**
+     * Getter method for the bag
+     * @return the bag
+     */
     public Bag getBag() {
         return bag;
     }

@@ -87,6 +87,8 @@ public class Board {
     }
 
     /**
+     * Getter method for the board
+     *
      * @return the board
      */
     public Square[][] getBoard() {
@@ -94,6 +96,8 @@ public class Board {
     }
 
     /**
+     * Getter method for the board that only returns the characters that are on the board.
+     *
      * @return a 2D array of chars containing only the string values of the tiles that are on the board
      */
     public char[][] getBoardLetters() {
@@ -107,11 +111,18 @@ public class Board {
         return boardLetters;
     }
 
+    /**
+     * Getter method for the number of filled squares on the board.
+     *
+     * @return number of filled squares.
+     */
     public int getFilledSquares() {
         return filledSquares;
     }
 
     /**
+     * Check whether the board is empty (i.e. has no tiles on it)
+     *
      * @return true iff the board is empty
      */
     public boolean containsNoTiles() {
@@ -448,6 +459,8 @@ public class Board {
     }
 
     /**
+     * Return a string representation of the board
+     *
      * @return a string representation of the Board
      */
     @Override

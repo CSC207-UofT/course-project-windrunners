@@ -76,6 +76,8 @@ public class Bag {
     }
 
     /**
+     * Return a list of the letters that are left in the bag, with repeats.
+     *
      * @return an ArrayList with just the letters of the tiles that are left in the bag (with repeats)
      */
     public ArrayList<Character> getBagLetters() {
@@ -87,6 +89,8 @@ public class Bag {
     }
 
     /**
+     * Return the number of tiles left in the bag.
+     *
      * @return an Integer representing number of the tiles that are left in the bag
      */
 
@@ -136,6 +140,8 @@ public class Bag {
     }
 
     /**
+     * Return the number of Tiles left in bag
+     *
      * @return the number of Tiles remaining in the Bag
      */
     public int numTilesRemaining() {
