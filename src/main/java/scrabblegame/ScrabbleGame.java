@@ -2,6 +2,14 @@ package main.java.scrabblegame;
 
 
 import main.java.scrabblegame.game.*;
+import main.java.scrabblegame.game.ai.BasicAI;
+import main.java.scrabblegame.game.ai.SlightlyMoreAdvancedAI;
+import main.java.scrabblegame.game.elements.Player;
+import main.java.scrabblegame.game.elements.Tile;
+import main.java.scrabblegame.game.moves.Move;
+import main.java.scrabblegame.game.moves.PassMove;
+import main.java.scrabblegame.game.moves.PlaceMove;
+import main.java.scrabblegame.game.moves.SwapMove;
 import main.java.scrabblegame.gui.GamePanel;
 import main.java.scrabblegame.gui.InputHandler;
 
@@ -65,7 +73,15 @@ public class ScrabbleGame {
 
     public static void guiGameLoopBody() {
         Player currPlayer = game.getCurrentPlayer();
+        GameState prevState = game.getGameState();
         inputHandler.setMoveIncomplete();
+
+        if (currPlayer.getSkip()) {
+            currPlayer.setSkip(false);
+            game.nextTurn();
+            game.getGameState().saveGameState("gamestates/");
+            return;
+        }
 
         if (currPlayer.getType().equals(BasicAI.checkString)) {
             BasicAI ai = new BasicAI(currPlayer.getRack());
@@ -76,6 +92,7 @@ public class ScrabbleGame {
 
             }
             game.nextTurn();
+            game.getGameState().saveGameState("gamestates/");
             return;
         } else if (currPlayer.getType().equals(SlightlyMoreAdvancedAI.checkString)) {
             SlightlyMoreAdvancedAI ai = new SlightlyMoreAdvancedAI(currPlayer.getRack());
@@ -86,6 +103,7 @@ public class ScrabbleGame {
 
             }
             game.nextTurn();
+            game.getGameState().saveGameState("gamestates/");
             return;
         }
 
@@ -103,7 +121,29 @@ public class ScrabbleGame {
         List<Object> wordInfo = inputHandler.completeMove(game.getBoard());
         if (wordInfo != null && !inputHandler.getSwapMove()) {
             try {
-                game.doPlaceMove((int) wordInfo.get(1), (int) wordInfo.get(0), (boolean) wordInfo.get(3), (String) wordInfo.get(2));
+                int x = (int) wordInfo.get(1);
+                int y = (int) wordInfo.get(0);
+                boolean direction = (boolean) wordInfo.get(3);
+                String word = (String) wordInfo.get(2);
+                Move move = new PlaceMove(x, y, direction, word);
+                game.doMove(move);
+
+                while (inputHandler.getChallengeActive()) {
+                    gamePanel.repaint();
+                    inputHandler.processInput(game.getBoard(), currPlayer);
+                }
+
+                if (inputHandler.getIndexOfChallengingPlayer() >= 0 && inputHandler.getIndexOfChallengingPlayer() < game.getPlayerManager().getPlayers().length) {
+                    GameState currState = game.getGameState();
+                    String name = game.getPlayerManager().getPlayers()[inputHandler.getIndexOfChallengingPlayer()].getName();
+                    game.loadGameState(prevState);
+                    boolean successful = game.challenge(name, x, y, direction, word);
+                    if (!successful) {
+                        game.loadGameState(currState);
+                        game.setPlayerSkip(name);
+                    }
+                }
+
                 game.nextTurn();
                 game.getGameState().saveGameState("gamestates/");
             } catch (Exception ignored) {
@@ -113,12 +153,14 @@ public class ScrabbleGame {
         if (inputHandler.getSwapMove()) {
             List<Tile> tilesToSwap = inputHandler.getTilesToSwap();
             try {
-                game.doSwapMove(tilesToSwap);
+                Move move = new SwapMove(tilesToSwap);
+                game.doMove(move);
                 game.nextTurn();
                 game.getGameState().saveGameState("gamestates/");
             } catch (Exception ignored) {
             }
         }
+
         inputHandler.resetAccumulators();
     }
 }

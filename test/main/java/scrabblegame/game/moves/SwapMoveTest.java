@@ -1,4 +1,6 @@
-package main.java.scrabblegame.game;
+package main.java.scrabblegame.game.moves;
+import main.java.scrabblegame.game.elements.*;
+import main.java.scrabblegame.game.moves.SwapMove;
 import org.junit.Test;
 import org.junit.Before;
 

@@ -1,4 +1,6 @@
-package main.java.scrabblegame.game;
+package main.java.scrabblegame.game.moves;
+
+import main.java.scrabblegame.game.elements.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,7 @@ public class PlaceMove implements Move {
      */
     @Override
     public void execute(Bag bag, Player player, Board board, Dictionary dict) throws Exception {
-        if (!board.checkWord(x, y, direction, word, dict)) {
+        if (!board.checkWordPlacement(x, y, direction, word) && !board.checkWordValid(x, y, direction, word, dict)) {
             // throw invalid word error
             throw new Exception();
         }

@@ -1,4 +1,4 @@
-package main.java.scrabblegame.game;
+package main.java.scrabblegame.game.elements;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,20 +126,17 @@ public class Board {
     */
 
     /**
-     * check if word can be placed on the Board
+     * check if placing this word is valid (does not check for any dictionary validity)
      *
-     * @param x          is the column of the first letter of the word
-     * @param y          is the row of the last letter of the word
-     * @param direction  is the direction along which the word may be placed
-     * @param word       is the word that is being checked
-     * @param dictionary is the Scrabble dictionary; used to verify is a word is a valid Scrabble word
+     * @param x         is the column of the first letter of the word
+     * @param y         is the row of the last letter of the word
+     * @param direction is the direction along which the word may be placed
+     * @param word      is the word that is being checked
      * @return true iff the word can be placed on the board
      */
-    public boolean checkWord(int x, int y, boolean direction, String word, Dictionary dictionary) {
+    public boolean checkWordPlacement(int x, int y, boolean direction, String word) {
+
         word = word.toUpperCase(Locale.ROOT);
-        if ((word.length() > 1 || containsNoTiles()) && !dictionary.isValid(word)) {
-            return false;
-        }
 
         boolean ifTouchesOtherWord = false;
 
@@ -164,11 +161,6 @@ public class Board {
                 return false;
             }
             boolean oppDirection = !direction;
-            if (board[y + d][x + r].isEmpty()) {
-                if (!checkIfConnectedWordIsValid(y + d, x + r, dictionary, oppDirection, word.charAt(i))) {
-                    return false;
-                }
-            }
             if (!board[y + d][x + r].isEmpty() ||
                     letterTouchesAnotherWord(y + d, x + r, oppDirection)) {
                 ifTouchesOtherWord = true;
@@ -176,6 +168,40 @@ public class Board {
         }
 
         return ifTouchesOtherWord;
+    }
+
+    /**
+     * Check if word being placed on the board creates only valid Scrabble words
+     *
+     * @param x          is the column of the first letter of the word
+     * @param y          is the row of the last letter of the word
+     * @param direction  is the direction along which the word may be placed
+     * @param word       is the word that is being checked
+     * @param dictionary is the Scrabble dictionary; used to verify is a word is a valid Scrabble word
+     * @return true iff all words created by placing this word are valid Scrabble words
+     */
+    public boolean checkWordValid(int x, int y, boolean direction, String word, Dictionary dictionary) {
+        word = word.toUpperCase(Locale.ROOT);
+        if (!dictionary.isValid(word)) {
+            return false;
+        }
+
+        int length = word.length();
+        final int D = (direction == DOWN) ? 1 : 0;
+        final int R = (direction == RIGHT) ? 1 : 0;
+
+        for (int i = 0; i < length; i++) {
+            int d = D * i;
+            int r = R * i;
+            boolean oppDirection = !direction;
+            if (board[y + d][x + r].isEmpty()) {
+                if (!checkIfConnectedWordIsValid(y + d, x + r, dictionary, oppDirection, word.charAt(i))) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -334,18 +360,18 @@ public class Board {
     /**
      * given lists of rows and columns of a list of Tiles, return if the tiles are placed on the same row or column
      * Precondition: rows.size() > 0 && cols.size() > 0
+     *
      * @param rows the rows of the tiles placed
      * @param cols the column of the tiles placed
      * @return "row" if all tiles are placed in the same row or rows.size() == 1 (i.e. only one tile is placed)
-     *         "col" if all tiles are placed in the same column
-     *         "none" otherwise
+     * "col" if all tiles are placed in the same column
+     * "none" otherwise
      */
-    public String tilesInSameRowOrColumn(List<Integer> rows, List<Integer> cols)  {
+    public String tilesInSameRowOrColumn(List<Integer> rows, List<Integer> cols) {
         String rowOrColumn = "none";
         if (rows.stream().distinct().limit(2).count() <= 1) {
             rowOrColumn = "row"; // all Tiles in same row
-        }
-        else {
+        } else {
             if (cols.stream().distinct().limit(2).count() <= 1) {
                 rowOrColumn = "col"; // all Tiles in same column
             }
@@ -379,18 +405,19 @@ public class Board {
      * along with the co-ordinates of the first letter. If the position of the tiles on the board is invalid,
      * return an empty list.
      * Precondition: the tiles are placed either in the same row or in the same column
-     * @param tiles the list of tiles placed on the board by the currentPlayer, in the order in which they were placed
+     *
+     * @param tiles                   the list of tiles placed on the board by the currentPlayer, in the order in which they were placed
      * @param positionsAlongDirection the co-ordinates of the tiles along the direction in which they are placed
-     *                               positionsAlongDirection[k] is the co-ordinate of tiles[k]
-     * @param r the other co-ordinate of the tiles (from the precondition, this must be the same for all tiles)
-     * @param direction the direction along which the tiles are placed
+     *                                positionsAlongDirection[k] is the co-ordinate of tiles[k]
+     * @param r                       the other co-ordinate of the tiles (from the precondition, this must be the same for all tiles)
+     * @param direction               the direction along which the tiles are placed
      * @return a List wordInfo such that wordInfo[0] = row of the first letter of the word,
-     *                                   wordInfo[1] = column of the first letter of the word,
-     *                                   wordInfo[2] = the word formed by the tiles along direction
-     *         wordInfo is empty if the tiles are placed on invalid position on the board.
+     * wordInfo[1] = column of the first letter of the word,
+     * wordInfo[2] = the word formed by the tiles along direction
+     * wordInfo is empty if the tiles are placed on invalid position on the board.
      */
     public List<Object> findWordFormedByTiles(List<Tile> tiles, List<Integer> positionsAlongDirection, int r,
-                                                  boolean direction) {
+                                              boolean direction) {
         List<Object> wordInfo = new ArrayList<>();
         final int D = (direction == DOWN) ? 1 : 0;
         final int R = (direction == RIGHT) ? 1 : 0;
@@ -402,7 +429,8 @@ public class Board {
         StringBuilder word = new StringBuilder();
         while (row >= D && col >= R && !board[row - D][col - R].isEmpty()) {
             row -= D;
-            col -= R; }
+            col -= R;
+        }
         while (row < BOARD_WIDTH && col < BOARD_WIDTH && (!duplicate.isEmpty() || !board[row][col].isEmpty())) {
             if (!board[row][col].isEmpty()) {
                 word.append(board[row][col].getTile().getLetter());
@@ -411,12 +439,16 @@ public class Board {
                 if (a == duplicate.get(0)) {
                     word.append(tiles.get(positionsAlongDirection.indexOf(duplicate.remove(0))).getLetter());
                 } else {
-                    return new ArrayList<>(); } }
+                    return new ArrayList<>();
+                }
+            }
             if (word.length() == 1) {
                 wordInfo.add(row);
-                wordInfo.add(col);}
+                wordInfo.add(col);
+            }
             row += D;
-            col += R; }
+            col += R;
+        }
         wordInfo.add(word.toString());
         return wordInfo;
     }

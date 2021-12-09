@@ -1,5 +1,8 @@
 package main.java.scrabblegame.game;
 
+import main.java.scrabblegame.game.elements.Bag;
+import main.java.scrabblegame.game.elements.Player;
+import main.java.scrabblegame.game.elements.Tile;
 import org.junit.Test;
 import org.junit.Before;
 
