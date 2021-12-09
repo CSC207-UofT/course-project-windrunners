@@ -1,4 +1,4 @@
-package main.java.scrabblegame.game;
+package main.java.scrabblegame.game.elements;
 
 import java.util.*;
 
@@ -90,7 +90,7 @@ public class Bag {
      * @return an Integer representing number of the tiles that are left in the bag
      */
 
-    public int getNumOfLettersInBag(){
+    public int getNumOfLettersInBag() {
         return this.getBagLetters().size();
 
     }

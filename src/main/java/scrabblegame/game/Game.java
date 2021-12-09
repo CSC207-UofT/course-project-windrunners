@@ -1,5 +1,11 @@
 package main.java.scrabblegame.game;
 
+import main.java.scrabblegame.game.elements.*;
+import main.java.scrabblegame.game.elements.Dictionary;
+import main.java.scrabblegame.game.moves.Move;
+import main.java.scrabblegame.game.moves.PassMove;
+import main.java.scrabblegame.game.moves.PlaceMove;
+import main.java.scrabblegame.game.moves.SwapMove;
 import main.java.scrabblegame.gui.InputHandler;
 
 import java.util.*;
@@ -12,7 +18,7 @@ public class Game {
     private Bag bag = new Bag();
     private PlayerManager playerManager;
     private InputHandler inputHandler = new InputHandler();
-    Dictionary dict = new Dictionary();
+    main.java.scrabblegame.game.elements.Dictionary dict = new Dictionary();
 
     /**
      * Creates a GameState object from the Game
@@ -58,36 +64,38 @@ public class Game {
     }
 
     /**
-     * Passes the turn
+     * challenge the move of placing word into the board
+     *
+     * @param name       name of challenger
+     * @param x          is the column of the first letter of the word
+     * @param y          is the row of the last letter of the word
+     * @param direction  is the direction along which the word may be placed
+     * @param word       is the word that is being checked
+     * @return true      iff placing this word would create an invalid Scrabble words
+     *                      and name is the name of an existing player
      */
-    public void doPassMove() throws Exception {
-        Move move = new PassMove();
-        doMove(move);
+    public boolean challenge( String name, int x, int y, boolean direction, String word) {
+        Player challenger = null;
+        for (Player p : playerManager.getPlayers()) {
+            if (p.getName().equals(name)) {
+                challenger = p;
+            }
+        }
+        return challenger != null && !board.checkWordValid(x, y, direction, word, dict);
     }
 
     /**
-     * Execute a swap move, with the tiles that were removed from the current player
+     * Set the player with name "name"'s turn to be skipped later
      *
-     * @param tilesRemoved the tiles to be swapped
+     * @param name      name of player's turn to be skipped
      */
-    public void doSwapMove(List<Tile> tilesRemoved) throws Exception {
-        Move move = new SwapMove(tilesRemoved);
-        doMove(move);
+    public void setPlayerSkip( String name ) {
+        for (Player p : playerManager.getPlayers()) {
+            if (p.getName().equals(name)) {
+                p.setSkip(true);
+            }
+        }
     }
-
-    /**
-     * Execute a swap move, with the given inputs
-     *
-     * @param word      is the word to be placed on the Board
-     * @param x         is the column of the first letter of the word
-     * @param y         is the row of the first letter of the word
-     * @param direction is the direction along which the word is to be placed
-     */
-    public void doPlaceMove(int x, int y, boolean direction, String word) throws Exception {
-        Move move = new PlaceMove(x, y, direction, word);
-        doMove(move);
-    }
-
 
     public void nextTurn() {
         playerManager.goToNextPlayer();

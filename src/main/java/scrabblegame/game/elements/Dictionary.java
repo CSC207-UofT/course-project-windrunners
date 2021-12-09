@@ -1,4 +1,4 @@
-package main.java.scrabblegame.game;
+package main.java.scrabblegame.game.elements;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

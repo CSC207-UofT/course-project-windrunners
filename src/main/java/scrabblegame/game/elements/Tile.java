@@ -1,4 +1,4 @@
-package main.java.scrabblegame.game;
+package main.java.scrabblegame.game.elements;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,10 +8,9 @@ import static java.util.Map.entry;
 
 /**
  * Each Tile object has a letter and points associated with the letter
- *
+ * <p>
  * The WildCard Tile represented by '~' has 0 points associated with it,
  * however, it can be used as a proxy for any letter in the game
- *
  */
 
 public class Tile {
@@ -26,11 +25,11 @@ public class Tile {
         return value;
     }
 
-    public void setLetter(char letter){
+    public void setLetter(char letter) {
         this.letter = letter;
     }
 
-    public void setValue(int value){
+    public void setValue(int value) {
         this.value = value;
     }
 
@@ -44,6 +43,9 @@ public class Tile {
         this.value = Tile.VALUE_DICT.get(letter);
     }
 
+    /**
+     * Map between characters and their tile values in scrabble
+     */
     private static final Map<Character, Integer> VALUE_DICT = Map.ofEntries(
             entry('A', 1),
             entry('B', 3),
@@ -120,6 +122,12 @@ public class Tile {
         return letters;
     }
 
+    /**
+     * Takes an array of characters and returns the an array with the value of those letter
+     *
+     * @param letters array of letters
+     * @return array of values of each letter
+     */
     public static int[] toLetterVals(char[] letters) {
         int[] letterVals = new int[letters.length];
         for (int i = 0; i < letters.length; i++) {
@@ -128,8 +136,9 @@ public class Tile {
         return letterVals;
     }
 
-  /**
+    /**
      * Overriding equals method to check for reference equality. Useful when checking if a tile belongs to a list
+     *
      * @param tile1 the first tile to be compared for reference equality
      * @param tile2 the first tile to be compared for reference equality
      * @return true iff tile1 and tile2 have the same reference

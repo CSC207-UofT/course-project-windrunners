@@ -1,13 +1,9 @@
 package main.java.scrabblegame.gui;
 
-import main.java.scrabblegame.game.Board;
-import main.java.scrabblegame.game.Player;
-import main.java.scrabblegame.game.Square;
-import main.java.scrabblegame.game.Tile;
+import main.java.scrabblegame.game.elements.*;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.lang.Math;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +18,8 @@ public class InputHandler extends MouseAdapter {
     private List<Integer> rowsOfTilesAccumulated = new ArrayList<>();
     private List<Integer> colsOfTilesAccumulated = new ArrayList<>();
     private boolean selectingWildcard = false;
+    private int indexOfChallengingPlayer = -1;
+    private boolean challengeActive = false;
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -74,6 +72,8 @@ public class InputHandler extends MouseAdapter {
     }
 
     public boolean getSelectingWildcard() { return selectingWildcard; }
+
+    public boolean getChallengeActive() { return challengeActive; }
 
     public int[] convertClickToSquare(int x, int y) {
         return new int[]{pixelToBoardCoordinate(x), pixelToBoardCoordinate(y)};
@@ -140,13 +140,33 @@ public class InputHandler extends MouseAdapter {
         }
     }
 
+    public void handleChallenge() {
+        if (currColumn == Board.BOARD_WIDTH) {
+            indexOfChallengingPlayer = currRow - 1;
+            challengeActive = false;
+        }
+        if (currRow == Board.BOARD_WIDTH + 3 && 5 <= currColumn && currColumn <= 7) {
+            indexOfChallengingPlayer = -1;
+            challengeActive = false;
+        }
+    }
+
+    public int getIndexOfChallengingPlayer() { return indexOfChallengingPlayer; }
+
     public void processInput(Board board, Player player) {
+        if (clickCompleteMoveBox(this.currColumn, this.currRow) && !swapMove) {
+            challengeActive = true;
+        }
+
         if (clickPassMoveBox(this.currColumn, this.currRow) || clickCompleteMoveBox(this.currColumn, this.currRow)) {
             this.moveComplete = true;
             currColumn = 20;
             currRow = 20;
         }
 
+        if (challengeActive) {
+            handleChallenge();
+        }
         if (clickSwapMoveBox(this.currColumn, this.currRow)) {
             currColumn = 20;
             currRow = 20;
@@ -223,16 +243,15 @@ public class InputHandler extends MouseAdapter {
     public List<Object> completeMove(Board board) {
         if (!swapMove &&
                 !board.tilesInSameRowOrColumn(this.rowsOfTilesAccumulated, this.colsOfTilesAccumulated).equals("none")) {
-                boolean direction = board.tilesInSameRowOrColumn(this.rowsOfTilesAccumulated, this.colsOfTilesAccumulated).equals("row");
-                List<Integer> positionsAlongDirection = direction ? this.colsOfTilesAccumulated : this.rowsOfTilesAccumulated;
-                int r = direction ? this.rowsOfTilesAccumulated.get(0) : this.colsOfTilesAccumulated.get(0);
-                List<Object> wordInfo = board.findWordFormedByTiles(this.tilesAccumulated, positionsAlongDirection, r, direction);
-                System.out.println("die");
-                wordInfo.add(direction);
-                return wordInfo;
-            }
-            return null;
+            boolean direction = board.tilesInSameRowOrColumn(this.rowsOfTilesAccumulated, this.colsOfTilesAccumulated).equals("row");
+            List<Integer> positionsAlongDirection = direction ? this.colsOfTilesAccumulated : this.rowsOfTilesAccumulated;
+            int r = direction ? this.rowsOfTilesAccumulated.get(0) : this.colsOfTilesAccumulated.get(0);
+            List<Object> wordInfo = board.findWordFormedByTiles(this.tilesAccumulated, positionsAlongDirection, r, direction);
+            wordInfo.add(direction);
+            return wordInfo;
         }
+        return null;
+    }
 
     public void resetAccumulators() {
         tilesAccumulated = new ArrayList<>();

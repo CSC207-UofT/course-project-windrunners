@@ -1,4 +1,6 @@
-package main.java.scrabblegame.game;
+package main.java.scrabblegame.game.ai;
+
+import main.java.scrabblegame.game.elements.Square;
 
 import java.util.HashSet;
 import java.util.ArrayList;

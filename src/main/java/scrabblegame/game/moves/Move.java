@@ -1,4 +1,9 @@
-package main.java.scrabblegame.game;
+package main.java.scrabblegame.game.moves;
+
+import main.java.scrabblegame.game.elements.Bag;
+import main.java.scrabblegame.game.elements.Board;
+import main.java.scrabblegame.game.elements.Dictionary;
+import main.java.scrabblegame.game.elements.Player;
 
 /**
  * An interface representing a move made by a Player. Implements the Command design pattern.
