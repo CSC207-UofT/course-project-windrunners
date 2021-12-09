@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Locale;
 
 /**
  * A Scrabble Dictionary.
@@ -46,6 +47,6 @@ public class Dictionary {
      * @return true iff word is a valid Scrabble word
      */
     public boolean isValid(String word) {
-        return words.contains(word);
+        return words.contains(word.toUpperCase(Locale.ROOT));
     }
 }
