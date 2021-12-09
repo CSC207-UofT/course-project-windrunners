@@ -7,7 +7,14 @@ public class BasicAI extends AbstractAI {
         super(rack);
     }
 
-
+    /**
+     * Returns the points that would be made by the prospective move.
+     * @param x     the x coordinate where the prospective move starts
+     * @param y     the y coordinate where the prospective move starts
+     * @param cb    a cacheBoard created from the current board for use in evaluating
+     * @param move  the characters from the players rack to be placed in the prospective move
+     * @return      the points that the prospective move would make.
+     */
     @Override
     public int evaluateMove(int x, int y, CacheBoard cb, char[] move) {
         int[] vals = Tile.toLetterVals(move);

@@ -5,6 +5,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * A class which implements most the details an AI needs. Specifically it handles iterating through
+ * every move that can be made. A concrete implementation only needs to implement a method that
+ * takes a prospective and evaulates it
+ */
 public abstract class AbstractAI {
     private final HashSet<String> words;
     private final char[] charRack;
@@ -92,8 +97,21 @@ public abstract class AbstractAI {
         return validPerms;
     }
 
+    /**
+     * Takes a prospective move and evaluates it. The larger return value the better the move.
+     * @param x     the x coordinate where the prospective move starts
+     * @param y     the y coordinate where the prospective move starts
+     * @param cb    a cacheBoard created from the current board for use in evaluating
+     * @param move  the characters from the players rack to be placed in the prospective move
+     * @return      an integer representing the quality of the prospective move
+     */
     public abstract int evaluateMove(int x, int y, CacheBoard cb, char[] move);
 
+    /**
+     * Takes the board and makes the best move possible
+     * @param board The current board
+     * @return the move to be made
+     */
     public Move makeMove(Board board) {
         ArrayList<char[]> perms = getRackPerms(charRack);
         int bestPoints = Integer.MIN_VALUE;
