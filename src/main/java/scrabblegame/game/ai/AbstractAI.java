@@ -1,12 +1,10 @@
 package main.java.scrabblegame.game.ai;
 
 import main.java.scrabblegame.game.elements.*;
+import main.java.scrabblegame.game.elements.Dictionary;
 import main.java.scrabblegame.game.moves.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * A class which implements most the details an AI needs. Specifically it handles iterating through
@@ -145,7 +143,7 @@ public abstract class AbstractAI {
         if (bestX == -1) {
             return new PassMove();
         } else {
-            return new PlaceMove(bestX, bestY, bestDirection, bestWord);
+            return new PlaceMove(bestX, bestY, bestDirection, bestWord.toUpperCase(Locale.ENGLISH));
         }
     }
 }

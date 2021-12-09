@@ -1,9 +1,11 @@
 package main.java.scrabblegame.game.ai;
 
+import java.util.List;
 import main.java.scrabblegame.game.elements.*;
 
-import java.util.List;
-
+/**
+ * An AI that just counts the points a move will make to evaluate it.
+ */
 public class BasicAI extends AbstractAI {
     public BasicAI(List<Tile> rack) {
         super(rack);
