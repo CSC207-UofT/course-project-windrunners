@@ -44,12 +44,12 @@ public class Game {
      * @param numPlayers the number of players
      * @param names      a list of the names of the players
      */
-    public void initPlayers(int numPlayers, List<String> names) {
-        playerManager = new PlayerManager(numPlayers, names, bag);
+    public void initPlayers(int numPlayers, List<String> names, List<Integer> types) {
+        playerManager = new PlayerManager(numPlayers, names, types, bag);
     }
 
     /**
-     * Makes the given move in the the current game
+     * Makes the given move in the current game
      *
      * @param move the move to be made
      */
