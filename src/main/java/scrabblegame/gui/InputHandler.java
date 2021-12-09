@@ -227,7 +227,6 @@ public class InputHandler extends MouseAdapter {
                 List<Integer> positionsAlongDirection = direction ? this.colsOfTilesAccumulated : this.rowsOfTilesAccumulated;
                 int r = direction ? this.rowsOfTilesAccumulated.get(0) : this.colsOfTilesAccumulated.get(0);
                 List<Object> wordInfo = board.findWordFormedByTiles(this.tilesAccumulated, positionsAlongDirection, r, direction);
-                System.out.println("die");
                 wordInfo.add(direction);
                 return wordInfo;
             }
