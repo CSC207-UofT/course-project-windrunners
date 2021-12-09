@@ -142,7 +142,7 @@ public abstract class AbstractAI {
         if (bestX == -1) {
             return new PassMove();
         } else {
-            return new PlaceMove(bestX, bestY, bestDirection, bestWord);
+            return new PlaceMove(bestX, bestY, bestDirection, bestWord.toUpperCase(Locale.ROOT));
         }
     }
 }
