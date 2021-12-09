@@ -10,11 +10,21 @@ import java.util.List;
 
 import java.awt.*;
 
+/**
+ * Class that renders all the components required for the GUI.
+ */
 public class Renderer {
 
     public static final int TILE_SIZE = 40;
     public static final int SQUARE_SIZE = 40;
 
+    /**
+     * Renders a tile in the GUI
+     * @param g Graphics object used to create visual components in GUI
+     * @param tile the tile we want to render
+     * @param x the x-coordinate of the tile we want to render
+     * @param y the y-coordinate of the tile we want to render
+     */
     public void renderTile(Graphics g, Tile tile, int x, int y) {
         Font font = new Font("TimesRoman", Font.BOLD, 30);
         g.setFont(font);
@@ -27,6 +37,13 @@ public class Renderer {
         g.drawString(letter, TILE_SIZE * x + (TILE_SIZE - metrics.stringWidth(letter)) / 2, TILE_SIZE * y + (TILE_SIZE - metrics.getHeight()) / 2 + metrics.getAscent());
     }
 
+    /**
+     * Renders a square (on the board) in the GUI
+     * @param g Graphics object used to create visual components in GUI
+     * @param square the square (on the board) we want to render
+     * @param x the x-coordinate of the tile we want to render
+     * @param y the y-coordinate of the tile we want to render
+     */
     public void renderSquare(Graphics g, Square square, int x, int y) {
         // this method assumes there is no tile on the square
         g.setColor(new Color(253, 173, 91));
@@ -53,6 +70,11 @@ public class Renderer {
         g.drawString(mult, SQUARE_SIZE * x + (SQUARE_SIZE - metrics.stringWidth(mult)) / 2, SQUARE_SIZE * y + (SQUARE_SIZE - metrics.getHeight()) / 2 + metrics.getAscent());
     }
 
+    /**
+     * Renders a Scrabble board in the GUI
+     * @param g Graphics object used to create visual components in GUI
+     * @param board the board we want to render
+     */
     public void renderBoard(Graphics g, Board board) {
         for (int i = 0; i < Board.BOARD_WIDTH; i++) {
             for (int j = 0; j < Board.BOARD_WIDTH; j++) {
@@ -65,6 +87,11 @@ public class Renderer {
         }
     }
 
+    /**
+     * Renders a player's rack in the GUI
+     * @param g Graphics object used to create visual components in GUI
+     * @param player the player whose rack we want to render
+     */
     public void renderRack(Graphics g, Player player) {
         g.drawString(player.getName() + "'s rack:", 40, 16 * 40 + 20);
         for (int i = 0; i < player.getRackSize(); i++) {
@@ -72,6 +99,12 @@ public class Renderer {
         }
     }
 
+    /**
+     * Renders the scoreboard, containing the players' names and the number of points they have accumulated so far
+     * @param g Graphics object used to create visual components in GUI
+     * @param playerManager the playerManager that has all the information on the players needed to render the
+     *                      scoreboard
+     */
     public void renderScoreboard(Graphics g, PlayerManager playerManager) {
         Player[] players = playerManager.getPlayers();
         for (int i = 0; i < players.length; i++) {
@@ -80,6 +113,11 @@ public class Renderer {
         }
     }
 
+    /**
+     * Renders the complete move box
+     * @param g Graphics object used to create visual components in GUI
+     * @param shouldItRender whether or not the box should render
+     */
     public void renderCompleteMoveBox(Graphics g, boolean shouldItRender) {
         if (shouldItRender) {
             g.setColor(new Color(255, 167, 61));
@@ -89,6 +127,11 @@ public class Renderer {
         }
     }
 
+    /**
+     * Renders the swap move box
+     * @param g Graphics object used to create visual components in GUI
+     * @param shouldItRender whether or not the box should render
+     */
     public void renderSwapMoveBox(Graphics g, boolean shouldItRender) {
         if (shouldItRender) {
             g.setColor(new Color(2, 167, 61));
@@ -98,6 +141,11 @@ public class Renderer {
         }
     }
 
+    /**
+     * Renders the cancel swap move box
+     * @param g Graphics object used to create visual components in GUI
+     * @param isSwapMove whether or not the user was attempting to make a swap move before trying to cancel their move
+     */
     public void renderCancelSwapMoveBox(Graphics g, boolean isSwapMove) {
         if (isSwapMove) {
             g.setColor(new Color(167, 2, 2));
@@ -107,6 +155,11 @@ public class Renderer {
         }
     }
 
+    /**
+     * Renders the tiles that the user has selected to swap
+     * @param g Graphics object used to create visual components in GUI
+     * @param isSwapMove whether or not the user was attempting to make a swap move before trying to cancel their move
+     */
     public void renderTilesToSwap(Graphics g, List<Tile> tiles, boolean isSwapMove) {
         if (isSwapMove) {
             g.drawString("Tiles To Swap", 40, 18 * 40 + 20);
@@ -121,6 +174,11 @@ public class Renderer {
         }
     }
 
+    /**
+     * Renders the pass move box
+     * @param g Graphics object used to create visual components in GUI
+     * @param shouldItRender whether or not the box should render
+     */
     public void renderPassMoveBox(Graphics g, boolean shouldItRender) {
         if (shouldItRender) {
             g.setColor(new Color(2, 176, 189));
@@ -130,6 +188,10 @@ public class Renderer {
         }
     }
 
+    /**
+     * Renders the prompt that allows the user to select the letter they wish to insert for a wildcard
+     * @param g Graphics object used to create visual components in GUI
+     */
     public void renderWildcardSelection(Graphics g) {
         g.drawString("Which Letter Would You Like to Use for your Wildcard Tile", 0, (Board.BOARD_WIDTH + 2) * TILE_SIZE);
         for (int i = 0; i < 26; i++) {
@@ -137,6 +199,13 @@ public class Renderer {
         }
     }
 
+    /**
+     * Renders a general rectangular box
+     * @param g Graphics object used to create visual components in GUI
+     * @param x the x-coordinate of the tile we want to render
+     * @param y the y-coordinate of the tile we want to render
+     * @param text the text that we want to include in the rendered box
+     */
     private void renderRectangleBox(Graphics g, int x, int y, String text) {
         g.fillRect(x, y,3 * SQUARE_SIZE, SQUARE_SIZE);
         g.setColor(Color.BLACK);
