@@ -39,7 +39,11 @@ public class SlightlyMoreAdvancedAI extends AbstractAI{
             if (total == sq.nthEmptySquare[empty]) {
                 int W = wordSq.getWordMult();
                 int letterPoints = vals[empty] * wordSq.getLetterMult();
-                letterWeights += CHAR_WEIGHTS.get(move[empty]);
+                char letter = move[empty];
+                if ('a' <= letter && letter <= 'z') {
+                    letter = '~';
+                }
+                letterWeights += CHAR_WEIGHTS.get(letter);
                 mult *= W;
                 wordPoints += letterPoints;
                 if (wordSq.crossingWordPoints != 0) {
