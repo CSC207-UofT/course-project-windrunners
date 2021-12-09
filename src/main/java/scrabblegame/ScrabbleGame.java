@@ -63,39 +63,31 @@ public class ScrabbleGame {
         window.setVisible(true);
     }
 
-    public static void cliGameLoopBody(Scanner sc) throws Exception {
-        gamePanel.repaint();
-
-        Player currPlayer = game.getCurrentPlayer();
-        System.out.println(currPlayer.getName() + "'s Turn");
-        System.out.println("Number of Tiles in the Bag = " + game.numTilesRemaining());
-        System.out.println(currPlayer);
-        System.out.println(game.getBoard());
-
-
-         PlayerController pc;
-         switch (currPlayer.getType()) {
-             case "basicAI": {
-                 pc = new BasicAIController();
-                 break;
-             }
-             case "slightlyMoreAdvancedAI": {
-                 pc = new SlightlyMoreAdvancedAIController();
-                 break;
-             }
-             default: {
-                 pc = new HumanController();
-             }
-         }
-         Move move = pc.makeMove(sc, game);
-         game.doMove(move);
-
-         game.nextTurn();
-    }
-
     public static void guiGameLoopBody() {
         Player currPlayer = game.getCurrentPlayer();
         inputHandler.setMoveIncomplete();
+
+        if (currPlayer.getType().equals(BasicAI.checkString)) {
+            BasicAI ai = new BasicAI(currPlayer.getRack());
+            Move move = ai.makeMove(game.getBoard());
+            try {
+                game.doMove(move);
+            } catch (Exception ignored) {
+
+            }
+            game.nextTurn();
+            return;
+        } else if (currPlayer.getType().equals(SlightlyMoreAdvancedAI.checkString)) {
+            SlightlyMoreAdvancedAI ai = new SlightlyMoreAdvancedAI(currPlayer.getRack());
+            Move move = ai.makeMove(game.getBoard());
+            try {
+                game.doMove(move);
+            } catch (Exception ignored) {
+
+            }
+            game.nextTurn();
+            return;
+        }
 
         while (!inputHandler.getMoveComplete()) {
             gamePanel.repaint();

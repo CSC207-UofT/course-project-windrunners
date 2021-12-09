@@ -6,6 +6,7 @@ public class BasicAI extends AbstractAI {
     public BasicAI(List<Tile> rack) {
         super(rack);
     }
+    public static String checkString = "basicAI";
 
     /**
      * Returns the points that would be made by the prospective move.

@@ -15,7 +15,7 @@ public class PlaceMoveTest {
     @Before
     public void setUp() {
         bag = new Bag();
-        player = new Player("John");
+        player = new Player("John", "human");
         List<Tile> tiles = Tile.charsToTiles("STROKEE".toCharArray());
         player.addTiles(tiles);
         board = new Board();

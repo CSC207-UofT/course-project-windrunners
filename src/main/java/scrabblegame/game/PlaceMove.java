@@ -31,7 +31,7 @@ public class PlaceMove implements Move {
      * Attempts to place the given word on the board in the given direction starting at the given coordinates.
      */
     @Override
-    public void execute(Bag bag, Player player, Board board, Dictionary dict) {
+    public void execute(Bag bag, Player player, Board board, Dictionary dict) throws Exception {
         if (!board.checkWord(x, y, direction, word, dict)) {
             // throw invalid word error
             throw new Exception();

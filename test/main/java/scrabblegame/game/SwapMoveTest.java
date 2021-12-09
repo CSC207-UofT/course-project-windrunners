@@ -15,7 +15,7 @@ public class SwapMoveTest {
     @Before
     public void setUp() {
         bag = new Bag();
-        player = new Player("John");
+        player = new Player("John", "human");
         List<Tile> tiles = Tile.charsToTiles("STRJJJE".toCharArray());
         player.addTiles(tiles);
         board = new Board();

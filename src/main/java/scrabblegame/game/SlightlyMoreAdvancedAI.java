@@ -16,7 +16,7 @@ public class SlightlyMoreAdvancedAI extends AbstractAI{
     public SlightlyMoreAdvancedAI(List<Tile> rack) {
         super(rack);
     }
-
+    public static String checkString = "slightlyMoreAdvancedAI";
     /**
      * Takes a prospective move and evaluates it.
      * @param x     the x coordinate where the prospective move starts

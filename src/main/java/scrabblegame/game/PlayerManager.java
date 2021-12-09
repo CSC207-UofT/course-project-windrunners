@@ -32,11 +32,11 @@ public class PlayerManager {
                     break;
                 }
                 case 2: {
-                    type = "slightlyMoreAdvancedAI";
+                    type = SlightlyMoreAdvancedAI.checkString;
                     break;
                 }
                 case 3: {
-                    type = "basicAI";
+                    type = BasicAI.checkString;
                 }
             }
             Player player = new Player(names.get(i), type);

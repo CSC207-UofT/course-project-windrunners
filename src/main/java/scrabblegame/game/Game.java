@@ -53,7 +53,7 @@ public class Game {
      *
      * @param move the move to be made
      */
-    public void doMove(Move move) {
+    public void doMove(Move move) throws Exception {
         move.execute(bag, playerManager.getCurrentPlayer(), board, dict);
     }
 
