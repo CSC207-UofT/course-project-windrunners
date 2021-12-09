@@ -8,11 +8,15 @@ import static java.util.Map.entry;
 
 /**
  * Each Tile object has a letter and points associated with the letter
+ *
+ * The WildCard Tile represented by '~' has 0 points associated with it,
+ * however, it can be used as a proxy for any letter in the game
+ *
  */
 
 public class Tile {
-    private final char letter;
-    private final int value;
+    private char letter;
+    private int value;
 
     public char getLetter() {
         return letter;
@@ -20,6 +24,14 @@ public class Tile {
 
     public int getValue() {
         return value;
+    }
+
+    public void setLetter(char letter){
+        this.letter = letter;
+    }
+
+    public void setValue(int value){
+        this.value = value;
     }
 
     /**
@@ -58,7 +70,8 @@ public class Tile {
             entry('W', 4),
             entry('X', 8),
             entry('Y', 4),
-            entry('Z', 10)
+            entry('Z', 10),
+            entry('~', 0)
     );
 
     public static int getLetterPoints(char letter) {
@@ -115,4 +128,13 @@ public class Tile {
         return letterVals;
     }
 
+  /**
+     * Overriding equals method to check for reference equality. Useful when checking if a tile belongs to a list
+     * @param tile1 the first tile to be compared for reference equality
+     * @param tile2 the first tile to be compared for reference equality
+     * @return true iff tile1 and tile2 have the same reference
+     */
+    public boolean equals(Tile tile1, Tile tile2) {
+        return tile1 == tile2;
+    }
 }

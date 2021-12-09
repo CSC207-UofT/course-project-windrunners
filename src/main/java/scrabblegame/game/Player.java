@@ -102,6 +102,10 @@ public class Player {
         return tiles;
     }
 
+    public void swapTiles(List<Tile> tilesToAdd, List<Tile> tilesToRemove) {
+        removeTiles(Tile.tilesToChars(tilesToRemove));
+        addTiles(tilesToAdd);
+    }
     /**
      * @return the list of tiles in the Player's rack
      */
@@ -118,11 +122,12 @@ public class Player {
      * @return a string representing the tiles in the rack
      */
     public String getRackString() {
-        StringBuilder rackString = new StringBuilder(this.name + "'s Letters: [");
+        StringBuilder rackString = new StringBuilder("[");
         for (Tile tile : rack) {
             rackString.append(tile.getLetter());
             rackString.append(",");
         }
+        rackString.deleteCharAt(rackString.length()-1);
         rackString.append("]");
         return rackString.toString();
     }
@@ -168,7 +173,7 @@ public class Player {
 
     @Override
     public String toString() {
-        return "Score: " + points + "\n" + getRackString() + "\n";
+        return "Score: " + points + "\n" + this.name + "'s Letters: " + getRackString() + "\n";
     }
 
 }

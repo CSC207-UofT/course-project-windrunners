@@ -21,11 +21,17 @@ public class SwapMove implements Move {
      * Attempts to swap tilesToSwap with the bag
      */
     @Override
-    public void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict) {
-        boolean hasLetters = pm.currentPlayerHasLetters(Tile.tilesToChars(tilesToSwap));
+    public void execute(Bag bag, Player player, Board board, Dictionary dict) {
+        if(bag.getNumOfLettersInBag() < 7){
+            //Move Skipped, does nothing (explicit return for clarity)
+            return;
+        }
+        boolean hasLetters = player.hasLetters(Tile.tilesToChars(tilesToSwap));
         if (hasLetters) {
             List<Tile> tilesReturned = bag.swapTiles(tilesToSwap);
-            pm.updateCurrentPlayer(tilesReturned, tilesToSwap);
+            player.swapTiles(tilesReturned, tilesToSwap);
         }
+        // Else, Move Skipped, does nothing (explicit return for clarity)
+        return;
     }
 }
