@@ -32,8 +32,10 @@ public class Dictionary {
             System.out.println(exception.getMessage());
         }
     }
-
+    
     /**
+     * Return the list of valid Scrabble words
+     *
      * @return the valid Scrabble words
      */
     public HashSet<String> getDictionary() {
