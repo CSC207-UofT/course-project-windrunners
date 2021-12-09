@@ -52,8 +52,8 @@ public class ScrabbleGame {
         }
         game.initPlayers(numPlayers, names, types);
         gameState = game.getGameState();
-        gameState.saveGameState("ho.csv");
-        gameState = new GameState("ho.csv");
+        gameState.saveGameState("gamestates/");
+        gameState = new GameState("gamestates/");
         gamePanel = new GamePanel(game);
         window.setContentPane(gamePanel);
         window.getContentPane().addMouseListener(inputHandler);
@@ -109,17 +109,17 @@ public class ScrabbleGame {
         }
         if (inputHandler.checkIfAccumulatorsResetted()) {
             game.nextTurn();
-            game.getGameState().saveGameState("ho.csv");
+            game.getGameState().saveGameState("gamestates/");
             return;
         }
-        gameState = new GameState("ho.csv");
+        gameState = new GameState("gamestates/");
         game.loadGameState(gameState);
         List<Object> wordInfo = inputHandler.completeMove(game.getBoard());
         if (wordInfo != null && !inputHandler.getSwapMove()) {
             try {
                 game.doPlaceMove((int) wordInfo.get(1), (int) wordInfo.get(0), (boolean) wordInfo.get(3), (String) wordInfo.get(2));
                 game.nextTurn();
-                game.getGameState().saveGameState("ho.csv");
+                game.getGameState().saveGameState("gamestates/");
             } catch (Exception ignored) {
 
             }
@@ -129,7 +129,7 @@ public class ScrabbleGame {
             try {
                 game.doSwapMove(tilesToSwap);
                 game.nextTurn();
-                game.getGameState().saveGameState("ho.csv");
+                game.getGameState().saveGameState("gamestates/");
             } catch (Exception ignored) {
             }
         }
