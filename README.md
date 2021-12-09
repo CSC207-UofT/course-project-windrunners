@@ -12,3 +12,5 @@ And here are the rest of the files:
     phase0/progress_report.md
 
     phase1/Design Document.pdf
+    
+The design document (+ other written documents) needed for phase 2 are in designdoc.pdf.
