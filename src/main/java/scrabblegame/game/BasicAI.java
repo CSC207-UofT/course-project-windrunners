@@ -1,7 +1,9 @@
 package main.java.scrabblegame.game;
 
+import java.util.List;
+
 public class BasicAI extends AbstractAI {
-    public BasicAI(char[] rack) {
+    public BasicAI(List<Tile> rack) {
         super(rack);
     }
 

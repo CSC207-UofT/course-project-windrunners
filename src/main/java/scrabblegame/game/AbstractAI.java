@@ -3,15 +3,20 @@ package main.java.scrabblegame.game;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 public abstract class AbstractAI {
     private final HashSet<String> words;
     private final char[] charRack;
-    public AbstractAI(char[] rack) {
-        Arrays.sort(rack);
+    public AbstractAI(List<Tile> rack) {
+        char[] charRack = new char[rack.size()];
+        for (int i = 0; i< rack.size(); i++) {
+            charRack[i] = rack.get(i).getLetter();
+        }
+        Arrays.sort(charRack);
         Dictionary dict = new Dictionary();
         words = dict.getDictionary();
-        this.charRack = rack;
+        this.charRack = charRack;
     }
 
     private static int factorial(int n) {

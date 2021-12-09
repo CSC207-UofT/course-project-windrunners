@@ -25,7 +25,7 @@ public class PlayerManager {
     public PlayerManager(int numPlayers, List<String> names, Bag bag) {
         this.players = new Player[numPlayers];
         for (int i = 0; i < numPlayers; i++) {
-            Player player = new Player(names.get(i));
+            Player player = new Player(names.get(i), "human");
             player.addTiles(bag.drawTiles(7));
             players[i] = player;
         }

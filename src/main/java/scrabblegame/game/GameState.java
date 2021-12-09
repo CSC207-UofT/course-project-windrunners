@@ -95,7 +95,7 @@ public class GameState {
                 for (char tileLetter : tileLetters) {
                     rack.add(new Tile(tileLetter));
                 }
-                players[i] = new Player(playerInfo[0]);
+                players[i] = new Player(playerInfo[0], "human");
                 players[i].addPoints(Integer.parseInt(playerInfo[1]));
                 players[i].addTiles(rack);
                 i++;

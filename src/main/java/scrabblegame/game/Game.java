@@ -50,38 +50,6 @@ public class Game {
         move.execute(bag, playerManager, board, dict);
     }
 
-    /**
-     * Passes the turn
-     */
-    public void doPassMove() {
-        Move move = new PassMove();
-        doMove(move);
-    }
-
-    /**
-     * Execute a swap move, with the tiles that were removed from the current player
-     *
-     * @param tilesRemoved the tiles to be swapped
-     */
-    public void doSwapMove(List<Tile> tilesRemoved) {
-        Move move = new SwapMove(tilesRemoved);
-        doMove(move);
-    }
-
-    /**
-     * Execute a swap move, with the given inputs
-     *
-     * @param word      is the word to be placed on the Board
-     * @param x         is the column of the first letter of the word
-     * @param y         is the row of the first letter of the word
-     * @param direction is the direction along which the word is to be placed
-     */
-    public void doPlaceMove(int x, int y, boolean direction, String word) {
-        Move move = new PlaceMove(x, y, direction, word);
-        doMove(move);
-    }
-
-
     public void nextTurn() {
         playerManager.goToNextPlayer();
     }

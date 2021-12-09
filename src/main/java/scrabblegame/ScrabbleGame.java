@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class ScrabbleGame {
 
@@ -26,7 +25,6 @@ public class ScrabbleGame {
         Scanner sc = new Scanner(System.in);
 
         initGame(sc, window);
-        PlayerController humanController = new HumanController();
         while (game.getBag().numTilesRemaining() > 0) {
             gamePanel.repaint();
 
@@ -35,8 +33,21 @@ public class ScrabbleGame {
             System.out.println("Number of Tiles in the Bag = " + game.numTilesRemaining());
             System.out.println(currPlayer);
             System.out.println(game.getBoard());
-
-            Move move = humanController.makeMove(sc, game);
+            PlayerController pc;
+            switch (currPlayer.getType()) {
+                case "basicAI": {
+                    pc = new BasicAIController();
+                    break;
+                }
+                case "slightlyMoreAdvancedAI": {
+                    pc = new SlightlyMoreAdvancedAIController();
+                    break;
+                }
+                default: {
+                    pc = new HumanController();
+                }
+            }
+            Move move = pc.makeMove(sc, game);
             game.doMove(move);
 
             game.nextTurn();

@@ -1,11 +1,12 @@
 package main.java.scrabblegame.game;
 
+import java.util.List;
 import java.util.Map;
 
 import static java.util.Map.entry;
 
 public class SlightlyMoreAdvancedAI extends AbstractAI{
-    public SlightlyMoreAdvancedAI(char[] rack) {
+    public SlightlyMoreAdvancedAI(List<Tile> rack) {
         super(rack);
     }
 
