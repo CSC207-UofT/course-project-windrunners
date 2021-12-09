@@ -1,5 +1,8 @@
 package main.java.scrabblegame.game;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.*;
 
 /**
@@ -115,19 +118,6 @@ public class Board {
         return filledSquares == 0;
     }
 
-    public boolean checkWord(int x, int y, boolean direction, String word, Dictionary dictionary) {
-        if (!isLegalPlacement(x, y, direction, word)) {
-            return false;
-        }
-        List<String> words = getCrossingWords(x, y, direction, word);
-        words.add(word);
-        for (String str : words) {
-            if (!dictionary.isValid(str)) {
-                return false;
-            }
-        }
-        return true;
-    }
     /*
         In this method, and in all the methods below,
         D is 1 if we are checking/inserting the word down the board, and 0 otherwise
@@ -136,18 +126,24 @@ public class Board {
     */
 
     /**
-     * check if the given word can be legallu placed on the board at the given location in the given direction.
-     * (but not whether the words formed are valid)
+     * check if word can be placed on the Board
      *
      * @param x          is the column of the first letter of the word
-     * @param y          is the row of the first letter of the word
+     * @param y          is the row of the last letter of the word
      * @param direction  is the direction along which the word may be placed
      * @param word       is the word that is being checked
-     * @return true iff the word can be legallu placed at the given spot. Specifically, it doesn't
+     * @param dictionary is the Scrabble dictionary; used to verify is a word is a valid Scrabble word
+     * @return true iff the word can be placed on the board
      */
-    public boolean isLegalPlacement(int x, int y, boolean direction, String word) {
+    public boolean checkWord(int x, int y, boolean direction, String word, Dictionary dictionary) {
         word = word.toUpperCase(Locale.ROOT);
-        final int length = word.length();
+        if ((word.length() > 1 || containsNoTiles()) && !dictionary.isValid(word)) {
+            return false;
+        }
+
+        boolean ifTouchesOtherWord = false;
+
+        int length = word.length();
         final int D = (direction == DOWN) ? 1 : 0;
         final int R = (direction == RIGHT) ? 1 : 0;
 
@@ -155,66 +151,31 @@ public class Board {
             return false;
         }
 
-        // check letter before and after placement are empty
-        if ( (y + D*length < BOARD_WIDTH && x + R*length < BOARD_WIDTH && !board[y + D*length][x + R*length].isEmpty()) ||
-                (y - D >= 0 && x - R >= 0 && !board[y - D][x - R].isEmpty()) ) {
-            return false;
-        }
-
         if (containsNoTiles()) {
-            return (x * R + y * D <= MIDDLE_SQUARE) && (x * R + y * D + length - 1 >= MIDDLE_SQUARE)
-                    && (x * D + y * R == MIDDLE_SQUARE);
+            return ((x * D + y * R == MIDDLE_SQUARE) && (x * R + y * D <= MIDDLE_SQUARE) &&
+                    (x * R + y * D + length - 1 >= MIDDLE_SQUARE));
         }
 
-        boolean touchesFilledSquare = false;
         for (int i = 0; i < length; i++) {
             int d = D * i;
             int r = R * i;
-            if (!board[y + d][x + r].isEmpty()) {
-                touchesFilledSquare = true;
-                if (board[y + d][x + r].getTile().getLetter() != word.charAt(i)) {
+            if (!board[y + d][x + r].isEmpty() &&
+                    board[y + d][x + r].getTile().getLetter() != word.charAt(i)) {
+                return false;
+            }
+            boolean oppDirection = !direction;
+            if (board[y + d][x + r].isEmpty()) {
+                if (!checkIfConnectedWordIsValid(y + d, x + r, dictionary, oppDirection, word.charAt(i))) {
                     return false;
                 }
             }
-            touchesFilledSquare = touchesFilledSquare || letterTouchesAnotherWord(x + r ,y + d, !direction);
-        }
-        return touchesFilledSquare;
-    }
-
-    /**
-     * Returns a List of words that cross the squares where the word is to be placed and would be
-     * created/modified by adding word starting at board[y][x] in direction
-     * Assumes that the word can be placed legally (in particular it won't run out of bounds of the board)
-     *
-     * @param x         is the column of the first letter of the word
-     * @param y         is the row of the first letter of the word
-     * @param direction is the direction along which the word may be placed
-     * @param word      is the word that would be pla
-     * @return a list of Strings that represent words that would cross the given word
-     */
-    public List<String> getCrossingWords(int x, int y, boolean direction, String word) {
-        final int R = (direction == RIGHT) ? 1 : 0;
-        final int D = (direction == DOWN) ? 1 : 0;
-        final boolean oppDir = !direction;
-        List<String> words = new ArrayList<>();
-        for (int i = 0; i < word.length(); i++) {
-            int r = R * i;
-            int d = D * i;
-            if (board[y + d][x + r].isEmpty()) {
-                StringBuilder addWord = new StringBuilder();
-                for (Square square : squaresOnLineFrom(x + r, y + d, oppDir, false)) {
-                    addWord.append(square.getTile().getLetter());
-                }
-                addWord.append(word.charAt(i));
-                for (Square square : squaresOnLineFrom(x + r, y + d, oppDir, true)) {
-                    addWord.append(square.getTile().getLetter());
-                }
-                if (addWord.length() > 1) {
-                    words.add(addWord.toString());
-                }
+            if (!board[y + d][x + r].isEmpty() ||
+                    letterTouchesAnotherWord(y + d, x + r, oppDirection)) {
+                ifTouchesOtherWord = true;
             }
         }
-        return words;
+
+        return ifTouchesOtherWord;
     }
 
     /**
@@ -225,43 +186,58 @@ public class Board {
      * @param direction is the direction along which we wish to check for adjacency
      * @return true iff the Square is adjacent to at least one word on the Board
      */
-    private boolean letterTouchesAnotherWord(int x, int y, boolean direction) {
+    private boolean letterTouchesAnotherWord(int y, int x, boolean direction) {
         final int D = (direction == DOWN) ? 1 : 0;
         final int R = (direction == RIGHT) ? 1 : 0;
-        boolean touchesBefore = (y - D >= 0) && (x - R >= 0) && !board[y - D][x - R].isEmpty();
-        boolean touchesAfter = (y + D < BOARD_WIDTH) && (x + R < BOARD_WIDTH) && !board[y + D][x + R].isEmpty();
-        return touchesBefore || touchesAfter;
+        boolean ifTouchesAnotherWord = false;
+        if (y - D >= 0 && x - R >= 0) {
+            ifTouchesAnotherWord = !board[y - D][x - R].isEmpty();
+        }
+        if (y + D < BOARD_WIDTH && x + R < BOARD_WIDTH) {
+            ifTouchesAnotherWord = ifTouchesAnotherWord || !board[y + D][x + R].isEmpty();
+        }
+        return ifTouchesAnotherWord;
     }
 
     /**
-     * Get the Squares that are on a straight uninterrupted line in a direction from the given spot
+     * checks whether each of the words on the board that may potentially
+     * *               contain this letter are valid Scrabble words
      *
      * @param x          is the column of the letter
      * @param y          is the row of the letter
-     * @param direction  is whether to go across (right) or down
-     * @param goForward  is true to go forward and false to go backwards
-     * @return ArrayList of squares (ordered left to right/top to bottom) that are traversed by going either
-     *   forward or backward from the given square (board[y][x]) in the given direction until reaching an empty square
+     * @param direction  is the direction along which the word is to be checked
+     * @param dictionary is the Scrabble dictionary; used to verify is a word is a valid Scrabble word
+     * @param letter     is the letter being considered; any words on the board that may potentially
+     *                   contain this letter are checked for validation
+     * @return true iff all the words on the board that may potentially
+     * *      *               contain this letter are valid Scrabble words
      */
-    public ArrayList<Square> squaresOnLineFrom(int x, int y, boolean direction, boolean goForward) {
-        final int F = goForward ? 1 : -1;
-        final int R = (direction == RIGHT) ? F : 0;
-        final int D = (direction == DOWN) ? F : 0;
-        ArrayList<Square> word = new ArrayList<>();
-        while (y + D >= 0 && x + R >= 0 && y + D < BOARD_WIDTH && x + R < BOARD_WIDTH
-                && !board[y + D][x + R].isEmpty()) {
-            word.add(board[y+D][x+R]);
+    private boolean checkIfConnectedWordIsValid(int y, int x, Dictionary dictionary, boolean direction, char letter) {
+        StringBuilder word = new StringBuilder();
+        final int D = (direction == DOWN) ? 1 : 0;
+        final int R = (direction == RIGHT) ? 1 : 0;
+        while (y >= D && x >= R && !board[y - D][x - R].isEmpty()) {
+            y -= D;
+            x -= R;
+        }
+        while (y < BOARD_WIDTH && x < BOARD_WIDTH && !board[y][x].isEmpty()) {
+            word.append(board[y][x].getTile().getLetter());
             y += D;
             x += R;
         }
-        if (!goForward) {
-            Collections.reverse(word);
+        word.append(letter);
+        y += D;
+        x += R;
+        while (y < BOARD_WIDTH && x < BOARD_WIDTH && !board[y][x].isEmpty()) {
+            word.append(board[y][x].getTile().getLetter());
+            y += D;
+            x += R;
         }
-        return word;
+        return dictionary.isValid(word.toString()) || word.length() == 1;
     }
 
     /**
-     * return a string of the letters of word that are not already on the board
+     * return a string of the letters of word, not in the board
      *
      * @param x         is the column of the first letter of the word
      * @param y         is the row of the last letter of the word
@@ -284,14 +260,12 @@ public class Board {
     }
 
     /**
-     * insert the required tiles to fill up the rest of the word, in the order they need to be inserted.
-     * assumes that it has already been checked that it can be inserted
+     * insert the required tiles to fill up the rest of the word, in the order they need to be inserted
      *
      * @param x         is the column of the first letter of the word
-     * @param y         is the row of the first letter of the word
+     * @param y         is the row of the last letter of the word
      * @param direction is the direction along which the Tiles are inserted
-     * @param tiles     is a list of required tiles to fill up the rest of the word,
-     *                  in the order they need to be inserted. Does not mutate it.
+     * @param tiles     is a list of required tiles to fill up the rest of the word, in the order they need to be inserted
      * @return the points earned on inserting this word
      */
     public int insertWord(int x, int y, boolean direction, List<Tile> tiles) {
@@ -315,6 +289,7 @@ public class Board {
             d += (direction == DOWN) ? 1 : 0;
             r += (direction == RIGHT) ? 1 : 0;
         }
+
         int points = countValue(word);
         for (ArrayList<Square> crossingWord : crossingWords) {
             points += countValue(crossingWord);
@@ -334,14 +309,48 @@ public class Board {
      *
      * @param x         is the column of the given location
      * @param y         is the row of the given location
-     * @param direction is the direction the word should be in
+     * @param direction is the given direction
      * @return a List of Squares containing the word in the given direction containing the given location
      */
     private ArrayList<Square> getWordAt(int x, int y, boolean direction) {
-        ArrayList<Square> word = squaresOnLineFrom(x, y, direction, false);
-        word.add(board[y][x]);
-        word.addAll(squaresOnLineFrom(x, y, direction, true));
+        ArrayList<Square> word = new ArrayList<>();
+        final int D = (direction == DOWN) ? 1 : 0;
+        final int R = (direction == RIGHT) ? 1 : 0;
+        int d = 0;
+        int r = 0;
+        while (y + d >= D && x + r >= R && !board[y + d - D][x + r - R].isEmpty()) {
+            d -= D;
+            r -= R;
+        }
+
+        while (y + d < BOARD_WIDTH && x + r < BOARD_WIDTH && !board[y + d][x + r].isEmpty()) {
+            word.add(board[y + d][x + r]);
+            d += D;
+            r += R;
+        }
         return word;
+    }
+
+    /**
+     * given lists of rows and columns of a list of Tiles, return if the tiles are placed on the same row or column
+     * Precondition: rows.size() > 0 && cols.size() > 0
+     * @param rows the rows of the tiles placed
+     * @param cols the column of the tiles placed
+     * @return "row" if all tiles are placed in the same row or rows.size() == 1 (i.e. only one tile is placed)
+     *         "col" if all tiles are placed in the same column
+     *         "none" otherwise
+     */
+    public String tilesInSameRowOrColumn(List<Integer> rows, List<Integer> cols)  {
+        String rowOrColumn = "none";
+        if (rows.stream().distinct().limit(2).count() <= 1) {
+            rowOrColumn = "row"; // all Tiles in same row
+        }
+        else {
+            if (cols.stream().distinct().limit(2).count() <= 1) {
+                rowOrColumn = "col"; // all Tiles in same column
+            }
+        }
+        return rowOrColumn;
     }
 
     /**
@@ -363,6 +372,53 @@ public class Board {
             }
         }
         return mult * wordValue;
+    }
+
+    /**
+     * return the word formed by placing tiles on the board (in the direction specified),
+     * along with the co-ordinates of the first letter. If the position of the tiles on the board is invalid,
+     * return an empty list.
+     * Precondition: the tiles are placed either in the same row or in the same column
+     * @param tiles the list of tiles placed on the board by the currentPlayer, in the order in which they were placed
+     * @param positionsAlongDirection the co-ordinates of the tiles along the direction in which they are placed
+     *                               positionsAlongDirection[k] is the co-ordinate of tiles[k]
+     * @param r the other co-ordinate of the tiles (from the precondition, this must be the same for all tiles)
+     * @param direction the direction along which the tiles are placed
+     * @return a List wordInfo such that wordInfo[0] = row of the first letter of the word,
+     *                                   wordInfo[1] = row of the first letter of the word,
+     *                                   wordInfo[2] = the word formed by the tiles along direction
+     *         wordInfo is empty if the tiles are placed on invalid position on the board.
+     */
+    public List<Object> findWordFormedByTiles(List<Tile> tiles, List<Integer> positionsAlongDirection, int r,
+                                                  boolean direction) {
+        List<Object> wordInfo = new ArrayList<>();
+        final int D = (direction == DOWN) ? 1 : 0;
+        final int R = (direction == RIGHT) ? 1 : 0;
+        List<Integer> duplicate = new ArrayList<>(positionsAlongDirection);
+        Collections.sort(duplicate);
+        int firstPosition = duplicate.get(0);
+        int row = firstPosition * D + r * R;
+        int col = firstPosition * R + r * D;
+        StringBuilder word = new StringBuilder();
+        while (row >= D && col >= R && !board[row - D][col - R].isEmpty()) {
+            row -= D;
+            col -= R; }
+        while (row < BOARD_WIDTH && col < BOARD_WIDTH && (!duplicate.isEmpty() || !board[row][col].isEmpty())) {
+            if (!board[row][col].isEmpty()) {
+                word.append(board[row][col].getTile().getLetter());
+            } else {
+                int a = direction ? col : row;
+                if (a == duplicate.get(0)) {
+                    word.append(tiles.get(positionsAlongDirection.indexOf(duplicate.remove(0))).getLetter());
+                } else {
+                    return new ArrayList<>(); } }
+            if (word.length() == 1) {
+                wordInfo.add(row);
+                wordInfo.add(col);}
+            row += D;
+            col += R; }
+        wordInfo.add(word.toString());
+        return wordInfo;
     }
 
     /**

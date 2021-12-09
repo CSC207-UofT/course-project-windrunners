@@ -102,6 +102,10 @@ public class Player {
         return tiles;
     }
 
+    public void swapTiles(List<Tile> tilesToAdd, List<Tile> tilesToRemove) {
+        removeTiles(Tile.tilesToChars(tilesToRemove));
+        addTiles(tilesToAdd);
+    }
     /**
      * @return the list of tiles in the Player's rack
      */

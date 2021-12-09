@@ -28,25 +28,23 @@ public class PlaceMove implements Move {
     }
 
     /**
-     * Attempts to put the given word on the board in the given direction starting at the given coordinates.
+     * Attempts to place the given word on the board in the given direction starting at the given coordinates.
      */
     @Override
-    public void execute(Bag bag, PlayerManager pm, Board board, Dictionary dict) throws Exception {
+    public void execute(Bag bag, Player player, Board board, Dictionary dict) {
         if (!board.checkWord(x, y, direction, word, dict)) {
             // throw invalid word error
             throw new Exception();
         }
         List<Character> lettersNeeded = board.lettersNeeded(x, y, direction, word);
-        if (!pm.currentPlayerHasLetters(lettersNeeded)) {
-            // throw invalid move error
-            throw new Exception();
-        }
         List<Tile> tilesForWord = new ArrayList<>();
         for (char c : lettersNeeded) {
-            tilesForWord.add(new Tile(c));
+            Tile newTile = new Tile(c);
+            tilesForWord.add(newTile);
         }
         int points = board.insertWord(x, y, direction, tilesForWord);
         List<Tile> tilesToAdd = bag.drawTiles(tilesForWord.size());
-        pm.updateCurrentPlayer(points, tilesToAdd, tilesForWord);
+        player.addPoints(points);
+        player.swapTiles(tilesToAdd, tilesForWord);
     }
 }

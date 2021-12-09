@@ -31,5 +31,8 @@ public class GamePanel extends JPanel {
                 currGame.getInputHandler().getSwapMove());
         renderer.renderPassMoveBox(g, currGame.getInputHandler().checkIfAccumulatorsResetted());
         renderer.renderCancelSwapMoveBox(g, currGame.getInputHandler().getSwapMove());
+        if (currGame.getInputHandler().getSelectingWildcard()) {
+            renderer.renderWildcardSelection(g);
+        }
     }
 }

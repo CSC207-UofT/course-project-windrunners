@@ -1,6 +1,8 @@
 package main.java.scrabblegame.game;
 
-import java.util.List;
+import main.java.scrabblegame.gui.InputHandler;
+
+import java.util.*;
 
 /**
  * The Game class which stores and controls all the resources needed for a game
@@ -9,6 +11,7 @@ public class Game {
     private Board board = new Board();
     private Bag bag = new Bag();
     private PlayerManager playerManager;
+    private InputHandler inputHandler = new InputHandler();
     Dictionary dict = new Dictionary();
 
     /**
@@ -17,7 +20,11 @@ public class Game {
      * @return the created GameState object
      */
     public GameState getGameState() {
-        return new GameState(new Bag(bag), new PlayerManager(playerManager), new Board(board));
+        return new GameState(new Bag (bag), new PlayerManager (playerManager), new Board (board));
+    }
+
+    public InputHandler getInputHandler() {
+        return inputHandler;
     }
 
     /**
@@ -47,8 +54,40 @@ public class Game {
      * @param move the move to be made
      */
     public void doMove(Move move) {
-        move.execute(bag, playerManager, board, dict);
+        move.execute(bag, playerManager.getCurrentPlayer(), board, dict);
     }
+
+    /**
+     * Passes the turn
+     */
+    public void doPassMove() throws Exception {
+        Move move = new PassMove();
+        doMove(move);
+    }
+
+    /**
+     * Execute a swap move, with the tiles that were removed from the current player
+     *
+     * @param tilesRemoved the tiles to be swapped
+     */
+    public void doSwapMove(List<Tile> tilesRemoved) throws Exception {
+        Move move = new SwapMove(tilesRemoved);
+        doMove(move);
+    }
+
+    /**
+     * Execute a swap move, with the given inputs
+     *
+     * @param word      is the word to be placed on the Board
+     * @param x         is the column of the first letter of the word
+     * @param y         is the row of the first letter of the word
+     * @param direction is the direction along which the word is to be placed
+     */
+    public void doPlaceMove(int x, int y, boolean direction, String word) throws Exception {
+        Move move = new PlaceMove(x, y, direction, word);
+        doMove(move);
+    }
+
 
     public void nextTurn() {
         playerManager.goToNextPlayer();
