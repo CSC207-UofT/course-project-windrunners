@@ -1,10 +1,13 @@
-package main.java.scrabblegame.game;
+package main.java.scrabblegame.game.ai;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
+
+import main.java.scrabblegame.game.elements.*;
+import main.java.scrabblegame.game.moves.*;
 
 public class AITest {
     // test board copied from here
