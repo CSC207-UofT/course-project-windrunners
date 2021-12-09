@@ -6,6 +6,8 @@ import main.java.scrabblegame.game.Board;
 import main.java.scrabblegame.game.Square;
 import main.java.scrabblegame.game.Tile;
 
+import java.util.List;
+
 import java.awt.*;
 
 public class Renderer {
@@ -76,5 +78,70 @@ public class Renderer {
             Player player = players[i];
             g.drawString(player.getName() + ": " + player.getPoints(), 600, 100 + 40 * i);
         }
+    }
+
+    public void renderCompleteMoveBox(Graphics g, boolean shouldItRender) {
+        if (shouldItRender) {
+            g.setColor(new Color(255, 167, 61));
+            int x = Board.BOARD_WIDTH * SQUARE_SIZE;
+            int y = (Board.BOARD_WIDTH + 1) * SQUARE_SIZE;
+            renderRectangleBox(g, x, y, "Complete Move");
+        }
+    }
+
+    public void renderSwapMoveBox(Graphics g, boolean shouldItRender) {
+        if (shouldItRender) {
+            g.setColor(new Color(2, 167, 61));
+            int x = Board.BOARD_WIDTH * SQUARE_SIZE;
+            int y = (Board.BOARD_WIDTH - 1) * SQUARE_SIZE;
+            renderRectangleBox(g, x, y, "Swap Move");
+        }
+    }
+
+    public void renderCancelSwapMoveBox(Graphics g, boolean isSwapMove) {
+        if (isSwapMove) {
+            g.setColor(new Color(167, 2, 2));
+            int x = Board.BOARD_WIDTH * SQUARE_SIZE;
+            int y = (Board.BOARD_WIDTH + 3) * SQUARE_SIZE;
+            renderRectangleBox(g, x, y, "Cancel Swap Move");
+        }
+    }
+
+    public void renderTilesToSwap(Graphics g, List<Tile> tiles, boolean isSwapMove) {
+        if (isSwapMove) {
+            g.drawString("Tiles To Swap", 40, 18 * 40 + 20);
+            for (int i = 0; i < 7; i++) {
+                if (i < tiles.size()) {
+                    renderTile(g, tiles.get(i), i + 5, 18);
+                }
+                else {
+                    renderSquare(g, new Square(), i + 5, 18);
+                }
+            }
+        }
+    }
+
+    public void renderPassMoveBox(Graphics g, boolean shouldItRender) {
+        if (shouldItRender) {
+            g.setColor(new Color(2, 176, 189));
+            int x = Board.BOARD_WIDTH * SQUARE_SIZE;
+            int y = (Board.BOARD_WIDTH - 3) * SQUARE_SIZE;
+            renderRectangleBox(g, x, y, "Pass Move");
+        }
+    }
+
+    public void renderWildcardSelection(Graphics g) {
+        g.drawString("Which Letter Would You Like to Use for your Wildcard Tile", 0, (Board.BOARD_WIDTH + 2) * TILE_SIZE);
+        for (int i = 0; i < 26; i++) {
+            renderTile(g, new Tile((char) (i + 65)), i % 13, Board.BOARD_WIDTH + 3 + (i / 13));
+        }
+    }
+
+    private void renderRectangleBox(Graphics g, int x, int y, String text) {
+        g.fillRect(x, y,3 * SQUARE_SIZE, SQUARE_SIZE);
+        g.setColor(Color.BLACK);
+        Font font = new Font("TimesRoman", Font.BOLD, 12);
+        g.setFont(font);
+        g.drawString(text, x + SQUARE_SIZE / 2, y + SQUARE_SIZE / 2);
     }
 }

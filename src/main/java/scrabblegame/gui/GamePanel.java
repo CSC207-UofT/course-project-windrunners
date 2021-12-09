@@ -24,5 +24,15 @@ public class GamePanel extends JPanel {
         renderer.renderBoard(g, currGame.getBoard());
         renderer.renderRack(g, currGame.getCurrentPlayer());
         renderer.renderScoreboard(g, currGame.getPlayerManager());
+        renderer.renderCompleteMoveBox(g, currGame.getInputHandler().isAMoveMade());
+        renderer.renderSwapMoveBox(g, !currGame.getInputHandler().placeMoveBeingMade() &&
+                !currGame.getInputHandler().getSwapMove());
+        renderer.renderTilesToSwap(g, currGame.getInputHandler().getTilesToSwap(),
+                currGame.getInputHandler().getSwapMove());
+        renderer.renderPassMoveBox(g, currGame.getInputHandler().checkIfAccumulatorsResetted());
+        renderer.renderCancelSwapMoveBox(g, currGame.getInputHandler().getSwapMove());
+        if (currGame.getInputHandler().getSelectingWildcard()) {
+            renderer.renderWildcardSelection(g);
+        }
     }
 }
