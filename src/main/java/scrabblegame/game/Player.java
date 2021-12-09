@@ -11,15 +11,17 @@ public class Player {
     private final String name;
     private int points;
     private final List<Tile> rack;
+    private final String type;
 
     /**
      * Class constructor. A player initially has 0 points
      * @param name the name of the player
      */
-    public Player(String name) {
+    public Player(String name, String type) {
         this.name = name;
         this.points = 0;
         this.rack = new ArrayList<>();
+        this.type = type;
     }
 
     public Player(Player that){
@@ -27,6 +29,14 @@ public class Player {
         this.points = that.points;
         this.rack = new ArrayList<>();
         this.rack.addAll(that.rack);
+        this.type = that.type;
+    }
+
+    /**
+     * @return the type of the Player's (human or AI, and which AI)
+     */
+    public String getType() {
+        return type;
     }
 
     /**

@@ -20,7 +20,7 @@ public class PlayerManagerTest {
 
     @Test
     public void testCreatesCorrectPlayers() {
-        PlayerManager pm = new PlayerManager(3, Arrays.asList("bob", "rob", "robert"), bag);
+        PlayerManager pm = new PlayerManager(3, Arrays.asList("bob", "rob", "robert"), Arrays.asList(1,1,1), bag);
         Player p1 = pm.getCurrentPlayer();
         pm.goToNextPlayer();
         Player p2 = pm.getCurrentPlayer();
@@ -37,13 +37,13 @@ public class PlayerManagerTest {
     @Test
     public void testUsesBagCorrectly() {
         int startSize = bag.numTilesRemaining();
-        new PlayerManager(3, Arrays.asList("bob", "rob", "robert"), bag);
+        new PlayerManager(3, Arrays.asList("bob", "rob", "robert"), Arrays.asList(1,1,1), bag);
         assertEquals(startSize - 21, bag.numTilesRemaining());
     }
 
     @Test
     public void testRackInitialization() {
-        PlayerManager pm = new PlayerManager(3, Arrays.asList("bob", "rob", "robert"), bag);
+        PlayerManager pm = new PlayerManager(3, Arrays.asList("bob", "rob", "robert"), Arrays.asList(1,1,1), bag);
         Player p1 = pm.getCurrentPlayer();
         pm.goToNextPlayer();
         Player p2 = pm.getCurrentPlayer();
@@ -60,7 +60,7 @@ public class PlayerManagerTest {
         List<Character> chars = Arrays.asList('A', 'B', 'C', 'D', 'E', 'F', 'G');
         List<Tile> playerTiles = Tile.charsToTiles(chars);
         bag.swapTiles(playerTiles);
-        PlayerManager pm = new PlayerManager(1, Collections.singletonList("bob"), bag);
+        PlayerManager pm = new PlayerManager(1, Collections.singletonList("bob"), List.of(1), bag);
         Player player = pm.getCurrentPlayer();
         assertEquals(7, player.getRackSize());
         assertTrue(player.hasLetters(chars));
@@ -77,7 +77,7 @@ public class PlayerManagerTest {
 
     @Test
     public void testGetLeaderAdjustsPointsCorrect() {
-        PlayerManager pm = new PlayerManager(3, Arrays.asList("bob", "rob", "robert"), bag);
+        PlayerManager pm = new PlayerManager(3, Arrays.asList("bob", "rob", "robert"), Arrays.asList(1,1,1), bag);
         ArrayList<Tile> tiles = new ArrayList<>();
         int[] points = {0, 35, 0};
         for (int i = 0; i < 3; i++) {
@@ -101,7 +101,7 @@ public class PlayerManagerTest {
 
     @Test
     public void testGetLeaderTieBreaker() {
-        PlayerManager pm = new PlayerManager(3, Arrays.asList("bob", "rob", "robert"), bag);
+        PlayerManager pm = new PlayerManager(3, Arrays.asList("bob", "rob", "robert"), Arrays.asList(1,1,1), bag);
         ArrayList<Tile> tiles = new ArrayList<>();
         int[] points = {0, 0, 50};
         for (int i = 0; i < 3; i++) {

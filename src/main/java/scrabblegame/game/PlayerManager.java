@@ -22,10 +22,24 @@ public class PlayerManager {
      * @param names      a list of the names of the players
      * @param bag        the Bag used to distribute Tiles from
      */
-    public PlayerManager(int numPlayers, List<String> names, Bag bag) {
+    public PlayerManager(int numPlayers, List<String> names, List<Integer> types, Bag bag) {
         this.players = new Player[numPlayers];
         for (int i = 0; i < numPlayers; i++) {
-            Player player = new Player(names.get(i));
+            String type = "";
+            switch (types.get(i)) {
+                case 1: {
+                    type = "human";
+                    break;
+                }
+                case 2: {
+                    type = SlightlyMoreAdvancedAI.checkString;
+                    break;
+                }
+                case 3: {
+                    type = BasicAI.checkString;
+                }
+            }
+            Player player = new Player(names.get(i), type);
             player.addTiles(bag.drawTiles(7));
             players[i] = player;
         }

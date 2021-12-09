@@ -7,7 +7,6 @@ import main.java.scrabblegame.gui.InputHandler;
 
 import javax.swing.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ScrabbleGame {
 
@@ -27,9 +26,7 @@ public class ScrabbleGame {
         Scanner sc = new Scanner(System.in);
 
         initGame(sc, window);
-
         while (game.getBag().numTilesRemaining() > 0) {
-//            cliGameLoopBody(sc);
             guiGameLoopBody();
         }
         Player winner = game.getLeader();
@@ -43,15 +40,19 @@ public class ScrabbleGame {
         System.out.println("How many players are there?");
         int numPlayers = Math.max(sc.nextInt(), 1);
         List<String> names = new ArrayList<>();
+        List<Integer> types = new ArrayList<>();
         for (int i = 0; i < numPlayers; i++) {
             System.out.println();
             System.out.print("Enter Player " + (i + 1) + "'s Name: ");
             names.add(sc.next());
+            System.out.print("Enter Player " + (i + 1) + "'s type: 1 if human, 2 if basic AI, 3 if more advanced AI ");
+            types.add(sc.nextInt());
+
         }
-        game.initPlayers(numPlayers, names);
+        game.initPlayers(numPlayers, names, types);
         gameState = game.getGameState();
-        gameState.saveGameState("ho.csv");
-        gameState = new GameState("ho.csv");
+        gameState.saveGameState("gamestates/");
+        gameState = new GameState("gamestates/");
         gamePanel = new GamePanel(game);
         window.setContentPane(gamePanel);
         window.getContentPane().addMouseListener(inputHandler);
@@ -62,25 +63,31 @@ public class ScrabbleGame {
         window.setVisible(true);
     }
 
-    public static void cliGameLoopBody(Scanner sc) throws Exception {
-            gamePanel.repaint();
-
-            Player currPlayer = game.getCurrentPlayer();
-            System.out.println(currPlayer.getName() + "'s Turn");
-            System.out.println("Number of Tiles in the Bag = " + game.numTilesRemaining());
-            System.out.println(currPlayer);
-            System.out.println(game.getBoard());
-
-            makeMove(sc);
-
-
-            game.nextTurn();
-
-    }
-
     public static void guiGameLoopBody() {
         Player currPlayer = game.getCurrentPlayer();
         inputHandler.setMoveIncomplete();
+
+        if (currPlayer.getType().equals(BasicAI.checkString)) {
+            BasicAI ai = new BasicAI(currPlayer.getRack());
+            Move move = ai.makeMove(game.getBoard());
+            try {
+                game.doMove(move);
+            } catch (Exception ignored) {
+
+            }
+            game.nextTurn();
+            return;
+        } else if (currPlayer.getType().equals(SlightlyMoreAdvancedAI.checkString)) {
+            SlightlyMoreAdvancedAI ai = new SlightlyMoreAdvancedAI(currPlayer.getRack());
+            Move move = ai.makeMove(game.getBoard());
+            try {
+                game.doMove(move);
+            } catch (Exception ignored) {
+
+            }
+            game.nextTurn();
+            return;
+        }
 
         while (!inputHandler.getMoveComplete()) {
             gamePanel.repaint();
@@ -88,17 +95,17 @@ public class ScrabbleGame {
         }
         if (inputHandler.checkIfAccumulatorsResetted()) {
             game.nextTurn();
-            game.getGameState().saveGameState("ho.csv");
+            game.getGameState().saveGameState("gamestates/");
             return;
         }
-        gameState = new GameState("ho.csv");
+        gameState = new GameState("gamestates/");
         game.loadGameState(gameState);
         List<Object> wordInfo = inputHandler.completeMove(game.getBoard());
         if (wordInfo != null && !inputHandler.getSwapMove()) {
             try {
                 game.doPlaceMove((int) wordInfo.get(1), (int) wordInfo.get(0), (boolean) wordInfo.get(3), (String) wordInfo.get(2));
                 game.nextTurn();
-                game.getGameState().saveGameState("ho.csv");
+                game.getGameState().saveGameState("gamestates/");
             } catch (Exception ignored) {
 
             }
@@ -108,83 +115,10 @@ public class ScrabbleGame {
             try {
                 game.doSwapMove(tilesToSwap);
                 game.nextTurn();
-                game.getGameState().saveGameState("ho.csv");
+                game.getGameState().saveGameState("gamestates/");
             } catch (Exception ignored) {
             }
         }
         inputHandler.resetAccumulators();
-    }
-
-    private static void makeMove(Scanner sc) throws Exception {
-
-        System.out.println("What is your move? Answer 1 to place a word, 2 to swap tiles, 3 to pass: ");
-        int choice = sc.nextInt();
-        String moveType = (choice == 1) ? "place" : (choice == 2) ? "swap" : "pass";
-
-        if (moveType.equals("pass")) {
-            game.doPassMove();
-        } else if (moveType.equals("swap")) {
-            makeSwapMove(sc);
-        } else {
-
-            makePlaceMove(sc);
-        }
-
-    }
-
-    private static void makeSwapMove(Scanner sc) throws Exception {
-
-        int maxTilesToSwap = Math.min(7, game.numTilesRemaining());
-        int numTilesToSwap;
-        while (true) {
-            System.out.println("Number of tiles to swap? (between 1 and " + maxTilesToSwap + ")");
-            numTilesToSwap = sc.nextInt();
-            if (numTilesToSwap > maxTilesToSwap) {
-                System.out.println("You can only swap " + maxTilesToSwap + " tiles. Try again.");
-            } else {
-                break;
-            }
-        }
-
-        List<Tile> tilesToSwap = new ArrayList<>();
-        List<Tile> rack = new ArrayList<>(game.getCurrPlayerRack());
-        List<Character> charList;
-        int i = 0;
-        while (i < numTilesToSwap) {
-            System.out.println("Tile number " + (i + 1) + " to swap? ");
-            char letterToSwap = sc.next().toUpperCase().charAt(0);
-
-            charList = rack.stream().map(Tile::getLetter).collect(Collectors.toList());
-            if (charList.contains(letterToSwap)) {
-                for (Tile tile : rack) {
-                    if (tile.getLetter() == letterToSwap) {
-                        rack.remove(tile);
-                        tilesToSwap.add(tile);
-                        break;
-                    }
-                }
-                i++;
-            } else {
-                System.out.println(game.getCurrentPlayer().getName() + " doesn't have this tile. Try again");
-            }
-        }
-
-        game.doSwapMove(tilesToSwap);
-        System.out.println("Tiles Swapped");
-
-    }
-
-    private static void makePlaceMove(Scanner sc) throws Exception {
-
-        System.out.println("Position of 1st letter (e.g. A5): ");
-        String position = sc.next();
-        int y = (int) position.charAt(0) - 65;
-        int x = Integer.parseInt(position.substring(1)) - 1;
-        System.out.println("Does your word goes from left to right? (answer Y or N)");
-        String directionStr = sc.next();
-        boolean direction = (directionStr.charAt(0) == 'Y') ? Board.RIGHT : Board.DOWN;
-        System.out.println("What is the word?");
-        String word = sc.next().toUpperCase();
-        game.doPlaceMove(x, y, direction, word);
     }
 }

@@ -44,6 +44,8 @@ public class GameState {
     }
 
     /**
+     * Getter method for the bag.
+     *
      * @return the bag
      */
     public Bag getBag() {
@@ -51,6 +53,8 @@ public class GameState {
     }
 
     /**
+     * Getter method for the board.
+     *
      * @return the board
      */
     public Board getBoard() {
@@ -58,6 +62,8 @@ public class GameState {
     }
 
     /**
+     * Getter method for the playerManager.
+     *
      * @return the playerManager
      */
     public PlayerManager getPlayerManager() {
@@ -95,11 +101,12 @@ public class GameState {
                 for (char tileLetter : tileLetters) {
                     rack.add(new Tile(tileLetter));
                 }
-                players[i] = new Player(playerInfo[0]);
+                players[i] = new Player(playerInfo[0], playerInfo[3]);
                 players[i].addPoints(Integer.parseInt(playerInfo[1]));
                 players[i].addTiles(rack);
                 i++;
             }
+            bufferedReader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -132,6 +139,7 @@ public class GameState {
                 }
                 i++;
             }
+            bufferedReader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -167,6 +175,7 @@ public class GameState {
             line = bufferedReader.readLine();
             String[] numPlayersAsString = line.split(",");
             info[2] = Integer.parseInt(numPlayersAsString[0]);
+            bufferedReader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -186,7 +195,8 @@ public class GameState {
             Player[] playerList = playerManager.getPlayers();
 
             for (Player player : playerList) {
-                String playerInfo = player.getName() + "," + player.getPoints() + "," + player.getRackLetters();
+                String playerInfo = player.getName() + "," + player.getPoints() + "," + player.getRackLetters()
+                        + "," + player.getType();
                 playerInfoCsvWriter.append(playerInfo);
                 playerInfoCsvWriter.append("\n");
             }

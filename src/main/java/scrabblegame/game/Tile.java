@@ -44,7 +44,7 @@ public class Tile {
         this.value = Tile.VALUE_DICT.get(letter);
     }
 
-    public static final Map<Character, Integer> VALUE_DICT = Map.ofEntries(
+    private static final Map<Character, Integer> VALUE_DICT = Map.ofEntries(
             entry('A', 1),
             entry('B', 3),
             entry('C', 3),
@@ -73,6 +73,10 @@ public class Tile {
             entry('Z', 10),
             entry('~', 0)
     );
+
+    public static int getLetterPoints(char letter) {
+        return VALUE_DICT.getOrDefault(letter, 0);
+    }
 
     /**
      * Takes a List of Characters and returns a List of tiles with those Characters.
@@ -116,7 +120,15 @@ public class Tile {
         return letters;
     }
 
-    /**
+    public static int[] toLetterVals(char[] letters) {
+        int[] letterVals = new int[letters.length];
+        for (int i = 0; i < letters.length; i++) {
+            letterVals[i] = Tile.getLetterPoints(letters[i]);
+        }
+        return letterVals;
+    }
+
+  /**
      * Overriding equals method to check for reference equality. Useful when checking if a tile belongs to a list
      * @param tile1 the first tile to be compared for reference equality
      * @param tile2 the first tile to be compared for reference equality
