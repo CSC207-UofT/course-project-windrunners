@@ -76,6 +76,7 @@ public class ScrabbleGame {
 
             }
             game.nextTurn();
+            game.getGameState().saveGameState("gamestates/");
             return;
         } else if (currPlayer.getType().equals(SlightlyMoreAdvancedAI.checkString)) {
             SlightlyMoreAdvancedAI ai = new SlightlyMoreAdvancedAI(currPlayer.getRack());
@@ -86,6 +87,7 @@ public class ScrabbleGame {
 
             }
             game.nextTurn();
+            game.getGameState().saveGameState("gamestates/");
             return;
         }
 
