@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -187,7 +189,7 @@ public class BoardTest {
     @Test
     public void testCheckWordOnlyMeetAtEnd() {
         board.insertWord(7, 7, Board.DOWN, Tile.charsToTiles("tee".toCharArray()));
-        assertTrue(board.checkWord(3, 10, Board.DOWN, "nails", dict));
+        assertTrue(board.checkWord(3, 10, Board.RIGHT, "nails", dict));
     }
 
     @Test
@@ -199,4 +201,48 @@ public class BoardTest {
         Collections.sort(lettersNeeded);
         assertArrayEquals(new Character[]{'b', 'c', 's'}, lettersNeeded.toArray());
     }
+
+    @Test
+    public void testFindWordFormedByTilesInvalidPlacements() {
+        List<Tile> tiles = Tile.charsToTiles("atc".toCharArray());
+        List<Integer> coordinates = new ArrayList<>(Arrays.asList(1, 2, 4));
+        assertEquals(board.findWordFormedByTiles(tiles, coordinates, 2, Board.RIGHT).size(), 0);
+        board.insertWord(7, 7, Board.RIGHT, Tile.charsToTiles("hat".toCharArray()));
+        board.insertWord(7, 7, Board.DOWN, Tile.charsToTiles("at".toCharArray()));
+        board.insertWord(7, 9, Board.DOWN, Tile.charsToTiles("ile".toCharArray()));
+        coordinates = new ArrayList<>(Arrays.asList(6, 8, 11));
+        assertEquals(board.findWordFormedByTiles(tiles, coordinates, 9, Board.RIGHT).size(), 0);
+    }
+
+    @Test
+    public void testFindWordFormedByTilesValidPlacements() {
+        List<Tile> tiles = Tile.charsToTiles("ars".toCharArray());
+        List<Integer> coordinates = new ArrayList<>(Arrays.asList(8, 10, 12));
+        board.insertWord(7, 7, Board.RIGHT, Tile.charsToTiles("hates".toCharArray()));
+        board.insertWord(7, 7, Board.DOWN, Tile.charsToTiles("at".toCharArray()));
+        board.insertWord(9, 7, Board.DOWN, Tile.charsToTiles("ile".toCharArray()));
+        board.insertWord(11, 7, Board.DOWN, Tile.charsToTiles("ap".toCharArray()));
+        assertEquals(board.findWordFormedByTiles(tiles, coordinates, 9, Board.RIGHT).size(), 3);
+        assertEquals(board.findWordFormedByTiles(tiles, coordinates, 9, Board.RIGHT).get(2), "TALRPS");
+        assertEquals(board.findWordFormedByTiles(tiles, coordinates, 9, Board.RIGHT).get(0), 9);
+        assertEquals(board.findWordFormedByTiles(tiles, coordinates, 9, Board.RIGHT).get(1), 7);
+    }
+
+    @Test
+    public void testTilesInSameRowOrColumn() {
+        List<Integer> rows = new ArrayList<>(List.of(2));
+        List<Integer> cols = new ArrayList<>(List.of(4));
+        assertEquals(board.tilesInSameRowOrColumn(rows, cols), "row");
+        rows = new ArrayList<>(Arrays.asList(4, 4, 4, 4, 5));
+        cols = new ArrayList<>(List.of(3, 3, 3, 3, 3));
+        assertEquals(board.tilesInSameRowOrColumn(rows, cols), "col");
+        rows = new ArrayList<>(Arrays.asList(4, 4, 4, 4, 4));
+        cols = new ArrayList<>(List.of(3, 3, 2, 2, 3));
+        assertEquals(board.tilesInSameRowOrColumn(rows, cols), "row");
+        rows = new ArrayList<>(Arrays.asList(1, 4, 4, 4, 4));
+        cols = new ArrayList<>(List.of(3, 3, 3, 3, 2));
+        assertEquals(board.tilesInSameRowOrColumn(rows, cols), "none");
+    }
+
+
 }
