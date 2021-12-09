@@ -73,9 +73,8 @@ public class ScrabbleGame {
 
     public static void guiGameLoopBody() {
         Player currPlayer = game.getCurrentPlayer();
-        inputHandler.setMoveIncomplete();
-
         GameState prevState = game.getGameState();
+        inputHandler.setMoveIncomplete();
 
         if (currPlayer.getSkip()) {
             currPlayer.setSkip(false);
@@ -113,12 +112,6 @@ public class ScrabbleGame {
             inputHandler.processInput(game.getBoard(), currPlayer);
         }
         if (inputHandler.checkIfAccumulatorsResetted()) {
-            Move move = new PassMove();
-            try {
-                game.doMove(move);
-            } catch (Exception ignored) {
-
-            }
             game.nextTurn();
             game.getGameState().saveGameState("gamestates/");
             return;
@@ -128,22 +121,28 @@ public class ScrabbleGame {
         List<Object> wordInfo = inputHandler.completeMove(game.getBoard());
         if (wordInfo != null && !inputHandler.getSwapMove()) {
             try {
-                Move move = new PlaceMove((int) wordInfo.get(1), (int) wordInfo.get(0), (boolean) wordInfo.get(3), (String) wordInfo.get(2));
+                int x = (int) wordInfo.get(1);
+                int y = (int) wordInfo.get(0);
+                boolean direction = (boolean) wordInfo.get(3);
+                String word = (String) wordInfo.get(2);
+                Move move = new PlaceMove(x, y, direction, word);
                 game.doMove(move);
 
-                /*
-                boolean challenge = false; //replace
-                if (challenge) {
+                while (inputHandler.getChallengeActive()) {
+                    gamePanel.repaint();
+                    inputHandler.processInput(game.getBoard(), currPlayer);
+                }
+
+                if (inputHandler.getIndexOfChallengingPlayer() >= 0 && inputHandler.getIndexOfChallengingPlayer() < game.getPlayerManager().getPlayers().length) {
                     GameState currState = game.getGameState();
-                    String name = "";
+                    String name = game.getPlayerManager().getPlayers()[inputHandler.getIndexOfChallengingPlayer()].getName();
                     game.loadGameState(prevState);
-                    boolean successful = game.challenge(name, (int) wordInfo.get(1), (int) wordInfo.get(0), (boolean) wordInfo.get(3), (String) wordInfo.get(2));
+                    boolean successful = game.challenge(name, x, y, direction, word);
                     if (!successful) {
                         game.loadGameState(currState);
                         game.setPlayerSkip(name);
                     }
                 }
-                 */
 
                 game.nextTurn();
                 game.getGameState().saveGameState("gamestates/");
@@ -161,6 +160,7 @@ public class ScrabbleGame {
             } catch (Exception ignored) {
             }
         }
+
         inputHandler.resetAccumulators();
     }
 }

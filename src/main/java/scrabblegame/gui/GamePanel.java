@@ -34,5 +34,8 @@ public class GamePanel extends JPanel {
         if (currGame.getInputHandler().getSelectingWildcard()) {
             renderer.renderWildcardSelection(g);
         }
+        if (currGame.getInputHandler().getChallengeActive()) {
+            renderer.renderChallengeSelection(g);
+        }
     }
 }

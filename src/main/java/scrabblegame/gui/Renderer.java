@@ -1,10 +1,7 @@
 package main.java.scrabblegame.gui;
 
-import main.java.scrabblegame.game.elements.Player;
+import main.java.scrabblegame.game.elements.*;
 import main.java.scrabblegame.game.PlayerManager;
-import main.java.scrabblegame.game.elements.Board;
-import main.java.scrabblegame.game.elements.Square;
-import main.java.scrabblegame.game.elements.Tile;
 
 import java.util.List;
 
@@ -76,7 +73,7 @@ public class Renderer {
         Player[] players = playerManager.getPlayers();
         for (int i = 0; i < players.length; i++) {
             Player player = players[i];
-            g.drawString(player.getName() + ": " + player.getPoints(), 600, 100 + 40 * i);
+            g.drawString(player.getName() + ": " + player.getPoints(), 15 * TILE_SIZE, 2 * TILE_SIZE + 40 * i);
         }
     }
 
@@ -135,6 +132,12 @@ public class Renderer {
         for (int i = 0; i < 26; i++) {
             renderTile(g, new Tile((char) (i + 65)), i % 13, Board.BOARD_WIDTH + 3 + (i / 13));
         }
+    }
+
+    public void renderChallengeSelection(Graphics g) {
+        g.drawString("Click on the name of the player that would like to challenge (if any)", 0, (Board.BOARD_WIDTH + 2) * TILE_SIZE + 20);
+        g.setColor(Color.red);
+        renderRectangleBox(g, 5 * TILE_SIZE, (Board.BOARD_WIDTH + 3) * TILE_SIZE, "No Challenge");
     }
 
     private void renderRectangleBox(Graphics g, int x, int y, String text) {
