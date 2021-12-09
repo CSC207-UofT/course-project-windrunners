@@ -385,7 +385,7 @@ public class Board {
      * @param r the other co-ordinate of the tiles (from the precondition, this must be the same for all tiles)
      * @param direction the direction along which the tiles are placed
      * @return a List wordInfo such that wordInfo[0] = row of the first letter of the word,
-     *                                   wordInfo[1] = row of the first letter of the word,
+     *                                   wordInfo[1] = column of the first letter of the word,
      *                                   wordInfo[2] = the word formed by the tiles along direction
      *         wordInfo is empty if the tiles are placed on invalid position on the board.
      */
