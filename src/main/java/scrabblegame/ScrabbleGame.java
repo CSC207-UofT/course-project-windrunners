@@ -64,38 +64,33 @@ public class ScrabbleGame {
     }
 
     public static void cliGameLoopBody(Scanner sc) throws Exception {
-            gamePanel.repaint();
+        gamePanel.repaint();
 
-            Player currPlayer = game.getCurrentPlayer();
-            System.out.println(currPlayer.getName() + "'s Turn");
-            System.out.println("Number of Tiles in the Bag = " + game.numTilesRemaining());
-            System.out.println(currPlayer);
-            System.out.println(game.getBoard());
+        Player currPlayer = game.getCurrentPlayer();
+        System.out.println(currPlayer.getName() + "'s Turn");
+        System.out.println("Number of Tiles in the Bag = " + game.numTilesRemaining());
+        System.out.println(currPlayer);
+        System.out.println(game.getBoard());
 
 
-             PlayerController pc;
-             switch (currPlayer.getType()) {
-                 case "basicAI": {
-                     pc = new BasicAIController();
-                     break;
-                 }
-                 case "slightlyMoreAdvancedAI": {
-                     pc = new SlightlyMoreAdvancedAIController();
-                     break;
-                 }
-                 default: {
-                     pc = new HumanController();
-                 }
+         PlayerController pc;
+         switch (currPlayer.getType()) {
+             case "basicAI": {
+                 pc = new BasicAIController();
+                 break;
              }
-             Move move = pc.makeMove(sc, game);
-             game.doMove(move);
+             case "slightlyMoreAdvancedAI": {
+                 pc = new SlightlyMoreAdvancedAIController();
+                 break;
+             }
+             default: {
+                 pc = new HumanController();
+             }
+         }
+         Move move = pc.makeMove(sc, game);
+         game.doMove(move);
 
-             game.nextTurn();
-
-            cliGameLoopBody(sc);
-
-            game.nextTurn();
-
+         game.nextTurn();
     }
 
     public static void guiGameLoopBody() {
