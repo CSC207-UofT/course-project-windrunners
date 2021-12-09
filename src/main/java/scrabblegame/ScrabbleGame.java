@@ -7,7 +7,6 @@ import main.java.scrabblegame.gui.InputHandler;
 
 import javax.swing.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ScrabbleGame {
 
